@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/layout/bottomsheet_payment_method.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_bottom_sheet"
+    android:paddingBottom="32dp">
+
+    <!-- Drag handle -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bg_handle"/>
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Payment Method"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#1A1A1A"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Payment list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPaymentMethods"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="false"/>
+
+    <!-- Add Payment Method -->
+    <LinearLayout
+        android:id="@+id/layoutAddPayment"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="20dp"
+        android:layout_marginTop="4dp"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_add_circle"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Payment Method"
+            android:textSize="15sp"
+            android:textColor="#1A1A1A"
+            android:layout_marginStart="12dp"/>
+    </LinearLayout>
+
+    <!-- Checkout button -->
+    <Button
+        android:id="@+id/btnCheckoutSheet"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="12dp"
+        android:text="Checkout"
+        android:textSize="16sp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:background="@drawable/bg_button_black"
+        android:stateListAnimator="@null"/>
+
+</LinearLayout>

@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Homi">
         <activity
+            android:name=".checkout.OrderSuccessActivity"
+            android:exported="false" />
+        <activity
+            android:name=".checkout.CheckoutActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
