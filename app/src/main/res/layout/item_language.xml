@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:background="@drawable/bg_language_item">
+
+    <!-- FIX: ImageView thay vì TextView để hiển thị ảnh cờ PNG -->
+    <ImageView
+        android:id="@+id/iv_language_flag"
+        android:layout_width="32dp"
+        android:layout_height="24dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/america_flag"
+        android:contentDescription="@string/flag" />
+
+    <!-- Language name -->
+    <TextView
+        android:id="@+id/tv_language_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="12dp"
+        android:textColor="@color/pp_black"
+        android:textSize="15sp"
+        android:text="@string/english" />
+
+    <!-- Native name -->
+    <TextView
+        android:id="@+id/tv_language_native"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:textColor="@color/pp_gray_medium"
+        android:textSize="13sp"
+        android:text="@string/english" />
+
+    <!-- Checkmark -->
+    <ImageView
+        android:id="@+id/iv_language_check"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:contentDescription="@string/todo"
+        android:src="@drawable/check"
+        android:visibility="gone" />
+
+</LinearLayout>

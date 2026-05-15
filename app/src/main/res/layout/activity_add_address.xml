@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/layout/activity_add_address.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- TOOLBAR -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_add_address"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#111111"
+        android:elevation="4dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/arrow"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/back"
+            android:scaleType="centerInside"
+            android:padding="12dp"
+            app:tint="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_new_address"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:fontFamily="serif" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- ── LABEL SELECTOR ── -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/address_label"
+                android:textColor="@color/pp_black"
+                android:textSize="11sp"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="20dp">
+
+                <TextView
+                    android:id="@+id/label_home"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:text="@string/home"
+                    android:gravity="center"
+                    android:textSize="13sp"
+                    android:textColor="#FFFFFF"
+                    android:background="#111111"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/label_work"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:text="@string/work"
+                    android:gravity="center"
+                    android:textSize="13sp"
+                    android:textColor="#111111"
+                    android:background="@drawable/bg_label_unselected"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/label_other"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:text="@string/other"
+                    android:gravity="center"
+                    android:textSize="13sp"
+                    android:textColor="#111111"
+                    android:background="@drawable/bg_label_unselected" />
+
+            </LinearLayout>
+
+            <!-- ── CONTACT INFO ── -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_information"
+                android:textColor="@color/pp_black"
+                android:textSize="11sp"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#FFFFFF"
+                android:padding="4dp"
+                android:layout_marginBottom="20dp">
+
+                <!-- Full Name -->
+                <EditText
+                    android:id="@+id/et_full_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:autofillHints=""
+                    android:hint="@string/full_name"
+                    android:textSize="14sp"
+                    android:textColor="#111111"
+                    android:textColorHint="#BBBBBB"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:background="@null"
+                    android:inputType="textPersonName"
+                    android:imeOptions="actionNext" />
+
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE" />
+
+                <!-- Phone -->
+                <EditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:autofillHints=""
+                    android:hint="@string/phone_number"
+                    android:textSize="14sp"
+                    android:textColor="#111111"
+                    android:textColorHint="#BBBBBB"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:background="@null"
+                    android:inputType="phone"
+                    android:imeOptions="actionNext" />
+
+            </LinearLayout>
+
+            <!-- ── ADDRESS DETAILS ── -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/address_details"
+                android:textColor="@color/pp_black"
+                android:textSize="11sp"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#FFFFFF"
+                android:padding="4dp"
+                android:layout_marginBottom="20dp">
+
+                <!-- Street address -->
+                <EditText
+                    android:id="@+id/et_street"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:autofillHints=""
+                    android:hint="@string/street_address_house_no"
+                    android:textSize="14sp"
+                    android:textColor="#111111"
+                    android:textColorHint="#BBBBBB"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:background="@null"
+                    android:inputType="textPostalAddress"
+                    android:imeOptions="actionNext" />
+
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE" />
+
+                <!-- Ward / Commune -->
+                <EditText
+                    android:id="@+id/et_ward"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:autofillHints=""
+                    android:hint="@string/ward_commune"
+                    android:textSize="14sp"
+                    android:textColor="#111111"
+                    android:textColorHint="#BBBBBB"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:background="@null"
+                    android:inputType="text"
+                    android:imeOptions="actionNext" />
+
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE" />
+
+                <!-- District -->
+                <EditText
+                    android:id="@+id/et_district"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:autofillHints=""
+                    android:hint="@string/district"
+                    android:textSize="14sp"
+                    android:textColor="#111111"
+                    android:textColorHint="#BBBBBB"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:background="@null"
+                    android:inputType="text"
+                    android:imeOptions="actionNext" />
+
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="#EEEEEE" />
+
+                <!-- City -->
+                <EditText
+                    android:id="@+id/et_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:autofillHints=""
+                    android:hint="@string/city_province"
+                    android:textSize="14sp"
+                    android:textColor="#111111"
+                    android:textColorHint="#BBBBBB"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:background="@null"
+                    android:inputType="text"
+                    android:imeOptions="actionDone" />
+
+            </LinearLayout>
+
+            <!-- Set as Default toggle -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="#FFFFFF"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/set_as_default_address"
+                    android:textColor="#111111"
+                    android:textSize="14sp" />
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_default"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- SAVE BUTTON -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:elevation="8dp"
+        android:padding="16dp">
+
+        <Button
+            android:id="@+id/btn_save_address"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="@string/save_address"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textAllCaps="false"
+            android:backgroundTint="#111111"
+            android:stateListAnimator="@null" />
+
+    </LinearLayout>
+
+</LinearLayout>

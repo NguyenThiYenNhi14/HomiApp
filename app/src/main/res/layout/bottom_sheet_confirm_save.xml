@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="#FFFFFF">
+
+    <!-- Thanh kéo -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:background="#CCCCCC"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- Tiêu đề -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/save_changes"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#111111"
+        android:gravity="center"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Nội dung -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/are_you_sure_you_want_to_update_your_information"
+        android:textSize="14sp"
+        android:textColor="#666666"
+        android:gravity="center"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- Nút Yes -->
+    <Button
+        android:id="@+id/btnConfirmYes"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="@string/yes"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#111111"
+        android:layout_marginBottom="12dp"/>
+
+    <!-- Nút Cancel -->
+    <Button
+        android:id="@+id/btnConfirmCancel"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="@string/cancel"
+        android:textColor="#111111"
+        android:backgroundTint="#EEEEEE"
+        android:layout_marginBottom="8dp"/>
+
+</LinearLayout>

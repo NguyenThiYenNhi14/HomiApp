@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/pp_background">
+
+    <!-- ===== TOP BAR ===== -->
+    <LinearLayout
+        android:id="@+id/layoutTopBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="8dp"
+        android:paddingEnd="16dp"
+        android:background="@color/white"
+        android:elevation="4dp">
+
+        <!-- Back Button -->
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/arrow"
+            android:scaleType="centerInside"
+            android:padding="4dp"
+            android:layout_marginEnd="12dp"
+            android:contentDescription="@string/back"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/terms_amp_conditions"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:paddingEnd="40dp" />
+
+    </LinearLayout>
+
+    <!-- ===== DIVIDER ===== -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider_color" />
+
+    <!-- ===== CONTENT AREA (Scrollable) ===== -->
+    <ScrollView
+        android:id="@+id/scrollContent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbarStyle="outsideOverlay"
+        android:fillViewport="true"
+        android:paddingBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="24dp">
+
+            <!-- App Logo / Icon Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:paddingBottom="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/homi"
+                    android:textSize="22sp"
+                    android:letterSpacing="0.12"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/last_updated_may_1_2025"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_muted"
+                    android:layout_marginTop="4dp" />
+
+            </LinearLayout>
+
+            <!-- Intro Card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_rounded"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/welcome_to_homi"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/by_using_the_homi_app_you_agree_to_the_following_terms_and_conditions_please_read_them_carefully_before_making_any_purchase_or_using_any_feature_of_our_platform"
+                    android:textSize="13sp"
+                    android:textColor="@color/text_secondary"
+                    android:lineSpacingMultiplier="1.5"
+                    android:layout_marginTop="8dp" />
+
+            </LinearLayout>
+
+            <!-- Section 1: Acceptance -->
+            <include layout="@layout/item_terms_section"
+                android:id="@+id/section1" />
+
+            <!-- Section 2: Products & Orders -->
+            <include layout="@layout/item_terms_section"
+                android:id="@+id/section2" />
+
+            <!-- Section 3: Payment -->
+            <include layout="@layout/item_terms_section"
+                android:id="@+id/section3" />
+
+            <!-- Section 4: Delivery & Shipping -->
+            <include layout="@layout/item_terms_section"
+                android:id="@+id/section4" />
+
+            <!-- Section 5: Returns & Refunds -->
+            <include layout="@layout/item_terms_section"
+                android:id="@+id/section5" />
+
+            <!-- Section 6: Privacy -->
+            <include layout="@layout/item_terms_section"
+                android:id="@+id/section6" />
+
+            <!-- Section 7: Intellectual Property -->
+            <include layout="@layout/item_terms_section"
+                android:id="@+id/section7" />
+
+            <!-- Section 8: Limitation of Liability -->
+            <include layout="@layout/item_terms_section"
+                android:id="@+id/section8" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- ===== BOTTOM BUTTON AREA ===== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:elevation="8dp"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="24dp">
+
+        <!-- Checkbox agree -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <CheckBox
+                android:id="@+id/checkboxAgree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/i_have_read_and_agree_to_the_terms_amp_conditions"
+                android:textSize="13sp"
+                android:textColor="@color/text_secondary"
+                android:layout_marginStart="8dp" />
+
+        </LinearLayout>
+
+        <!-- Accept Button -->
+        <Button
+            android:id="@+id/btnAccept"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="@string/accept_amp_continue"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:background="@color/black"
+            android:enabled="false"
+            />
+
+        <!-- Decline Button -->
+        <Button
+            android:id="@+id/btnDecline"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:text="@string/decline"
+            android:textSize="14sp"
+            android:background="@android:color/transparent"
+            android:layout_marginTop="4dp"
+            android:alpha="0.5"/>
+
+    </LinearLayout>
+
+</LinearLayout>

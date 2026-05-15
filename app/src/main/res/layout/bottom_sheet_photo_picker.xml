@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    android:paddingTop="20dp"
+    android:paddingBottom="8dp">
+
+    <!-- Tiêu đề -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/select_profile_photo"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:paddingBottom="16dp"/>
+
+    <!-- Đường kẻ ngang -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EEEEEE"/>
+
+    <!-- Open Camera -->
+    <TextView
+        android:id="@+id/tvOpenCamera"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="@string/open_camera"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:background="?attr/selectableItemBackground"/>
+
+    <!-- Đường kẻ ngang -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EEEEEE"/>
+
+    <!-- Select From Gallery -->
+    <TextView
+        android:id="@+id/tvSelectGallery"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="@string/select_from_gallery"
+        android:textSize="15sp"
+        android:textColor="#111111"
+        android:gravity="center"
+        android:background="?attr/selectableItemBackground"/>
+
+</LinearLayout>

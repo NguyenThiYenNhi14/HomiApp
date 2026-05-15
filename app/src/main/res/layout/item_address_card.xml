@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_address_card"
+    android:layout_marginBottom="12dp"
+    android:padding="16dp">
+
+    <!-- Row 1: Label + Default badge + Options -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:id="@+id/tv_address_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/home"
+            android:textColor="@color/pp_black"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:background="@drawable/bg_language_item"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp" />
+
+        <!-- FIX: Added tv_default_badge that SavedAddressesActivity looks for -->
+        <TextView
+            android:id="@+id/tv_default_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Default"
+            android:textSize="11sp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/bg_default_badge"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:visibility="gone" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/btn_address_options"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:text="⋮"
+            android:textSize="22sp"
+            android:textColor="#555555"
+            android:gravity="center"
+            android:contentDescription="@string/options" />
+
+    </LinearLayout>
+
+    <!-- Recipient name -->
+    <TextView
+        android:id="@+id/tv_recipient_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/kevin_gilbert"
+        android:textColor="#111111"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="3dp" />
+
+    <!-- Phone -->
+    <TextView
+        android:id="@+id/tv_recipient_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/_84_901_234_567"
+        android:textColor="#888888"
+        android:textSize="13sp"
+        android:layout_marginBottom="10dp" />
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EEEEEE"
+        android:layout_marginBottom="10dp" />
+
+    <!-- Full address -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="top">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="📍"
+            android:textSize="14sp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="1dp"
+            android:contentDescription="" />
+
+        <TextView
+            android:id="@+id/tv_full_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/_123_nguyen_hue_blvd_ben_nghe_ward_district_1_ho_chi_minh_city"
+            android:textColor="#555555"
+            android:textSize="13sp"
+            android:lineSpacingMultiplier="1.5" />
+
+    </LinearLayout>
+
+</LinearLayout>

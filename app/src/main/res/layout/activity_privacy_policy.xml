@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/layout/activity_privacy_policy.xml -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pp_background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/pp_black"
+            android:orientation="vertical"
+            android:paddingStart="24dp"
+            android:paddingTop="48dp"
+            android:paddingEnd="24dp"
+            android:paddingBottom="36dp">
+
+            <!-- Back icon + Title row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/btn_back"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/arrow"
+                    android:scaleType="centerInside"
+                    android:padding="4dp"
+                    android:layout_marginEnd="12dp"
+                    android:contentDescription="@string/back"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:tint="@color/pp_white" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="serif"
+                        android:letterSpacing="0.3"
+                        android:text="@string/privacy_policy"
+                        android:textColor="@color/pp_white"
+                        android:textSize="28sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:letterSpacing="0.2"
+                        android:text="@string/last_updated_may_2025"
+                        android:textColor="@color/pp_gray_light"
+                        android:textSize="11sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Body -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingTop="24dp"
+            android:paddingBottom="48dp">
+
+            <!-- Intro card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_intro_card"
+                android:orientation="vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="14dp"
+                android:paddingBottom="14dp"
+                android:layout_marginBottom="28dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/we_respect_your_privacy_and_are_committed_to_protecting_the_personal_information_you_share_when_using_the_homi_app"
+                    android:textColor="@color/pp_black"
+                    android:textSize="13sp"
+                    android:lineSpacingMultiplier="1.6" />
+
+            </LinearLayout>
+
+            <include layout="@layout/item_policy_section" android:id="@+id/section1" />
+            <View android:layout_width="match_parent" android:layout_height="1dp"
+                android:background="@color/pp_divider" android:layout_marginTop="24dp" android:layout_marginBottom="24dp" />
+
+            <include layout="@layout/item_policy_section" android:id="@+id/section2" />
+            <View android:layout_width="match_parent" android:layout_height="1dp"
+                android:background="@color/pp_divider" android:layout_marginTop="24dp" android:layout_marginBottom="24dp" />
+
+            <include layout="@layout/item_policy_section" android:id="@+id/section3" />
+            <View android:layout_width="match_parent" android:layout_height="1dp"
+                android:background="@color/pp_divider" android:layout_marginTop="24dp" android:layout_marginBottom="24dp" />
+
+            <include layout="@layout/item_policy_section" android:id="@+id/section4" />
+            <View android:layout_width="match_parent" android:layout_height="1dp"
+                android:background="@color/pp_divider" android:layout_marginTop="24dp" android:layout_marginBottom="24dp" />
+
+            <include layout="@layout/item_policy_section" android:id="@+id/section5" />
+            <View android:layout_width="match_parent" android:layout_height="1dp"
+                android:background="@color/pp_divider" android:layout_marginTop="24dp" android:layout_marginBottom="24dp" />
+
+            <include layout="@layout/item_policy_section" android:id="@+id/section6" />
+            <View android:layout_width="match_parent" android:layout_height="1dp"
+                android:background="@color/pp_divider" android:layout_marginTop="24dp" android:layout_marginBottom="24dp" />
+
+            <include layout="@layout/item_policy_section" android:id="@+id/section7" />
+            <View android:layout_width="match_parent" android:layout_height="1dp"
+                android:background="@color/pp_divider" android:layout_marginTop="24dp" android:layout_marginBottom="24dp" />
+
+            <include layout="@layout/item_policy_section" android:id="@+id/section8" />
+
+            <!-- Contact Block -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/pp_black"
+                android:orientation="vertical"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:paddingTop="28dp"
+                android:paddingBottom="28dp"
+                android:layout_marginTop="32dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/contact_us"
+                    android:textColor="@color/pp_white"
+                    android:textSize="17sp"
+                    android:fontFamily="serif"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:id="@+id/tv_contact_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/homi_home_furniture"
+                    android:textColor="@color/pp_gray_light"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/tv_contact_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/email_privacy_homi_vn"
+                    android:textColor="@color/pp_gray_light"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/tv_contact_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/phone_1800_xxxx"
+                    android:textColor="@color/pp_gray_light"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="4dp" />
+
+                <TextView
+                    android:id="@+id/tv_contact_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/address_company_address_ho_chi_minh_city_vietnam"
+                    android:textColor="@color/pp_gray_light"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <!-- Footer -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/_2026_homi_home_furniture_all_rights_reserved"
+                android:textColor="@color/pp_gray_medium"
+                android:textSize="11sp"
+                android:gravity="center"
+                android:layout_marginTop="20dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

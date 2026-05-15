@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/bg_language_item.xml -->
+<!-- Row trắng với viền dưới xám nhạt -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/pp_white" />
+        </shape>
+    </item>
+    <!-- Bottom border -->
+    <item android:top="55dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/pp_divider" />
+        </shape>
+    </item>
+</layer-list>
