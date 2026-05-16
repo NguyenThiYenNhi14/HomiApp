@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">Homi Admin</string>
+    <string name="login_title">Login Admin</string>
+    <string name="login_subtitle">Access your luxury workspace</string>
+    <string name="label_username">Username</string>
+    <string name="hint_username">Enter your username</string>
+    <string name="label_password">Password</string>
+    <string name="hint_password">••••••••</string>
+    <string name="label_sign_in_as">Sign in as</string>
+    <string name="role_admin">Admin</string>
+    <string name="role_employee">Employee</string>
+    <string name="remember_me">Remember me</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="btn_login">LOGIN</string>
+    <string name="no_account_request">Don’t have an account? Request Access</string>
+    <string name="footer_text_1">HOMI APP</string>
+    <string name="footer_text_2">FURNITURE DESIGN</string>
+    <string name="copyright">© 2026 Homi App Management. All rights reserved.</string>
+
+    <string name="str_orders">Orders</string>
+
+    <!-- Dashboard Header -->
+    <string name="str_dashboard_title">Admin Portal</string>
+    <string name="str_dashboard_subtitle">System performance overview and executive controls.</string>
+
+    <!-- Global Insights -->
+    <string name="str_section_global_insights">GLOBAL INSIGHTS</string>
+    <string name="str_badge_live">LIVE</string>
+    <string name="str_stat_net_revenue_label">NET REVENUE</string>
+    <string name="str_stat_net_revenue_value">$42,850.00</string>
+    <string name="str_stat_net_revenue_change">12.5%</string>
+    <string name="str_stat_order_volume_label">ORDER VOLUME</string>
+    <string name="str_stat_order_volume_value">156</string>
+    <string name="str_stat_order_volume_change">8.2%</string>
+    <string name="str_stat_user_activity_label">USER ACTIVITY</string>
+    <string name="str_stat_user_activity_value">1,204</string>
+    <string name="str_stat_user_activity_change">4.2%</string>
+    <string name="str_arrow_up">↑</string>
+
+    <!-- Growth Chart -->
+    <string name="str_chart_title">Growth Trajectory</string>
+    <string name="str_chart_subtitle">7-day performance metrics</string>
+    <string name="str_chart_icon">📈</string>
+
+    <!-- Command Center -->
+    <string name="str_section_command_center">COMMAND CENTER</string>
+    <string name="str_card_pending_orders_label">PENDING ORDERS</string>
+    <string name="str_card_pending_orders_value">24</string>
+    <string name="str_card_shipping_label">SHIPPING</string>
+    <string name="str_card_shipping_value">12</string>
+    <string name="str_card_catalog_label">CATALOG</string>
+    <string name="str_card_catalog_value">Add Product</string>
+    <string name="str_card_intelligence_label">INTELLIGENCE</string>
+    <string name="str_card_intelligence_value">AI Combo</string>
+
+    <!-- Inventory Spotlight -->
+    <string name="str_section_inventory">INVENTORY SPOTLIGHT</string>
+    <string name="str_browse_all">BROWSE ALL</string>
+    <string name="str_product1_name">VELVET LOUNGE</string>
+    <string name="str_product1_price">$1,250.00</string>
+    <string name="str_product2_name">MARBLE PLINTH</string>
+    <string name="str_product2_price">$890.00</string>
+    <string name="str_product3_name">ORGANIC VASE</string>
+    <string name="str_product3_price">$340.00</string>
+
+    <!-- Bottom Nav -->
+    <string name="str_nav_home">Home</string>
+    <string name="str_nav_products">Products</string>
+    <string name="str_nav_orders">Orders</string>
+    <string name="str_nav_ai">AI</string>
+    <string name="str_nav_profile">Profile</string>
+</resources>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Background -->
+    <color name="luxury_bg">#FBF9F9</color>
+    <color name="luxury_surface_low">#F5F3F3</color>
+    <color name="luxury_surface_card">#FFFFFF</color>
+    <color name="luxury_surface_icon_gray">#E9E8E7</color>
+    <color name="luxury_surface_icon_black_tint">#1AFFFFFF</color>
+
+    <!-- Primary / Brand -->
+    <color name="luxury_primary">#1A1A1A</color>
+    <color name="luxury_primary_pure">#000000</color>
+
+    <!-- Text -->
+    <color name="luxury_text_primary">#1B1C1C</color>
+    <color name="luxury_text_secondary">#444748</color>
+    <color name="luxury_text_hint">#99444748</color>
+
+    <!-- Borders & Dividers -->
+    <color name="luxury_outline">#747878</color>
+    <color name="luxury_outline_variant">#C4C7C7</color>
+    <color name="luxury_divider">#E3E2E2</color>
+
+    <!-- On-dark (text/icon trên nền đen) -->
+    <color name="luxury_on_primary">#FFFFFF</color>
+    <color name="luxury_on_primary_muted">#B3FFFFFF</color>
+
+    <!-- Badge -->
+    <color name="luxury_badge_live_bg">#000000</color>
+    <color name="luxury_badge_live_text">#FFFFFF</color>
+
+    <!-- Chart -->
+    <color name="luxury_chart_line">#000000</color>
+    <color name="luxury_chart_fill">#0D000000</color>
+
+    <!-- Toolbar & Bottom Nav -->
+    <color name="color_nav_active">#000000</color>
+    <color name="color_nav_inactive">#80444748</color>
+    <color name="color_surface">#FFFFFF</color>
+    <color name="color_divider">#F0EEEE</color>
+    <color name="color_badge">#BA1A1A</color>
+    <color name="color_on_surface">#1B1C1C</color>
+</resources>
