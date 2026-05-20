@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- res/layout/bottomsheet_payment_method.xml -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/bg_bottom_sheet"
-    android:paddingBottom="32dp">
+    android:background="@drawable/bg_white_bottom_container"
+    android:paddingBottom="24dp">
 
-    <!-- Drag handle -->
     <View
         android:layout_width="40dp"
         android:layout_height="4dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/bg_handle"/>
+        android:background="@drawable/bg_handle_black"/>
 
-    <!-- Title -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,54 +24,53 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="#1A1A1A"
-        android:layout_marginHorizontal="20dp"
+        android:layout_marginStart="24dp"
         android:layout_marginBottom="16dp"/>
 
-    <!-- Payment list -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvPaymentMethods"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"/>
+        android:nestedScrollingEnabled="false"
+        tools:listitem="@layout/item_payment_method"
+        tools:itemCount="4"/>
 
-    <!-- Add Payment Method -->
     <LinearLayout
         android:id="@+id/layoutAddPayment"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="56dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingHorizontal="20dp"
+        android:layout_marginHorizontal="24dp"
         android:layout_marginTop="4dp"
+        android:background="@drawable/bg_payment_group_outline"
+        android:paddingHorizontal="16dp"
         android:clickable="true"
         android:focusable="true">
-
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_add_circle"/>
-
+            android:src="@drawable/ic_add_circle"
+            app:tint="#1A1A1A"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add Payment Method"
-            android:textSize="15sp"
-            android:textColor="#1A1A1A"
-            android:layout_marginStart="12dp"/>
+            android:layout_marginStart="12dp"
+            android:textStyle="bold"
+            android:textColor="#1A1A1A"/>
     </LinearLayout>
 
-    <!-- Checkout button -->
     <Button
         android:id="@+id/btnCheckoutSheet"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="24dp"
         android:text="Checkout"
-        android:textSize="16sp"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
+        app:backgroundTint="#1A1A1A"
         android:background="@drawable/bg_button_black"
         android:stateListAnimator="@null"/>
-
 </LinearLayout>

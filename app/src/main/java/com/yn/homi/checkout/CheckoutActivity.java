@@ -2,9 +2,17 @@ package com.yn.homi.checkout;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.*;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
 import com.bumptech.glide.Glide;
 import com.yn.homi.R;
 import com.yn.homi.checkout.model.PaymentMethod;
@@ -21,7 +29,26 @@ public class CheckoutActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_checkout);
+
+        View main = findViewById(R.id.main);
+        View bottomBar = findViewById(R.id.layoutBottomBar);
+
+        ViewCompat.setOnApplyWindowInsetsListener(main, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
+            
+            int basePaddingBottom = (int) (12 * getResources().getDisplayMetrics().density);
+            bottomBar.setPadding(
+                    bottomBar.getPaddingLeft(),
+                    bottomBar.getPaddingTop(),
+                    bottomBar.getPaddingRight(),
+                    systemBars.bottom + basePaddingBottom
+            );
+            return insets;
+        });
+
         bindViews();
         loadData();
         setupListeners();
@@ -41,7 +68,6 @@ public class CheckoutActivity extends AppCompatActivity {
     private void loadData() {
         currentItem = (CartItem) getIntent().getSerializableExtra("EXTRA_CART_ITEM");
         if (currentItem == null) {
-            // Fallback để test
             currentItem = new CartItem("ID", "Modern L-Shaped Sofa", 13500.0, 1, "");
         }
 
@@ -78,6 +104,14 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private void openPaymentSheet() {
         PaymentMethodBottomSheet sheet = new PaymentMethodBottomSheet();
+        
+        // Truyền phương thức đang chọn vào sheet để nó hiển thị đúng vị trí tick
+        if (selectedPayment != null) {
+            sheet.setSelectedMethodName(selectedPayment.getName());
+        } else {
+            sheet.setSelectedMethodName(tvPaymentMethod.getText().toString());
+        }
+
         sheet.setOnPaymentConfirmedListener(method -> {
             selectedPayment = method;
             tvPaymentMethod.setText(method.getName());
