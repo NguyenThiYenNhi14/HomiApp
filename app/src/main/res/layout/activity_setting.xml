@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Settings"
+            android:text="@string/settings"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="#111111"
@@ -45,7 +45,6 @@
                     android:layout_height="50dp"
                     android:src="@drawable/icon_account_circle"
                     android:scaleType="centerCrop"/>
-                <!-- FIX: Đã xóa app:tint="#333333" để ảnh thật không bị tô màu xám -->
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -58,7 +57,7 @@
                         android:id="@+id/tvUserName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Kevin Gilbert"
+                        android:text="@string/kevin_gilbert"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="#111111"/>
@@ -67,7 +66,7 @@
                         android:id="@+id/tvUserEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="kevingilbert@gmail.com"
+                        android:text="@string/kevingilbert_gmail_com"
                         android:textSize="13sp"
                         android:textColor="#555555"/>
                 </LinearLayout>
@@ -84,7 +83,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Account"
+            android:text="@string/account"
             android:textSize="12sp"
             android:textStyle="bold"
             android:textColor="#888888"
@@ -94,7 +93,7 @@
             android:paddingBottom="6dp"
             android:paddingStart="4dp"/>
 
-        <!-- Group Account: Password, Payment, Address -->
+        <!-- Group Account: Password, Address -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -106,8 +105,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <!-- FIX: Đã xóa <View> divider thừa ở đây (trước Password & Security) -->
 
                 <!-- Password & Security -->
                 <LinearLayout
@@ -130,46 +127,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Password &amp; Security"
-                        android:textSize="15sp"
-                        android:textColor="#111111"
-                        android:paddingStart="12dp"/>
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/arrow_right"
-                        app:tint="#333333"/>
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#F0F0F0"
-                    android:layout_marginStart="52dp"/>
-
-                <!-- Payment Methods -->
-                <LinearLayout
-                    android:id="@+id/layoutPaymentMethods"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:orientation="horizontal"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:gravity="center_vertical"
-                    android:background="@drawable/ripple_white">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/baseline_payments_24"
-                        app:tint="#333333"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Payment Methods"
+                        android:text="@string/password_amp_security"
                         android:textSize="15sp"
                         android:textColor="#111111"
                         android:paddingStart="12dp"/>
@@ -208,7 +166,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Saved Addresses"
+                        android:text="@string/saved_addresses"
                         android:textSize="15sp"
                         android:textColor="#111111"
                         android:paddingStart="12dp"/>
@@ -226,7 +184,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Shopping"
+            android:text="@string/shopping"
             android:textSize="12sp"
             android:textStyle="bold"
             android:textColor="#888888"
@@ -264,22 +222,22 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_shopping_cart"
-                        app:tint="#333333" />
+                        app:tint="#333333"/>
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:paddingStart="12dp"
-                        android:text="My Orders"
+                        android:text="@string/my_orders"
                         android:textColor="#111111"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"/>
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/arrow_right"
-                        app:tint="#333333" />
+                        app:tint="#333333"/>
                 </LinearLayout>
 
                 <View
@@ -309,7 +267,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="My Wishlist"
+                        android:text="@string/my_wishlist"
                         android:textSize="15sp"
                         android:textColor="#111111"
                         android:paddingStart="12dp"/>
@@ -327,7 +285,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Preferences"
+            android:text="@string/preferences"
             android:textSize="12sp"
             android:textStyle="bold"
             android:textColor="#888888"
@@ -357,7 +315,8 @@
                     android:orientation="horizontal"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:background="@drawable/ripple_white">
 
                     <ImageView
                         android:layout_width="24dp"
@@ -369,12 +328,11 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Notifications"
+                        android:text="@string/notifications"
                         android:textSize="15sp"
                         android:textColor="#111111"
                         android:paddingStart="12dp"/>
 
-                    <!-- FIX: Đổi <Switch> → <androidx.appcompat.widget.SwitchCompat> -->
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/switchNotification"
                         android:layout_width="wrap_content"
@@ -397,7 +355,8 @@
                     android:orientation="horizontal"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:background="@drawable/ripple_white">
 
                     <ImageView
                         android:layout_width="24dp"
@@ -409,12 +368,11 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Dark Mode"
+                        android:text="@string/dark_mode"
                         android:textSize="15sp"
                         android:textColor="#111111"
                         android:paddingStart="12dp"/>
 
-                    <!-- FIX: Đổi <Switch> → <androidx.appcompat.widget.SwitchCompat> -->
                     <androidx.appcompat.widget.SwitchCompat
                         android:id="@+id/switchDarkMode"
                         android:layout_width="wrap_content"
@@ -449,7 +407,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Language"
+                        android:text="@string/language"
                         android:textSize="15sp"
                         android:textColor="#111111"
                         android:paddingStart="12dp"/>
@@ -467,7 +425,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="About"
+            android:text="@string/about"
             android:textSize="12sp"
             android:textStyle="bold"
             android:textColor="#888888"
@@ -511,7 +469,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="About app"
+                        android:text="@string/about_app"
                         android:textSize="15sp"
                         android:textColor="#111111"
                         android:paddingStart="12dp"/>
@@ -550,7 +508,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Terms &amp; Conditions"
+                        android:text="@string/terms_amp_conditions"
                         android:textSize="15sp"
                         android:textColor="#111111"
                         android:paddingStart="12dp"/>
@@ -589,7 +547,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Privacy Policy"
+
+                        android:text="@string/privacy_policy"
                         android:textSize="15sp"
                         android:textColor="#111111"
                         android:paddingStart="12dp"/>
@@ -628,7 +587,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Help"
+                        android:text="@string/help"
                         android:textSize="15sp"
                         android:textColor="#111111"
                         android:paddingStart="12dp"/>
@@ -646,7 +605,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="24dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="2dp">
 
@@ -669,7 +628,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Logout"
+                    android:text="@string/logout"
                     android:textSize="15sp"
                     android:textColor="#E53935"
                     android:paddingStart="12dp"/>

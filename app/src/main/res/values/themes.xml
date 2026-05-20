@@ -1,9 +1,30 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Homi" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Base.Theme.FurnitureApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#4CAF50</item>
     </style>
+
+    <!-- Single Theme.FurnitureApp — merged both declarations into one -->
+    <style name="Theme.FurnitureApp" parent="Base.Theme.FurnitureApp">
+        <item name="materialSwitchStyle">@style/GreenSwitch</item>
+    </style>
+
+    <style name="GreenSwitch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="thumbTint">@null</item>
+        <item name="trackTint">@null</item>
+        <item name="colorPrimary">#4CAF50</item>
+    </style>
+
+    <style name="TabLayoutStyle">
+        <item name="tabBackground">@drawable/tab_selector</item>
+        <item name="tabTextAppearance">@style/TabTextAppearance</item>
+    </style>
+
+    <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">13sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
 
     <style name="Theme.Homi" parent="Base.Theme.Homi" />
 </resources>
