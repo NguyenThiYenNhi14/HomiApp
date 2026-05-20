@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="24dp"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="#FFFFFF">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/ivPaymentIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            tools:src="@drawable/ic_cash" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/ivPaymentIcon"
+            android:layout_toStartOf="@id/ivCheck"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+
+            <TextView
+                android:id="@+id/tvPaymentName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="ZaloPay"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="#1A1A1A" />
+
+            <TextView
+                android:id="@+id/tvPaymentDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Ví điện tử ZaloPay"
+                android:textSize="13sp"
+                android:textColor="#888888"
+                android:layout_marginTop="2dp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivCheck"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            tools:src="@drawable/ic_checkbox_checked" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

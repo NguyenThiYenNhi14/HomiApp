@@ -27,7 +27,7 @@
 
         <activity
             android:name=".checkout.CheckoutActivity"
-            android:exported="false" />
+            android:exported="false"/>
 
         <activity
             android:name=".MainActivity"
