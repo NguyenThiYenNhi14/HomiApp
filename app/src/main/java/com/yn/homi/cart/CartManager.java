@@ -74,6 +74,15 @@ public class CartManager {
         return total;
     }
 
+    public double getShipping() {
+        // Shipping is FREE as requested
+        return 0.0;
+    }
+
+    public double getOrderTotal() {
+        return getSubTotal() + getShipping();
+    }
+
     public void clear() { items.clear(); notifyChanged(); }
 
     private void notifyChanged() {

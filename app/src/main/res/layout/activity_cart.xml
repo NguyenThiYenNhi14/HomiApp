@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="#F2EDE8">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="220dp"
-        android:clipToPadding="false">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <!-- Header -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
@@ -38,22 +40,28 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="Add to Cart"
+                    android:text="Cart"
+                    android:textColor="#1A1A1A"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="#1A1A1A"/>
+                    android:textStyle="bold" />
 
-                <ImageButton
-                    android:id="@+id/btnCartIcon"
+                <RelativeLayout
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/bg_circle_white"
-                    android:src="@drawable/ic_cart"
-                    android:padding="10dp"/>
+                    android:background="@drawable/bg_circle_white">
+                    <ImageView
+                        android:id="@+id/ivCartIcon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_cart"
+                        android:layout_centerInParent="true"
+                        app:tint="#1A1A1A"/>
+                </RelativeLayout>
             </RelativeLayout>
 
+            <!-- Empty State -->
             <LinearLayout
                 android:id="@+id/layoutEmpty"
                 android:layout_width="match_parent"
@@ -76,6 +84,7 @@
                     android:layout_marginTop="16dp"/>
             </LinearLayout>
 
+            <!-- Product List -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvCartItems"
                 android:layout_width="match_parent"
@@ -85,101 +94,111 @@
                 android:overScrollMode="never"
                 tools:listitem="@layout/item_cart"
                 tools:itemCount="3"/>
+
+            <!-- Khối trắng bắt đầu từ Summary trở xuống -->
+            <LinearLayout
+                android:id="@+id/layoutSummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_white_bottom_container"
+                android:orientation="vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="28dp"
+                android:paddingBottom="12dp"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Sub Total"
+                        android:textSize="14sp"
+                        android:textColor="#888888"/>
+                    <TextView
+                        android:id="@+id/tvSubTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="172.000 VNĐ"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#1A1A1A"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Shipping"
+                        android:textSize="14sp"
+                        android:textColor="#888888"/>
+                    <TextView
+                        android:id="@+id/tvShipping"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="125.000 VNĐ"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#1A1A1A"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layerType="software"
+                    android:background="@drawable/bg_dashed_line"
+                    android:layout_marginBottom="16dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Order total"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="#1A1A1A"/>
+                    <TextView
+                        android:id="@+id/tvOrderTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="297.000 VNĐ"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="#1A1A1A"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Filler to extend white background to the bottom -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="#FFFFFF" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <!-- Bottom Bar trắng cố định -->
     <LinearLayout
         android:id="@+id/layoutBottomBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:orientation="vertical"
-        android:background="@drawable/bg_white_top_rounded"
-        android:elevation="16dp"
+        android:background="#FFFFFF"
         android:paddingHorizontal="24dp"
-        android:paddingTop="24dp">
-
-        <LinearLayout
-            android:id="@+id/layoutSummary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="visible">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="8dp">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Sub Total"
-                    android:textSize="14sp"
-                    android:textColor="#888888"/>
-                <TextView
-                    android:id="@+id/tvSubTotal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="$172.00"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#1A1A1A"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Shipping"
-                    android:textSize="14sp"
-                    android:textColor="#888888"/>
-                <TextView
-                    android:id="@+id/tvShipping"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="FREE"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#1A1A1A"/>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layerType="software"
-                android:background="@drawable/bg_dashed_line"
-                android:layout_marginBottom="16dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="20dp">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Order total"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="#1A1A1A"/>
-                <TextView
-                    android:id="@+id/tvOrderTotal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="$172.00"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="#1A1A1A"/>
-            </LinearLayout>
-        </LinearLayout>
+        android:paddingVertical="12dp">
 
         <Button
             android:id="@+id/btnContinue"
@@ -192,7 +211,7 @@
             android:background="@drawable/bg_button_black"
             app:backgroundTint="#1A1A1A"
             android:textAllCaps="false"
-            android:stateListAnimator="@null"
-            android:layout_marginBottom="12dp"/>
+            android:stateListAnimator="@null"/>
     </LinearLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</LinearLayout>
