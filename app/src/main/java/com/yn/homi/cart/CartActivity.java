@@ -39,7 +39,7 @@ public class CartActivity extends AppCompatActivity
     private List<CartItem> cartItems;
     private CartAdapter adapter;
     private TextView tvSubTotal, tvShipping, tvOrderTotal;
-    private View layoutSummary;
+    private View layoutSummary, layoutBottomContainer;
     private Button btnContinue;
     private View layoutEmpty;
 
@@ -70,17 +70,18 @@ public class CartActivity extends AppCompatActivity
         }
 
         View main = findViewById(R.id.main);
-        View bottomBar = findViewById(R.id.layoutBottomBar);
-        if (main != null && bottomBar != null) {
+        View bottomContainer = findViewById(R.id.layoutBottomContainer);
+        if (main != null && bottomContainer != null) {
             ViewCompat.setOnApplyWindowInsetsListener(main, (v, insets) -> {
                 Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
 
-                int basePaddingBottom = (int) (12 * getResources().getDisplayMetrics().density);
-                bottomBar.setPadding(
-                        bottomBar.getPaddingLeft(),
-                        bottomBar.getPaddingTop(),
-                        bottomBar.getPaddingRight(),
+                // Padding dưới cho cả khối container để nền trắng tràn xuống navigation bar
+                int basePaddingBottom = (int) (4 * getResources().getDisplayMetrics().density);
+                bottomContainer.setPadding(
+                        bottomContainer.getPaddingLeft(),
+                        bottomContainer.getPaddingTop(),
+                        bottomContainer.getPaddingRight(),
                         systemBars.bottom + basePaddingBottom
                 );
                 return insets;
@@ -93,12 +94,13 @@ public class CartActivity extends AppCompatActivity
     }
 
     private void bindViews() {
-        tvSubTotal    = findViewById(R.id.tvSubTotal);
-        tvShipping    = findViewById(R.id.tvShipping);
-        tvOrderTotal  = findViewById(R.id.tvOrderTotal);
-        layoutSummary = findViewById(R.id.layoutSummary);
-        btnContinue   = findViewById(R.id.btnContinue);
-        layoutEmpty   = findViewById(R.id.layoutEmpty);
+        tvSubTotal            = findViewById(R.id.tvSubTotal);
+        tvShipping            = findViewById(R.id.tvShipping);
+        tvOrderTotal          = findViewById(R.id.tvOrderTotal);
+        layoutSummary         = findViewById(R.id.layoutSummary);
+        layoutBottomContainer = findViewById(R.id.layoutBottomContainer);
+        btnContinue           = findViewById(R.id.btnContinue);
+        layoutEmpty           = findViewById(R.id.layoutEmpty);
     }
 
     private void loadData() {
@@ -215,7 +217,9 @@ public class CartActivity extends AppCompatActivity
         com.yn.homi.cart.CartManager manager = com.yn.homi.cart.CartManager.getInstance();
         boolean isEmpty = manager.getItems().isEmpty();
 
-        if (layoutSummary != null) layoutSummary.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+        if (layoutBottomContainer != null) {
+            layoutBottomContainer.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+        }
         if (btnContinue != null) btnContinue.setEnabled(!isEmpty);
         if (layoutEmpty != null) layoutEmpty.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
 
