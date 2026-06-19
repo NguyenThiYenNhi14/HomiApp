@@ -11,6 +11,9 @@ public class SharedPrefManager {
     private static final String KEY_USER_EMAIL = "user_email";
     private static final String KEY_NOTIF      = "notifications_enabled";
     private static final String KEY_AVATAR_URI = "avatar_uri";
+    private static final String KEY_IS_LOGGED_IN = "is_logged_in";
+    private static final String KEY_USER_ROLE = "user_role";
+    private static final String KEY_USER_ID = "user_id";
 
     private static SharedPrefManager instance;
     private final SharedPreferences prefs;
@@ -69,6 +72,28 @@ public class SharedPrefManager {
         prefs.edit().putBoolean(KEY_NOTIF, enabled).apply();
     }
 
+    public void setLoggedIn(boolean isLoggedIn, int userId, String username, String email, String role) {
+        prefs.edit()
+                .putBoolean(KEY_IS_LOGGED_IN, isLoggedIn)
+                .putInt(KEY_USER_ID, userId)
+                .putString(KEY_USER_NAME, username)
+                .putString(KEY_USER_EMAIL, email)
+                .putString(KEY_USER_ROLE, role)
+                .apply();
+    }
+
+    public boolean isLoggedIn() {
+        return prefs.getBoolean(KEY_IS_LOGGED_IN, false);
+    }
+
+    public String getUserRole() {
+        return prefs.getString(KEY_USER_ROLE, "USER");
+    }
+
+    public int getUserId() {
+        return prefs.getInt(KEY_USER_ID, -1);
+    }
+
     /** Lấy trạng thái notification, mặc định bật (true) */
     public boolean isNotificationsEnabled() {
         return prefs.getBoolean(KEY_NOTIF, true);
@@ -76,9 +101,12 @@ public class SharedPrefManager {
 
     public void clearUserSession() {
         prefs.edit()
+                .remove(KEY_IS_LOGGED_IN)
+                .remove(KEY_USER_ID)
                 .remove(KEY_USER_NAME)
                 .remove(KEY_USER_EMAIL)
                 .remove(KEY_AVATAR_URI)
+                .remove(KEY_USER_ROLE)
                 .remove(KEY_NOTIF)
                 .apply();
     }

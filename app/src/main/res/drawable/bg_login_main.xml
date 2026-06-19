@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Hình nền -->
+    <item android:drawable="@drawable/banner" />
+    <!-- Lớp phủ tối -->
+    <item>
+        <shape>
+            <solid android:color="#66000000" />
+        </shape>
+    </item>
+</layer-list>
