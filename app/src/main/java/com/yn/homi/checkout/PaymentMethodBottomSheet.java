@@ -11,26 +11,33 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.yn.homi.R;
 import com.yn.homi.checkout.adapter.PaymentMethodAdapter;
 import com.yn.homi.checkout.model.PaymentMethod;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PaymentMethodBottomSheet extends BottomSheetDialogFragment {
 
-    // Callback trả kết quả về CheckoutActivity
     public interface OnPaymentConfirmedListener {
         void onConfirmed(PaymentMethod method);
     }
 
     private OnPaymentConfirmedListener confirmListener;
     private PaymentMethod selectedMethod = null;
+    private String preSelectedName = "Cash on hand"; // Mặc định
 
     public void setOnPaymentConfirmedListener(OnPaymentConfirmedListener listener) {
         this.confirmListener = listener;
+    }
+
+    // Hàm để Activity truyền tên phương thức đang dùng vào
+    public void setSelectedMethodName(String name) {
+        if (name != null && !name.isEmpty()) {
+            this.preSelectedName = name;
+        }
     }
 
     @Nullable
@@ -48,32 +55,51 @@ public class PaymentMethodBottomSheet extends BottomSheetDialogFragment {
         RecyclerView rvPayments = view.findViewById(R.id.rvPaymentMethods);
         Button btnCheckout      = view.findViewById(R.id.btnCheckoutSheet);
 
-        // --- Dữ liệu mẫu (sau này lấy từ ViewModel / API) ---
+        // --- Dữ liệu động dựa trên lựa chọn của người dùng ---
         List<PaymentMethod> methods = new ArrayList<>();
-        methods.add(new PaymentMethod(
-                R.drawable.ic_paypal,
-                "PayPal",
-                "alex*****@mail.com",
-                false));
-        methods.add(new PaymentMethod(
-                R.drawable.ic_mastercard,
-                "Mastercard",
-                "5284 8922 7424 ****",
-                true));                       // default selected
 
-        // Ghi nhớ lựa chọn ban đầu
-        selectedMethod = methods.get(1);
+        methods.add(new PaymentMethod(
+                R.drawable.ic_cash,
+                "Cash on hand",
+                "Pay when you receive",
+                preSelectedName.equals("Cash on hand")));
+
+        methods.add(new PaymentMethod(
+                R.drawable.ic_momo,
+                "Momo",
+                "Ví điện tử Momo",
+                preSelectedName.equals("Momo")));
+
+        methods.add(new PaymentMethod(
+                R.drawable.ic_apple_pay,
+                "Apple Pay",
+                "Thanh toán qua Apple",
+                preSelectedName.equals("Apple Pay")));
+
+        methods.add(new PaymentMethod(
+                R.drawable.ic_zalopay,
+                "ZaloPay",
+                "Ví điện tử ZaloPay",
+                preSelectedName.equals("ZaloPay")));
+
+        // Tìm phương thức đang được tick để gán vào selectedMethod ban đầu
+        for (PaymentMethod m : methods) {
+            if (m.isSelected()) {
+                selectedMethod = m;
+                break;
+            }
+        }
 
         PaymentMethodAdapter adapter = new PaymentMethodAdapter(
                 requireContext(),
                 methods,
-                method -> selectedMethod = method   // cập nhật khi user chọn
+                method -> selectedMethod = method // Cập nhật khi user click chọn
         );
 
         rvPayments.setLayoutManager(new LinearLayoutManager(requireContext()));
         rvPayments.setAdapter(adapter);
 
-        // Checkout button
+        // Nút Checkout trả về kết quả chính xác
         btnCheckout.setOnClickListener(v -> {
             if (selectedMethod != null && confirmListener != null) {
                 confirmListener.onConfirmed(selectedMethod);
@@ -81,9 +107,8 @@ public class PaymentMethodBottomSheet extends BottomSheetDialogFragment {
             dismiss();
         });
 
-        // Add payment method
         view.findViewById(R.id.layoutAddPayment).setOnClickListener(v -> {
-            // TODO: mở màn hình thêm thẻ mới
+            // Xử lý thêm phương thức thanh toán mới
         });
     }
 }

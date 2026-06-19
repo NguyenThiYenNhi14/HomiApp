@@ -15,8 +15,7 @@ import com.yn.homi.checkout.model.PaymentMethod;
 
 import java.util.List;
 
-public class PaymentMethodAdapter
-        extends RecyclerView.Adapter<PaymentMethodAdapter.ViewHolder> {
+public class PaymentMethodAdapter extends RecyclerView.Adapter<PaymentMethodAdapter.ViewHolder> {
 
     public interface OnPaymentSelectedListener {
         void onSelected(PaymentMethod method);
@@ -34,7 +33,7 @@ public class PaymentMethodAdapter
         this.items    = items;
         this.listener = listener;
 
-        // Find initially-selected item
+        // Tìm vị trí thẻ nào được cấu hình chọn mặc định ban đầu (Ví dụ: ZaloPay)
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).isSelected()) {
                 selectedPosition = i;
@@ -55,34 +54,46 @@ public class PaymentMethodAdapter
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         PaymentMethod item = items.get(position);
 
+        // Đổ dữ liệu hình ảnh và chữ vào các thẻ UI
         holder.ivIcon.setImageResource(item.getIconRes());
         holder.tvName.setText(item.getName());
         holder.tvDetail.setText(item.getDetail());
 
-        // Show checked / unchecked icon
+        // Xử lý logic bật/tắt icon dấu tick dựa theo vị trí đang được click chọn
         boolean isSelected = (position == selectedPosition);
         holder.ivCheck.setImageResource(
                 isSelected ? R.drawable.ic_checkbox_checked
                         : R.drawable.ic_checkbox_unchecked);
 
+        // Bắt sự kiện khi người dùng click chọn 1 dòng phương thức
         holder.itemView.setOnClickListener(v -> {
-            int prev = selectedPosition;
-            selectedPosition = holder.getAdapterPosition();
+            int currentPos = holder.getAdapterPosition();
+            if (currentPos == RecyclerView.NO_POSITION) return;
 
-            // Deselect old, select new
-            if (prev != -1) {
+            int prev = selectedPosition;
+            selectedPosition = currentPos;
+
+            // 1. Tắt dấu tick ở thẻ cũ và ép nó cập nhật lại UI
+            if (prev != -1 && prev != selectedPosition) {
                 items.get(prev).setSelected(false);
                 notifyItemChanged(prev);
             }
+
+            // 2. Bật dấu tick ở thẻ mới chọn và cập nhật UI ngay lập tức
             items.get(selectedPosition).setSelected(true);
             notifyItemChanged(selectedPosition);
 
-            if (listener != null) listener.onSelected(item);
+            // 3. Truyền dữ liệu phương thức đã chọn ra ngoài BottomSheet
+            if (listener != null) {
+                listener.onSelected(item);
+            }
         });
     }
 
     @Override
-    public int getItemCount() { return items.size(); }
+    public int getItemCount() {
+        return items == null ? 0 : items.size();
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivIcon, ivCheck;

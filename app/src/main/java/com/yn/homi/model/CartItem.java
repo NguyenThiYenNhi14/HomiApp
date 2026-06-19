@@ -17,9 +17,16 @@ public class CartItem implements Serializable {
         this.imageUrl = imageUrl;
     }
 
+    public String getId() { return id; }
     public String getName() { return name; }
     public double getPrice() { return price; }
-    public int getQuantity() { return quantity; }
-    public void setQuantity(int q) { this.quantity = q; }
     public String getImageUrl() { return imageUrl; }
+
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
+
+    // --- BỔ SUNG HÀM TÍNH TỔNG TIỀN MÓN HÀNG ---
+    public double getItemTotal() {
+        return price * quantity;
+    }
 }
