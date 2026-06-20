@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<path xmlns:android="http://schemas.android.com/apk/res/android"
+    android:pathData="M 50,0 L 100,30 L 100,100 L 0,100 L 0,30 Z" />
+<!-- This is a placeholder logic, usually we use a shape or a custom view for this specific house shape -->

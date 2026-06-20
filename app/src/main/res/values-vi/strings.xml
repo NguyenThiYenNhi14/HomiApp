@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">Homi</string>
+    <string name="good_morning">Chào buổi sáng</string>
+    <string name="good_afternoon">Chào buổi chiều</string>
+    <string name="good_evening">Chào buổi tối</string>
+    <string name="search_hint">Tìm kiếm sản phẩm</string>
+    <string name="sales">Giảm giá</string>
+    <string name="flash_sale">Giá sốc</string>
+    <string name="best_sellers">Bán chạy nhất</string>
+    <string name="see_all">Xem tất cả</string>
+    <string name="recommended">Gợi ý cho bạn</string>
+    <string name="ideas">Ý tưởng</string>
+    <string name="new_arrivals">Hàng mới về</string>
+    <string name="shop">Cửa hàng</string>
+    <string name="inspiration">Cảm hứng</string>
+    <string name="lists">Danh sách</string>
+    <string name="account">Tài khoản</string>
+    <string name="no_products_found">Không tìm thấy sản phẩm nào</string>
+    <string name="customer_rating">Đánh giá cao</string>
+    <string name="new_arrival">Hàng mới về</string>
+    <string name="price_high_to_low">Giá: Cao đến Thấp</string>
+    <string name="price_low_to_high">Giá: Thấp đến Cao</string>
+    <string name="recommended_sort">Gợi ý</string>
+    <string name="explore_with_homi">Khám phá cùng Homi</string>
+    <string name="sort_by">Sắp xếp</string>
+    <string name="search_error">Đã xảy ra lỗi khi tìm kiếm</string>
+    <string name="select_image">Chọn hình ảnh</string>
+    <string name="take_photo">Chụp ảnh</string>
+    <string name="choose_from_gallery">Chọn từ thư viện</string>
+    <string name="cancel">Hủy</string>
+    <string name="apply">Áp dụng</string>
+    <string name="reset">Đặt lại</string>
+    <string name="camera_permission_required">Cần quyền truy cập máy ảnh để chụp ảnh</string>
+    <string name="furniture_banner_title">NỘI THẤT</string>
+
+    <string name="label_select_color">Chọn màu sắc</string>
+    <string name="label_description">Mô tả sảnップ</string>
+    <string name="label_reviews">ĐÁNH GIÁ</string>
+    <string name="msg_empty_reviews">Sản phẩm này đang chờ đánh giá đầu tiên. Hãy chia sẻ cảm nhận của bạn để truyền cảm hứng cho người khác.\n(Chỉ dành cho người mua đã xác thực)</string>
+    <string name="btn_write_first_review">Viết đánh giá đầu tiên</string>
+    <string name="label_verified_buyers">Tất cả đánh giá từ người mua đã xác thực</string>
+    <string name="btn_view_all_with_arrow">XEM TẤT CẢ →</string>
+    <string name="label_recommendations">Có thể bạn cũng thích</string>
+    <string name="btn_add_to_cart">Thêm vào giỏ hàng</string>
+
+    <string name="title_cart">Giỏ hàng</string>
+    <string name="msg_empty_cart">Giỏ hàng của bạn đang trống</string>
+    <string name="label_total">Tổng cộng</string>
+    <string name="btn_checkout">THANH TOÁN</string>
+</resources>

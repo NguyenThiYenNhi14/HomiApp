@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_filter_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <!-- Header Sidebar -->
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="20dp">
+
+            <!-- Furniture Section (Expandable) -->
+            <LinearLayout
+                android:id="@+id/ll_menu_furniture_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="16dp"
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Furniture"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/iv_furniture_arrow"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@android:drawable/arrow_down_float"
+                    app:tint="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_furniture_sub_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:background="#FAFAFA">
+
+                <LinearLayout
+                    android:id="@+id/ll_menu_living_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="20dp"
+                    android:paddingVertical="14dp"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
+                    <TextView
+                        android:id="@+id/tv_menu_living"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Living Room"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+                    <ImageView
+                        android:id="@+id/iv_living_arrow"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:src="@android:drawable/arrow_down_float"
+                        app:tint="@color/black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_living_sub_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:background="#F5F5F5">
+
+                    <TextView
+                        android:id="@+id/tv_menu_living_tv_stands"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="60dp"
+                        android:paddingEnd="20dp"
+                        android:paddingVertical="12dp"
+                        android:text="TV Stands &amp; Media Consoles"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground" />
+
+                    <TextView
+                        android:id="@+id/tv_menu_living_coffee_tables"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="60dp"
+                        android:paddingEnd="20dp"
+                        android:paddingVertical="12dp"
+                        android:text="Coffee Tables"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground" />
+
+                    <TextView
+                        android:id="@+id/tv_menu_living_sleeper_sofas"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="60dp"
+                        android:paddingEnd="20dp"
+                        android:paddingVertical="12dp"
+                        android:text="Sleeper Sofas &amp; Futons"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground" />
+
+                    <TextView
+                        android:id="@+id/tv_menu_living_sofa"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="60dp"
+                        android:paddingEnd="20dp"
+                        android:paddingVertical="12dp"
+                        android:text="Sofas"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground" />
+
+                    <TextView
+                        android:id="@+id/tv_menu_living_sets"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="60dp"
+                        android:paddingEnd="20dp"
+                        android:paddingVertical="12dp"
+                        android:text="Living Room Sets"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground" />
+
+                    <TextView
+                        android:id="@+id/tv_menu_living_accent_chairs"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="60dp"
+                        android:paddingEnd="20dp"
+                        android:paddingVertical="12dp"
+                        android:text="Accent Chairs &amp; Recliners"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground" />
+
+                    <TextView
+                        android:id="@+id/tv_menu_living_cabinets"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="60dp"
+                        android:paddingEnd="20dp"
+                        android:paddingVertical="12dp"
+                        android:text="Cabinets"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground" />
+
+                    <TextView
+                        android:id="@+id/tv_menu_living_ottomans"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="60dp"
+                        android:paddingEnd="20dp"
+                        android:paddingVertical="12dp"
+                        android:text="Ottomans &amp; Benches"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground" />
+                </LinearLayout>
+                <!-- Kitchen & Dining Expandable -->
+                <LinearLayout
+                    android:id="@+id/ll_menu_kitchen_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="20dp"
+                    android:paddingVertical="14dp"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
+                    <TextView
+                        android:id="@+id/tv_menu_kitchen"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Kitchen &amp; Dining"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+                    <ImageView
+                        android:id="@+id/iv_kitchen_arrow"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:src="@android:drawable/arrow_down_float"
+                        app:tint="@color/black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_kitchen_sub_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:background="#F5F5F5">
+                    <TextView android:id="@+id/tv_menu_kitchen_tables" style="@style/SubMenuStyle" android:text="Dining Tables" />
+                    <TextView android:id="@+id/tv_menu_kitchen_chairs" style="@style/SubMenuStyle" android:text="Dining Chairs" />
+                    <TextView android:id="@+id/tv_menu_kitchen_stools" style="@style/SubMenuStyle" android:text="Bar Stools" />
+                    <TextView android:id="@+id/tv_menu_kitchen_islands" style="@style/SubMenuStyle" android:text="Kitchen Islands &amp; Carts" />
+                    <TextView android:id="@+id/tv_menu_kitchen_sideboards" style="@style/SubMenuStyle" android:text="Sideboards &amp; Buffets" />
+                </LinearLayout>
+
+                <!-- Bedroom Expandable -->
+                <LinearLayout
+                    android:id="@+id/ll_menu_bedroom_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="20dp"
+                    android:paddingVertical="14dp"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
+                    <TextView
+                        android:id="@+id/tv_menu_bedroom"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Bedroom"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+                    <ImageView
+                        android:id="@+id/iv_bedroom_arrow"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:src="@android:drawable/arrow_down_float"
+                        app:tint="@color/black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_bedroom_sub_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:background="#F5F5F5">
+                    <TextView android:id="@+id/tv_menu_bedroom_beds" style="@style/SubMenuStyle" android:text="Beds" />
+                    <TextView android:id="@+id/tv_menu_bedroom_dressers" style="@style/SubMenuStyle" android:text="Dressers &amp; Chests" />
+                    <TextView android:id="@+id/tv_menu_bedroom_nightstands" style="@style/SubMenuStyle" android:text="Nightstands" />
+                    <TextView android:id="@+id/tv_menu_bedroom_armoires" style="@style/SubMenuStyle" android:text="Armoires &amp; Wardrobes" />
+                    <TextView android:id="@+id/tv_menu_bedroom_mattresses" style="@style/SubMenuStyle" android:text="Mattresses" />
+                </LinearLayout>
+
+                <!-- Office Expandable -->
+                <LinearLayout
+                    android:id="@+id/ll_menu_office_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="20dp"
+                    android:paddingVertical="14dp"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
+                    <TextView
+                        android:id="@+id/tv_menu_office"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Office"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+                    <ImageView
+                        android:id="@+id/iv_office_arrow"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:src="@android:drawable/arrow_down_float"
+                        app:tint="@color/black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_office_sub_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:background="#F5F5F5">
+                    <TextView android:id="@+id/tv_menu_office_desks" style="@style/SubMenuStyle" android:text="Desks" />
+                    <TextView android:id="@+id/tv_menu_office_chairs" style="@style/SubMenuStyle" android:text="Office Chairs" />
+                    <TextView android:id="@+id/tv_menu_office_bookcases" style="@style/SubMenuStyle" android:text="Bookcases" />
+                    <TextView android:id="@+id/tv_menu_office_files" style="@style/SubMenuStyle" android:text="File Cabinets" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View style="@style/FilterDividerStyle" />
+
+            <!-- New Arrivals -->
+            <TextView
+                android:id="@+id/tv_menu_new_arrivals"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="16dp"
+                android:text="New Arrivals"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground" />
+            <View style="@style/FilterDividerStyle" />
+
+            <!-- Best Seller -->
+            <TextView
+                android:id="@+id/tv_menu_best_seller"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="16dp"
+                android:text="Best Seller"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground" />
+            <View style="@style/FilterDividerStyle" />
+
+            <!-- Flash Sale -->
+            <TextView
+                android:id="@+id/tv_menu_flash_sale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="16dp"
+                android:text="Flash Sale"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground" />
+            <View style="@style/FilterDividerStyle" />
+
+            <!-- Recommended -->
+            <TextView
+                android:id="@+id/tv_menu_recommended"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="16dp"
+                android:text="Recommended"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground" />
+            <View style="@style/FilterDividerStyle" />
+
+            <!-- Ideas -->
+            <TextView
+                android:id="@+id/tv_menu_ideas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="20dp"
+                android:paddingVertical="16dp"
+                android:text="Ideas"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

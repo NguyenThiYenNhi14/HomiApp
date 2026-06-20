@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -36,7 +37,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.activity.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -44,21 +44,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation("com.google.android.material:material:1.11.0")
-    implementation("androidx.recyclerview:recyclerview:1.3.2")
-    implementation("androidx.cardview:cardview:1.0.0")
-    implementation("com.google.code.gson:gson:2.10.1")
-            // RecyclerView
-            implementation("androidx.recyclerview:recyclerview:1.3.2")
-
-            // CardView
-            implementation("androidx.cardview:cardview:1.0.0")
-
-            // ViewPager2
-            implementation("androidx.viewpager2:viewpager2:1.1.0")
-
-            // Glide (chỉ khai báo 1 lần)
-            implementation("com.github.bumptech.glide:glide:4.16.0")
-            annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
-
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
+    implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-storage")
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.google.code.gson:gson:2.11.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.google.mlkit:image-labeling:17.0.9")
+    implementation("androidx.palette:palette:1.0.0")
 }
