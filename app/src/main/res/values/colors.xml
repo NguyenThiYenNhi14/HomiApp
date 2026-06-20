@@ -9,4 +9,17 @@
     <color name="red_badge">#D32F2F</color>
     <color name="yellow_sale">#FFC107</color>
     <color name="black_overlay">#80000000</color>
+
+    <color name="bg_card_accent">#FFF5E6</color>
+    <color name="bg_card">#FFFFFF</color>
+    <color name="divider_color">#E0E0E0</color>
+    <color name="pp_white">#FFFFFF</color>
+    <color name="pp_black">#000000</color>
+    <color name="pp_divider">#E0E0E0</color>
+    <color name="pp_text_body">#757575</color>
+    <color name="pp_background">#FFFFFF</color>
+    <color name="pp_gray_light">#F5F5F5</color>
+    <color name="pp_gray_medium">#9E9E9E</color>
+    <color name="text_muted">#888888</color>
+    <color name="text_secondary">#555555</color>
 </resources>

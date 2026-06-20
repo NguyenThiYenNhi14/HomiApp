@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
@@ -30,11 +31,12 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText edtUsername, edtEmail, edtPhone, edtAddress, edtPassword, edtDob;
     private Spinner spinnerGender;
     private FrameLayout layoutAvatar;
-    private ImageView imgAvatar;
+    private ImageView imgAvatar, ivEyeRegister;
     private AppCompatButton btnSignUp;
     private ImageButton btnBack;
     private ImageView btnDatePicker;
     private TextView txtLogin;
+    private boolean isPasswordVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class RegistrationActivity extends AppCompatActivity {
         btnDatePicker = findViewById(R.id.btnDatePicker);
         btnSignUp = findViewById(R.id.btnSignUp);
         txtLogin = findViewById(R.id.txtLogin);
+        ivEyeRegister = findViewById(R.id.ivEyeRegister);
     }
 
     private void setupGenderSpinner() {
@@ -80,6 +83,19 @@ public class RegistrationActivity extends AppCompatActivity {
         edtDob.setOnClickListener(v -> showDatePicker());
 
         btnSignUp.setOnClickListener(v -> handleSignUp());
+        ivEyeRegister.setOnClickListener(v -> togglePasswordVisibility());
+    }
+
+    private void togglePasswordVisibility() {
+        if (isPasswordVisible) {
+            edtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            ivEyeRegister.setImageResource(R.drawable.ic_eye_off);
+        } else {
+            edtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            ivEyeRegister.setImageResource(R.drawable.ic_eye_on);
+        }
+        isPasswordVisible = !isPasswordVisible;
+        edtPassword.setSelection(edtPassword.getText().length());
     }
 
     private void showDatePicker() {

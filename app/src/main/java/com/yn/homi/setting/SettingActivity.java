@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,13 +12,14 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.yn.homi.R;
+import com.yn.homi.authentication.LoginActivity;
 import com.yn.homi.setting.about.AboutActivity;
 import com.yn.homi.setting.about.HelpActivity;
 import com.yn.homi.setting.about.PrivacyPolicyActivity;
@@ -193,29 +193,29 @@ public class SettingActivity extends AppCompatActivity {
         );
 
         // ===== LOGOUT =====
-        layoutLogout.setOnClickListener(v -> showLogoutBottomSheet());
+        layoutLogout.setOnClickListener(v -> showLogoutDialog());
     }
 
-    private void showLogoutBottomSheet() {
-        BottomSheetDialog dialog = new BottomSheetDialog(this);
+    private void showLogoutDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.dialog_logout, null);
+        builder.setView(view);
 
-        View view = getLayoutInflater().inflate(
-                R.layout.bottom_sheet_logout,
-                findViewById(android.R.id.content),
-                false
-        );
-        dialog.setContentView(view);
+        AlertDialog dialog = builder.create();
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
 
-        Button btnYes    = view.findViewById(R.id.btnYes);
-        Button btnCancel = view.findViewById(R.id.btnCancel);
+        View btnLogout = view.findViewById(R.id.btnLogout);
+        View btnCancel = view.findViewById(R.id.btnCancel);
 
-        btnYes.setOnClickListener(v -> {
+        btnLogout.setOnClickListener(v -> {
             dialog.dismiss();
             Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
-            // TODO: uncomment khi có LoginActivity
-            // Intent i = new Intent(this, LoginActivity.class);
-            // i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            // startActivity(i);
+            
+            Intent i = new Intent(this, LoginActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
         });
 
         btnCancel.setOnClickListener(v -> dialog.dismiss());

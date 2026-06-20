@@ -198,19 +198,40 @@
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/edtPassword"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_input_white"
-                android:hint="@string/password"
-                android:inputType="textPassword"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:textSize="14sp"
-                tools:ignore="Autofill" />
+                android:background="@drawable/bg_input_white">
+
+                <EditText
+                    android:id="@+id/edtPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="50dp"
+                    android:textSize="14sp"
+                    tools:ignore="Autofill" />
+
+                <ImageView
+                    android:id="@+id/ivEyeRegister"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_eye_off"
+                    android:contentDescription="@null"
+                    app:tint="@color/black" />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/txtGender"

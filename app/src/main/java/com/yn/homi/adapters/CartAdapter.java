@@ -47,13 +47,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 .placeholder(android.R.drawable.ic_menu_gallery)
                 .into(holder.ivProduct);
 
-        holder.ivPlus.setOnClickListener(v -> listener.onQuantityChanged(item.getProduct().getId(), item.getQuantity() + 1));
-        holder.ivMinus.setOnClickListener(v -> {
+        holder.btnPlus.setOnClickListener(v -> listener.onQuantityChanged(item.getProduct().getId(), item.getQuantity() + 1));
+        holder.btnMinus.setOnClickListener(v -> {
             if (item.getQuantity() > 1) {
                 listener.onQuantityChanged(item.getProduct().getId(), item.getQuantity() - 1);
             }
         });
-        holder.ivRemove.setOnClickListener(v -> listener.onRemoveItem(item.getProduct().getId()));
+        // holder.ivRemove.setOnClickListener(v -> listener.onRemoveItem(item.getProduct().getId()));
     }
 
     @Override
@@ -62,18 +62,18 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     }
 
     static class CartViewHolder extends RecyclerView.ViewHolder {
-        ImageView ivProduct, ivPlus, ivMinus, ivRemove;
+        ImageView ivProduct;
+        View btnPlus, btnMinus;
         TextView tvName, tvPrice, tvQuantity;
 
         public CartViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivProduct = itemView.findViewById(R.id.iv_product);
-            ivPlus = itemView.findViewById(R.id.iv_plus);
-            ivMinus = itemView.findViewById(R.id.iv_minus);
-            ivRemove = itemView.findViewById(R.id.iv_remove);
-            tvName = itemView.findViewById(R.id.tv_name);
-            tvPrice = itemView.findViewById(R.id.tv_price);
-            tvQuantity = itemView.findViewById(R.id.tv_quantity);
+            ivProduct = itemView.findViewById(R.id.imgProduct);
+            btnPlus = itemView.findViewById(R.id.btnPlus);
+            btnMinus = itemView.findViewById(R.id.btnMinus);
+            tvName = itemView.findViewById(R.id.tvProductName);
+            tvPrice = itemView.findViewById(R.id.tvProductPrice);
+            tvQuantity = itemView.findViewById(R.id.tvQuantity);
         }
     }
 }

@@ -69,6 +69,7 @@ import com.yn.homi.models.Banner;
 import com.yn.homi.models.Idea;
 import com.yn.homi.models.Product;
 import com.yn.homi.models.RoomCategory;
+import com.yn.homi.setting.SettingActivity;
 import com.yn.homi.utils.FirestoreRepository;
 import com.yn.homi.utils.GeminiVisionHelper;
 
@@ -614,6 +615,14 @@ public class HomeActivity extends AppCompatActivity {
         findViewById(R.id.tv_sales_badge).setOnClickListener(v -> openProductList("Flash Sale", "filter"));
 
         ivCameraSearch.setOnClickListener(v -> showImagePickerDialog());
+
+        LinearLayout btnAccount = findViewById(R.id.btn_account);
+        if (btnAccount != null) {
+            btnAccount.setOnClickListener(v -> {
+                Intent intent = new Intent(HomeActivity.this, SettingActivity.class);
+                startActivity(intent);
+            });
+        }
 
         llFreeShipping.setOnClickListener(v -> showServiceGuaranteeDialog());
         llReturnPolicy.setOnClickListener(v -> showServiceGuaranteeDialog());

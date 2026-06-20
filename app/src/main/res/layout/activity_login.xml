@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
@@ -57,22 +58,42 @@
             android:textColorHint="#CCFFFFFF"
             tools:ignore="Autofill" />
 
-        <EditText
-            android:id="@+id/edtpsw"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_marginTop="16dp"
-            android:background="@drawable/bg_edittext_pill"
-            android:drawableStart="@drawable/baseline_lock_24"
-            android:drawablePadding="12dp"
-            android:drawableTint="@color/white"
-            android:hint="@string/str_enter_your_password"
-            android:inputType="textPassword"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#CCFFFFFF"
-            tools:ignore="Autofill" />
+            android:background="@drawable/bg_edittext_pill">
+
+            <EditText
+                android:id="@+id/edtpsw"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:drawableStart="@drawable/baseline_lock_24"
+                android:drawablePadding="12dp"
+                android:drawableTint="@color/white"
+                android:hint="@string/str_enter_your_password"
+                android:inputType="textPassword"
+                android:paddingStart="20dp"
+                android:paddingEnd="50dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#CCFFFFFF"
+                tools:ignore="Autofill" />
+
+            <ImageView
+                android:id="@+id/ivEyeLogin"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="false"
+                android:padding="8dp"
+                android:src="@drawable/ic_eye_off"
+                app:tint="@color/white" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

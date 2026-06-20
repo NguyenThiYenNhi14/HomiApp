@@ -31,10 +31,10 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnCar
     }
 
     private void initViews() {
-        rvCartItems = findViewById(R.id.rv_cart_items);
-        tvTotalPrice = findViewById(R.id.tv_total_price);
-        emptyCartContainer = findViewById(R.id.empty_cart_container);
-        findViewById(R.id.iv_back).setOnClickListener(v -> finish());
+        rvCartItems = findViewById(R.id.rvCartItems);
+        tvTotalPrice = findViewById(R.id.tvOrderTotal);
+        emptyCartContainer = findViewById(R.id.layoutEmpty);
+        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
         
         rvCartItems.setLayoutManager(new LinearLayoutManager(this));
     }

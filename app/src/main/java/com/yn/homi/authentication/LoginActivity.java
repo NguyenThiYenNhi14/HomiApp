@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.yn.homi.HomeActivity;
 import com.yn.homi.MainActivity;
 import com.yn.homi.R;
 
@@ -30,8 +32,9 @@ public class LoginActivity extends AppCompatActivity {
     private EditText edtEmail, edtpsw;
     private CheckBox chkRemember;
     private Button btnLogin, btnforgot, btncreateacc;
-    private ImageView btnGoogle, btnApple, btnFacebook;
+    private ImageView btnGoogle, btnApple, btnFacebook, ivEyeLogin;
     private SharedPreferences sharedPreferences;
+    private boolean isPasswordVisible = false;
 
     // Mock User Database: Email -> {Hashed Password, Role}
     private static final Map<String, UserInfo> MOCK_USER_DB = new HashMap<>();
@@ -78,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         btnGoogle = findViewById(R.id.imageView);
         btnApple = findViewById(R.id.imageView2);
         btnFacebook = findViewById(R.id.imageView3);
+        ivEyeLogin = findViewById(R.id.ivEyeLogin);
 
         sharedPreferences = getSharedPreferences("LoginPrefs", MODE_PRIVATE);
     }
@@ -99,6 +103,23 @@ public class LoginActivity extends AppCompatActivity {
         btnGoogle.setOnClickListener(socialClickListener);
         btnApple.setOnClickListener(socialClickListener);
         btnFacebook.setOnClickListener(socialClickListener);
+
+        ivEyeLogin.setOnClickListener(v -> togglePasswordVisibility(edtpsw, ivEyeLogin));
+    }
+
+    private void togglePasswordVisibility(EditText editText, ImageView eyeIcon) {
+        if (isPasswordVisible) {
+            // Hide password
+            editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            eyeIcon.setImageResource(R.drawable.ic_eye_off);
+        } else {
+            // Show password
+            editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            eyeIcon.setImageResource(R.drawable.ic_eye_on);
+        }
+        isPasswordVisible = !isPasswordVisible;
+        // Keep cursor at the end
+        editText.setSelection(editText.getText().length());
     }
 
     private void handleLogin() {
@@ -140,7 +161,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, roleMessage, Toast.LENGTH_SHORT).show();
 
                 // Navigate to Main Screen
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                 intent.putExtra("USER_ROLE", userInfo.role);
                 startActivity(intent);
                 finish();
