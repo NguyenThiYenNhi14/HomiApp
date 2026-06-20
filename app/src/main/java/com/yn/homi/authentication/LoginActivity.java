@@ -17,7 +17,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.yn.homi.MainActivity;
 import com.yn.homi.R;
+
+import org.mindrot.jbcrypt.BCrypt;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -26,6 +32,29 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin, btnforgot, btncreateacc;
     private ImageView btnGoogle, btnApple, btnFacebook;
     private SharedPreferences sharedPreferences;
+
+    // Mock User Database: Email -> {Hashed Password, Role}
+    private static final Map<String, UserInfo> MOCK_USER_DB = new HashMap<>();
+
+    static {
+        // Admin: Anhngoc@0605
+        MOCK_USER_DB.put("nguyenthianhngoc060305@gmail.com", new UserInfo(
+                BCrypt.hashpw("Anhngoc@0605", BCrypt.gensalt()), "ADMIN"));
+
+        // Regular User: User@123
+        MOCK_USER_DB.put("user@example.com", new UserInfo(
+                BCrypt.hashpw("User@123", BCrypt.gensalt()), "USER"));
+    }
+
+    private static class UserInfo {
+        String hashedPassword;
+        String role;
+
+        UserInfo(String hashedPassword, String role) {
+            this.hashedPassword = hashedPassword;
+            this.role = role;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,17 +126,24 @@ public class LoginActivity extends AppCompatActivity {
         // Simulate API call
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             setLoading(false);
-            if (email.equals("admin@gmail.com") && password.equals("Admin@123")) {
+            
+            UserInfo userInfo = MOCK_USER_DB.get(email);
+
+            if (userInfo != null && BCrypt.checkpw(password, userInfo.hashedPassword)) {
                 if (chkRemember.isChecked()) {
                     saveCredentials(email, password);
                 } else {
                     clearCredentials();
                 }
-                Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                // Navigate to Main Screen (Replace MainActivity with your actual main activity)
-                // Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                // startActivity(intent);
-                // finish();
+                
+                String roleMessage = userInfo.role.equals("ADMIN") ? "Login successful as Admin!" : "Login successful!";
+                Toast.makeText(LoginActivity.this, roleMessage, Toast.LENGTH_SHORT).show();
+
+                // Navigate to Main Screen
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra("USER_ROLE", userInfo.role);
+                startActivity(intent);
+                finish();
             } else {
                 Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
             }

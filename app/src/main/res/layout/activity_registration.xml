@@ -9,7 +9,6 @@
     android:fillViewport="true"
     tools:context=".authentication.RegistrationActivity">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,8 +16,6 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-
-        <!-- Header -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,7 +23,6 @@
             android:layout_marginBottom="20dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
-
 
             <ImageButton
                 android:id="@+id/btnBack"
@@ -38,7 +34,6 @@
                 android:src="@drawable/ic_arrow_left"
                 app:tint="@color/white" />
 
-
             <TextView
                 android:id="@+id/txtTitle"
                 android:layout_width="323dp"
@@ -49,21 +44,15 @@
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="bold" />
-
-
         </LinearLayout>
 
-
-        <!-- Glass Container -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_glass"
+            android:background="@drawable/bg_login_container"
             android:orientation="vertical"
             android:padding="24dp">
 
-
-            <!-- Avatar Picker -->
             <FrameLayout
                 android:id="@+id/layoutAvatar"
                 android:layout_width="120dp"
@@ -73,12 +62,10 @@
                 android:clickable="true"
                 android:focusable="true">
 
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/bg_avatar_circle" />
-
 
                 <ImageView
                     android:id="@+id/imgCameraIcon"
@@ -89,7 +76,6 @@
                     android:src="@drawable/icon_photo_camera"
                     app:tint="@color/black" />
 
-
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/imgAvatar"
                     android:layout_width="match_parent"
@@ -97,12 +83,8 @@
                     android:scaleType="centerCrop"
                     app:shapeAppearanceOverlay="@style/CircleImage"
                     android:contentDescription="@null" />
-
-
             </FrameLayout>
 
-
-            <!-- Username -->
             <TextView
                 android:id="@+id/txtName"
                 android:layout_width="wrap_content"
@@ -110,7 +92,6 @@
                 android:text="@string/str_username"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
-
 
             <EditText
                 android:id="@+id/edtUsername"
@@ -126,8 +107,6 @@
                 android:textSize="14sp"
                 tools:ignore="Autofill" />
 
-
-            <!-- Email -->
             <TextView
                 android:id="@+id/txtEmail"
                 android:layout_width="wrap_content"
@@ -135,7 +114,6 @@
                 android:text="@string/str_email_address_label"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
-
 
             <EditText
                 android:id="@+id/edtEmail"
@@ -151,8 +129,6 @@
                 android:textSize="14sp"
                 tools:ignore="Autofill" />
 
-
-            <!-- Phone -->
             <TextView
                 android:id="@+id/txtPhone"
                 android:layout_width="wrap_content"
@@ -160,7 +136,6 @@
                 android:text="@string/str_phone_number_label"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -173,14 +148,12 @@
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp">
 
-
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="18dp"
                     android:layout_marginStart="8dp"
                     android:contentDescription="@null"
                     android:src="@drawable/vietnam_flag" />
-
 
                 <EditText
                     android:id="@+id/edtPhone"
@@ -193,12 +166,8 @@
                     android:paddingEnd="12dp"
                     android:textSize="14sp"
                     tools:ignore="Autofill" />
-
-
             </LinearLayout>
 
-
-            <!-- Address -->
             <TextView
                 android:id="@+id/txtAddress"
                 android:layout_width="wrap_content"
@@ -206,7 +175,6 @@
                 android:text="@string/str_address_label"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
-
 
             <EditText
                 android:id="@+id/edtAddress"
@@ -222,7 +190,6 @@
                 android:textSize="14sp"
                 tools:ignore="Autofill" />
 
-            <!-- Password -->
             <TextView
                 android:id="@+id/txtPassword"
                 android:layout_width="wrap_content"
@@ -245,8 +212,6 @@
                 android:textSize="14sp"
                 tools:ignore="Autofill" />
 
-
-            <!-- Gender -->
             <TextView
                 android:id="@+id/txtGender"
                 android:layout_width="wrap_content"
@@ -255,14 +220,12 @@
                 android:textColor="@color/white"
                 android:textStyle="bold" />
 
-
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_input_white">
-
 
                 <Spinner
                     android:id="@+id/spinnerGender"
@@ -272,7 +235,6 @@
                     android:paddingStart="12dp"
                     android:paddingEnd="40dp" />
 
-
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
@@ -280,12 +242,8 @@
                     android:layout_marginEnd="12dp"
                     android:contentDescription="@null"
                     android:src="@drawable/ic_chevron_down" />
-
-
             </FrameLayout>
 
-
-            <!-- Dob -->
             <TextView
                 android:id="@+id/txtBirthdate"
                 android:layout_width="wrap_content"
@@ -293,7 +251,6 @@
                 android:text="@string/str_dob_label"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -305,7 +262,6 @@
                 android:orientation="horizontal"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp">
-
 
                 <EditText
                     android:id="@+id/edtDob"
@@ -319,19 +275,14 @@
                     android:textSize="14sp"
                     tools:ignore="Autofill" />
 
-
                 <ImageView
                     android:id="@+id/btnDatePicker"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:contentDescription="@string/pick_date"
                     android:src="@drawable/calendar" />
-
-
             </LinearLayout>
 
-
-            <!-- Sign Up Button -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnSignUp"
                 android:layout_width="match_parent"
@@ -344,14 +295,11 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-
-            <!-- Login footer -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:orientation="horizontal">
-
 
                 <TextView
                     android:id="@+id/txtask"
@@ -360,7 +308,6 @@
                     android:text="@string/str_already_have_account_text"
                     android:textColor="@color/white"
                     android:textSize="14sp" />
-
 
                 <TextView
                     android:id="@+id/txtLogin"
@@ -375,5 +322,3 @@
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
-
-

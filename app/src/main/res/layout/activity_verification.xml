@@ -8,7 +8,6 @@
     android:background="@color/white"
     tools:context=".authentication.VerificationActivity">
 
-    <!-- Back Button -->
     <ImageView
         android:id="@+id/btnBack"
         android:layout_width="40dp"
@@ -22,7 +21,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/black" />
 
-    <!-- Title -->
     <TextView
         android:id="@+id/txtTitle"
         android:layout_width="wrap_content"
@@ -36,7 +34,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnBack" />
 
-    <!-- Illustration -->
     <ImageView
         android:id="@+id/imgIllustration"
         android:layout_width="0dp"
@@ -49,7 +46,6 @@
         app:layout_constraintTop_toBottomOf="@id/txtTitle"
         app:srcCompat="@mipmap/img_verify_email" />
 
-    <!-- Instructions -->
     <TextView
         android:id="@+id/txtInstruction"
         android:layout_width="wrap_content"
@@ -76,7 +72,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtInstruction" />
 
-    <!-- Verification Code Inputs -->
     <LinearLayout
         android:id="@+id/otpLayout"
         android:layout_width="wrap_content"
@@ -173,7 +168,6 @@
 
     </LinearLayout>
 
-    <!-- Continue Button -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnContinue"
         android:layout_width="0dp"
@@ -191,7 +185,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/otpLayout" />
 
-    <!-- Footer: Back to Login -->
     <TextView
         android:id="@+id/txtBackToLogin"
         android:layout_width="wrap_content"
