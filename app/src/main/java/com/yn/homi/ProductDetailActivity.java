@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import com.yn.homi.cart.CartActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -32,9 +33,9 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private ViewPager2 vpProductImages;
     private TabLayout tabIndicator;
-    private TextView tvName, tvPrice, tvOriginalPrice, tvDescription, tvQuantity, tvRatingCount, tvSelectedColor, tvImageCount;
+    private TextView tvName, tvPrice, tvOriginalPrice, tvDescription, tvQuantity, tvRatingCount, tvSelectedColor, tvImageCount, tvCartBadge;
     private RatingBar rbRating;
-    private ImageButton btnBack, btnFavorite, btnCart, btnIncrease, btnDecrease, btnMore;
+    private ImageButton btnBack, btnFavoriteHeader, btnCart, btnIncrease, btnDecrease, btnMore, fabFavorite;
     private View btnAddToCart;
     private View llReviewsEmpty, llReviewsLoaded;
     private TextView tvAvgRatingText;
@@ -89,11 +90,13 @@ public class ProductDetailActivity extends AppCompatActivity {
         rvThumbnails = findViewById(R.id.rv_thumbnails);
         btnBack = findViewById(R.id.btn_back);
         btnMore = findViewById(R.id.btn_more);
-        btnFavorite = findViewById(R.id.btn_favorite_header);
+        btnFavoriteHeader = findViewById(R.id.btn_favorite_header);
+        fabFavorite = findViewById(R.id.fab_favorite);
         btnCart = findViewById(R.id.btn_cart_header);
         btnIncrease = findViewById(R.id.btn_increase);
         btnDecrease = findViewById(R.id.btn_decrease);
         btnAddToCart = findViewById(R.id.btn_add_to_cart);
+        tvCartBadge = findViewById(R.id.tv_cart_badge);
         llReviewsEmpty = findViewById(R.id.ll_reviews_empty);
         llReviewsLoaded = findViewById(R.id.ll_reviews_loaded);
         tvAvgRatingText = findViewById(R.id.tv_avg_rating_text);
@@ -115,15 +118,26 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         btnAddToCart.setOnClickListener(v -> {
             if (product != null) {
-                cartManager.addToCart(product, quantity);
+                com.yn.homi.cart.CartManager.getInstance(this).addItem(new com.yn.homi.model.CartItem(
+                        product.getId(),
+                        product.getName(),
+                        product.getPrice(),
+                        quantity,
+                        product.getThumbnailUrl()
+                ));
                 Toast.makeText(this, "Added " + quantity + " items to cart", Toast.LENGTH_SHORT).show();
+                updateCartBadge();
             }
         });
 
-        btnFavorite.setOnClickListener(v -> {
+        btnFavoriteHeader.setOnClickListener(v -> {
+            android.content.Intent intent = new android.content.Intent(this, com.yn.homi.setting.wishlist.WishlistActivity.class);
+            startActivity(intent);
+        });
+
+        fabFavorite.setOnClickListener(v -> {
             if (product != null) {
-                favoritesManager.toggleFavorite(product);
-                updateFavoriteIcon();
+                showWishlistSelectionDialog();
             }
         });
 
@@ -133,6 +147,59 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
 
         btnMore.setOnClickListener(this::showMoreMenu);
+    }
+
+    private void showWishlistSelectionDialog() {
+        List<com.yn.homi.models.Wishlist> wishlists = favoritesManager.getWishlists();
+        
+        if (wishlists.isEmpty()) {
+            showCreateWishlistDialog(null);
+            return;
+        }
+
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_select_wishlist, null);
+        com.google.android.material.bottomsheet.BottomSheetDialog dialog = new com.google.android.material.bottomsheet.BottomSheetDialog(this);
+        dialog.setContentView(dialogView);
+
+        RecyclerView rvWishlists = dialogView.findViewById(R.id.rv_wishlists);
+        View btnCreateNew = dialogView.findViewById(R.id.btn_create_new_list);
+
+        rvWishlists.setLayoutManager(new LinearLayoutManager(this));
+        com.yn.homi.adapters.WishlistSelectionAdapter adapter = new com.yn.homi.adapters.WishlistSelectionAdapter(wishlists, wishlist -> {
+            favoritesManager.addProductToWishlist(wishlist.getName(), product);
+            Toast.makeText(this, "Added to " + wishlist.getName(), Toast.LENGTH_SHORT).show();
+            updateFavoriteIcon();
+            dialog.dismiss();
+        });
+        rvWishlists.setAdapter(adapter);
+
+        btnCreateNew.setOnClickListener(v -> {
+            showCreateWishlistDialog(dialog);
+        });
+
+        dialog.show();
+    }
+
+    private void showCreateWishlistDialog(com.google.android.material.bottomsheet.BottomSheetDialog parentDialog) {
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setTitle("New Wishlist");
+
+        final android.widget.EditText input = new android.widget.EditText(this);
+        input.setHint("Enter list name");
+        builder.setView(input);
+
+        builder.setPositiveButton("Create", (dialog, which) -> {
+            String name = input.getText().toString().trim();
+            if (!name.isEmpty()) {
+                favoritesManager.createWishlistAndAddProduct(name, product);
+                Toast.makeText(this, "Created and added to " + name, Toast.LENGTH_SHORT).show();
+                updateFavoriteIcon();
+                if (parentDialog != null) parentDialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
     }
 
     private void showMoreMenu(View v) {
@@ -150,6 +217,23 @@ public class ProductDetailActivity extends AppCompatActivity {
             return false;
         });
         popup.show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateCartBadge();
+    }
+
+    private void updateCartBadge() {
+        if (tvCartBadge == null) return;
+        int count = com.yn.homi.cart.CartManager.getInstance(this).getTotalItemCount();
+        if (count > 0) {
+            tvCartBadge.setText(String.valueOf(count));
+            tvCartBadge.setVisibility(View.VISIBLE);
+        } else {
+            tvCartBadge.setVisibility(View.GONE);
+        }
     }
 
     private void shareProduct() {
@@ -189,9 +273,11 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private void updateFavoriteIcon() {
         if (product != null && product.getId() != null && favoritesManager.isFavorite(product.getId())) {
-            btnFavorite.setImageResource(R.drawable.ic_heart_filled);
+            fabFavorite.setImageResource(R.drawable.ic_heart_filled);
+            fabFavorite.setColorFilter(android.graphics.Color.RED);
         } else {
-            btnFavorite.setImageResource(R.drawable.ic_heart);
+            fabFavorite.setImageResource(R.drawable.ic_heart);
+            fabFavorite.setColorFilter(android.graphics.Color.WHITE);
         }
     }
 

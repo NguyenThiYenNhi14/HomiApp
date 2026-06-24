@@ -9,6 +9,7 @@ public class UserProfile implements Parcelable {
     public String fullName;
     public String phoneNumber;
     public String email;
+    public String address;
     public String gender;
     public String dateOfBirth;
     public String avatarUri;  // đường dẫn ảnh
@@ -18,6 +19,7 @@ public class UserProfile implements Parcelable {
         fullName    = "";
         phoneNumber = "";
         email       = "";
+        address     = "";
         gender      = "";
         dateOfBirth = "";
         avatarUri   = "";
@@ -28,6 +30,7 @@ public class UserProfile implements Parcelable {
         fullName    = in.readString();
         phoneNumber = in.readString();
         email       = in.readString();
+        address     = in.readString();
         gender      = in.readString();
         dateOfBirth = in.readString();
         avatarUri   = in.readString();
@@ -38,6 +41,7 @@ public class UserProfile implements Parcelable {
         dest.writeString(fullName);
         dest.writeString(phoneNumber);
         dest.writeString(email);
+        dest.writeString(address);
         dest.writeString(gender);
         dest.writeString(dateOfBirth);
         dest.writeString(avatarUri);

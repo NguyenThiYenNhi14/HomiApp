@@ -14,8 +14,8 @@ import com.yn.homi.R;
 
 public class MyOrdersActivity extends AppCompatActivity {
 
-    private static final String[] TAB_TITLES = {"All", "Paid", "Shipped", "Delivered", "Returns"};
-    private static final String[] TAB_STATUS = {"ALL", "PAID", "SHIPPED", "DELIVERED", "RETURNED"};
+    private static final String[] TAB_TITLES = {"All Orders", "Pending", "Processing", "Partially Shipped", "Shipped", "Return"};
+    private static final String[] TAB_STATUS = {"ALL", "PENDING", "PROCESSING", "PARTIALLY_SHIPPED", "SHIPPED", "RETURNED"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,21 +35,11 @@ public class MyOrdersActivity extends AppCompatActivity {
                 tab.setText(TAB_TITLES[position])
         ).attach();
 
-        // Style tab được chọn = pill xanh
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                updateTabStyle(tabLayout);
-            }
-            @Override public void onTabUnselected(TabLayout.Tab tab) {
-                updateTabStyle(tabLayout);
-            }
-            @Override public void onTabReselected(TabLayout.Tab tab) {}
-        });
-    }
-
-    private void updateTabStyle(TabLayout tabLayout) {
-        // Tự style pill — xem phần styles.xml bên dưới
+        // Handle target tab from Intent
+        int targetTab = getIntent().getIntExtra("TARGET_TAB", 0);
+        if (targetTab >= 0 && targetTab < TAB_TITLES.length) {
+            viewPager.setCurrentItem(targetTab, false);
+        }
     }
 
     // Adapter cho ViewPager2

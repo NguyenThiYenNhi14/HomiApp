@@ -48,6 +48,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import androidx.appcompat.app.AppCompatActivity;
+import com.yn.homi.cart.CartActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -98,7 +99,7 @@ public class HomeActivity extends BaseActivity {
     private ViewPager2 viewPagerBanner;
     private ViewPager2 vpBestSellers;
     private TabLayout tabIndicator;
-    private TextView tvGreeting, tvEmptySearch;
+    private TextView tvGreeting, tvEmptySearch, tvCartBadge;
     private ImageView ivCart, ivFilter;
     private EditText etSearch;
     private ImageView ivCameraSearch;
@@ -142,6 +143,22 @@ public class HomeActivity extends BaseActivity {
         if (btnShop != null) {
             btnShop.setOnClickListener(v -> {
                 Intent intent = new Intent(HomeActivity.this, ShopActivity.class);
+                startActivity(intent);
+            });
+        }
+
+        View btnAccount = findViewById(R.id.btn_account);
+        if (btnAccount != null) {
+            btnAccount.setOnClickListener(v -> {
+                Intent intent = new Intent(HomeActivity.this, com.yn.homi.setting.profile.YourProfileActivity.class);
+                startActivity(intent);
+            });
+        }
+
+        View btnLists = findViewById(R.id.btn_lists);
+        if (btnLists != null) {
+            btnLists.setOnClickListener(v -> {
+                Intent intent = new Intent(HomeActivity.this, com.yn.homi.setting.wishlist.WishlistActivity.class);
                 startActivity(intent);
             });
         }
@@ -588,6 +605,7 @@ public class HomeActivity extends BaseActivity {
         tabIndicator = findViewById(R.id.tab_indicator);
         tvGreeting = findViewById(R.id.tv_greeting);
         tvEmptySearch = findViewById(R.id.tv_empty_search);
+        tvCartBadge = findViewById(R.id.tv_cart_badge);
         ivCart = findViewById(R.id.iv_cart);
         ivFilter = findViewById(R.id.iv_menu);
         etSearch = findViewById(R.id.et_search);
@@ -842,6 +860,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        updateCartBadge();
         if (bannerRunnable != null) {
             bannerHandler.removeCallbacks(bannerRunnable);
             if (bannerAdapter != null && bannerAdapter.getItemCount() > 1) {
@@ -853,6 +872,17 @@ public class HomeActivity extends BaseActivity {
             if (bestSellerAdapter != null && bestSellerAdapter.getItemCount() > 0) {
                 bannerHandler.postDelayed(bestSellerRunnable, 3000);
             }
+        }
+    }
+
+    private void updateCartBadge() {
+        if (tvCartBadge == null) return;
+        int count = com.yn.homi.cart.CartManager.getInstance(this).getTotalItemCount();
+        if (count > 0) {
+            tvCartBadge.setText(String.valueOf(count));
+            tvCartBadge.setVisibility(View.VISIBLE);
+        } else {
+            tvCartBadge.setVisibility(View.GONE);
         }
     }
 

@@ -1,173 +1,151 @@
 package com.yn.homi.setting.profile;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.yn.homi.R;
+import com.yn.homi.authentication.LoginActivity;
+import com.yn.homi.cart.CartActivity;
 
 public class YourProfileActivity extends AppCompatActivity {
 
-    private UserProfile profile;
-
-    private ImageView ivAvatar;
-    private TextView tvFullName, tvPhone, tvEmail, tvGender, tvDob;
-
-    // Trạng thái ẩn/hiện — mặc định đều đang ẩn
-    private boolean phoneVisible = false;
-    private boolean emailVisible = false;
-
-    private final ActivityResultLauncher<Intent> editLauncher =
-            registerForActivityResult(
-                    new ActivityResultContracts.StartActivityForResult(),
-                    result -> {
-                        if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                            UserProfile updated = null;
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                                updated = result.getData()
-                                        .getParcelableExtra("UPDATED_PROFILE", UserProfile.class);
-                            }
-                            if (updated != null) {
-                                profile = updated;
-                                showProfile(profile);
-                                // Reset về ẩn khi profile được cập nhật
-                                phoneVisible = false;
-                                emailVisible = false;
-                                updatePhoneDisplay();
-                                updateEmailDisplay();
-
-                                Intent resultIntent = new Intent();
-                                resultIntent.putExtra("UPDATED_PROFILE", profile);
-                                setResult(RESULT_OK, resultIntent);
-                            }
-                        }
-                    }
-            );
+    private FirebaseAuth mAuth;
+    private TextView tvAuthTitle;
+    private Button btnLogin;
+    private ConstraintLayout llAuthHeader;
+    private LinearLayout llRecentlyEmpty;
+    private LinearLayout llUnpaid, llProcessing, llShipped, llReturns;
+    private android.widget.ImageView ivSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_your_profile);
 
-        // Lấy profile
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            profile = getIntent().getParcelableExtra("USER_PROFILE", UserProfile.class);
-        }
-        if (profile == null) profile = new UserProfile();
+        mAuth = FirebaseAuth.getInstance();
+        
+        initViews();
+        setupListeners();
+        checkUserStatus();
+    }
 
-        // Ánh xạ view
-        ivAvatar   = findViewById(R.id.ivAvatar);
-        tvFullName = findViewById(R.id.tvFullName);
-        tvPhone    = findViewById(R.id.tvPhone);
-        tvEmail    = findViewById(R.id.tvEmail);
-        tvGender   = findViewById(R.id.tvGender);
-        tvDob      = findViewById(R.id.tvDob);
+    private void initViews() {
+        tvAuthTitle = findViewById(R.id.tv_auth_title);
+        btnLogin = findViewById(R.id.btn_login_account);
+        llAuthHeader = findViewById(R.id.ll_auth_header);
+        llRecentlyEmpty = findViewById(R.id.ll_recently_empty);
+        llUnpaid = findViewById(R.id.ll_unpaid);
+        llProcessing = findViewById(R.id.ll_processing);
+        llShipped = findViewById(R.id.ll_shipped);
+        llReturns = findViewById(R.id.ll_returns);
+        ivSettings = findViewById(R.id.iv_settings);
+        setupBottomNavigation();
+    }
 
-        Button btnEdit = findViewById(R.id.btnEdit);
-        ImageButton btnTogglePhone = findViewById(R.id.btnTogglePhone);
-        ImageButton btnToggleEmail = findViewById(R.id.btnToggleEmail);
-
-        showProfile(profile);
-
-        // Nút Back
-        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
-
-        // Nút Edit
-        btnEdit.setOnClickListener(v -> {
-            Intent intent = new Intent(this, EditProfileActivity.class);
-            intent.putExtra("USER_PROFILE", profile);
-            editLauncher.launch(intent);
+    private void setupBottomNavigation() {
+        findViewById(R.id.btn_shop).setOnClickListener(v -> {
+            startActivity(new Intent(this, com.yn.homi.ShopActivity.class));
+            finish();
         });
 
-        // Toggle Phone
-        btnTogglePhone.setOnClickListener(v -> {
-            phoneVisible = !phoneVisible;
-            updatePhoneDisplay();
-            btnTogglePhone.setImageResource(
-                    phoneVisible ? R.drawable.ic_eye_on : R.drawable.ic_eye_off
-            );
+        findViewById(R.id.btn_lists).setOnClickListener(v -> {
+            startActivity(new Intent(this, com.yn.homi.setting.wishlist.WishlistActivity.class));
+            finish();
         });
 
-        // Toggle Email
-        btnToggleEmail.setOnClickListener(v -> {
-            emailVisible = !emailVisible;
-            updateEmailDisplay();
-            btnToggleEmail.setImageResource(
-                    emailVisible ? R.drawable.ic_eye_on : R.drawable.ic_eye_off
-            );
+        findViewById(R.id.btn_account).setOnClickListener(v -> {
+            // Already here
+        });
+
+        findViewById(R.id.fab_home).setOnClickListener(v -> {
+            Intent intent = new Intent(this, com.yn.homi.HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
         });
     }
 
-    private void showProfile(UserProfile p) {
-        tvFullName.setText(p.fullName.isEmpty()   ? "—" : p.fullName);
-        tvGender.setText(p.gender.isEmpty()       ? "—" : p.gender);
-        tvDob.setText(p.dateOfBirth.isEmpty()     ? "—" : p.dateOfBirth);
+    private void setupListeners() {
+        // Toolbar Icons
+        findViewById(R.id.iv_cart).setOnClickListener(v -> {
+            startActivity(new Intent(this, CartActivity.class));
+        });
 
-        // Phone và Email luôn bắt đầu ở trạng thái ẩn
-        updatePhoneDisplay();
-        updateEmailDisplay();
+        if (ivSettings != null) {
+            ivSettings.setOnClickListener(v -> {
+                startActivity(new Intent(this, com.yn.homi.setting.SettingActivity.class));
+            });
+        }
 
-        if (p.avatarUri != null && !p.avatarUri.isEmpty()) {
-            ivAvatar.clearColorFilter();
-            Glide.with(this)
-                    .load(Uri.parse(p.avatarUri))
-                    .circleCrop()
-                    .placeholder(R.drawable.icon_account_circle)
-                    .into(ivAvatar);
+        // Auth listeners
+        View.OnClickListener loginAction = v -> {
+            if (mAuth.getCurrentUser() == null) {
+                startActivity(new Intent(this, LoginActivity.class));
+            }
+        };
+
+        if (llAuthHeader != null) llAuthHeader.setOnClickListener(loginAction);
+        if (btnLogin != null) btnLogin.setOnClickListener(loginAction);
+
+        // Service Items
+        findViewById(R.id.ll_account_setting).setOnClickListener(v -> {
+            if (mAuth.getCurrentUser() != null) {
+                // If logged in, maybe show a detailed profile or settings
+                startActivity(new Intent(this, EditProfileActivity.class));
+            } else {
+                startActivity(new Intent(this, LoginActivity.class));
+            }
+        });
+
+        // Other items can be linked here as needed (Orders, Wishlist, etc.)
+        findViewById(R.id.tv_view_all_orders).setOnClickListener(v -> {
+            openOrdersWithTab(0);
+        });
+
+        if (llUnpaid != null) llUnpaid.setOnClickListener(v -> openOrdersWithTab(1));
+        if (llProcessing != null) llProcessing.setOnClickListener(v -> openOrdersWithTab(2));
+        if (llShipped != null) llShipped.setOnClickListener(v -> openOrdersWithTab(4));
+        if (llReturns != null) llReturns.setOnClickListener(v -> openOrdersWithTab(5));
+    }
+
+    private void openOrdersWithTab(int tabIndex) {
+        Intent intent = new Intent(this, com.yn.homi.setting.order.MyOrdersActivity.class);
+        intent.putExtra("TARGET_TAB", tabIndex);
+        startActivity(intent);
+    }
+
+    private void checkUserStatus() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            // Logged in state
+            String name = user.getDisplayName();
+            if (name == null || name.isEmpty()) {
+                name = user.getEmail();
+            }
+            tvAuthTitle.setText(name + " >");
+            if (llRecentlyEmpty != null) llRecentlyEmpty.setVisibility(View.GONE);
+            
+            // Here you could update stats (Coupons, Points, etc.) from Firestore
+        } else {
+            // Guest state
+            tvAuthTitle.setText("Sign In / Register >");
+            if (llRecentlyEmpty != null) llRecentlyEmpty.setVisibility(View.VISIBLE);
         }
     }
 
-    /** Hiển thị phone dạng ẩn (••••••••) hoặc thật tuỳ trạng thái */
-    private void updatePhoneDisplay() {
-        String phone = profile.phoneNumber;
-        if (phone == null || phone.isEmpty()) {
-            tvPhone.setText("—");
-            return;
-        }
-        tvPhone.setText(phoneVisible ? phone : maskText(phone));
-    }
-
-    /** Hiển thị email dạng ẩn hoặc thật tuỳ trạng thái */
-    private void updateEmailDisplay() {
-        String email = profile.email;
-        if (email == null || email.isEmpty()) {
-            tvEmail.setText("—");
-            return;
-        }
-        tvEmail.setText(emailVisible ? email : maskEmail(email));
-    }
-
-    /**
-     * Ẩn toàn bộ ký tự trừ 3 ký tự đầu và 2 ký tự cuối.
-     * VD: "0912345678" → "091•••••78"
-     */
-    private String maskText(String text) {
-        if (text.length() <= 5) return "•••••";
-        return text.substring(0, 3)
-                + "•".repeat(text.length() - 5)
-                + text.substring(text.length() - 2);
-    }
-
-    /**
-     * Ẩn phần local của email, giữ lại domain.
-     * VD: "bob.smith@gmail.com" → "bob•••••@gmail.com"
-     */
-    private String maskEmail(String email) {
-        int atIndex = email.indexOf('@');
-        if (atIndex <= 0) return maskText(email);
-        String local  = email.substring(0, atIndex);
-        String domain = email.substring(atIndex);       // "@gmail.com"
-        if (local.length() <= 3) return "•••" + domain;
-        return local.substring(0, 3) + "•".repeat(local.length() - 3) + domain;
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Re-check status in case user logged in/out from another screen
+        checkUserStatus();
     }
 }

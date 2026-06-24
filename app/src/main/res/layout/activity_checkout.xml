@@ -45,7 +45,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:text="Checkout"
+                        android:text="@string/checkout"
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:textColor="#1A1A1A"/>
@@ -83,7 +83,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="Address"
+                        android:text="@string/address"
                         android:textColor="#1A1A1A"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -125,7 +125,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="28dp"
-                    android:text="Payment method"
+                    android:text="@string/payment_method"
                     android:textColor="#1A1A1A"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -145,7 +145,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="Select Payment method"
+                        android:text="@string/select_payment_method"
                         android:textColor="#AAAAAA"
                         android:textSize="14sp" />
 
@@ -162,7 +162,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="28dp"
-                    android:text="Promo/voucher"
+                    android:text="@string/promo_voucher"
                     android:textColor="#1A1A1A"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -182,7 +182,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="Select voucher"
+                        android:text="@string/select_voucher"
                         android:textColor="#AAAAAA"
                         android:textSize="14sp" />
 
@@ -199,7 +199,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:text="SubTotal"
+                    android:text="@string/label_subtotal"
                     android:textColor="#1A1A1A"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -246,7 +246,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Delivery:"
+                        android:text="@string/label_delivery"
                         android:textColor="#888888"
                         android:textSize="14sp" />
 
@@ -278,7 +278,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Order total"
+                        android:text="@string/label_order_total"
                         android:textColor="#1A1A1A"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -311,7 +311,7 @@
             android:layout_height="52dp"
             android:background="@drawable/bg_button_black"
             android:stateListAnimator="@null"
-            android:text="Checkout"
+            android:text="@string/checkout"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
             android:textSize="16sp"

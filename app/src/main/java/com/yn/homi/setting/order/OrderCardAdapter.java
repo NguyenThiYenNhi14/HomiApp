@@ -80,19 +80,21 @@ public class OrderCardAdapter extends RecyclerView.Adapter<OrderCardAdapter.View
         configurePrimaryButton(holder.btnPrimaryAction, order);
     }
 
-    // Method xử lý màu sắc và label cho Badge trạng thái — B&W scheme
     private void applyStatusBadge(TextView badge, Order.Status status) {
         String label;
         int bgColor, textColor;
         switch (status) {
-            case PAID:
-                label = "Paid";
+            case PENDING:
+                label = "Pending";
+                bgColor = 0xFFF2F2F2; textColor = 0xFF555555; break;
+            case PROCESSING:
+                label = "Processing";
+                bgColor = 0xFFF2F2F2; textColor = 0xFF555555; break;
+            case PARTIALLY_SHIPPED:
+                label = "Partially Shipped";
                 bgColor = 0xFFF2F2F2; textColor = 0xFF555555; break;
             case SHIPPED:
                 label = "Shipped";
-                bgColor = 0xFF111111; textColor = 0xFFFFFFFF; break;
-            case DELIVERED:
-                label = "Delivered";
                 bgColor = 0xFF111111; textColor = 0xFFFFFFFF; break;
             case RETURNED:
                 label = "Returned";
@@ -113,13 +115,15 @@ public class OrderCardAdapter extends RecyclerView.Adapter<OrderCardAdapter.View
         int black = android.graphics.Color.parseColor("#111111");
         int gray  = android.graphics.Color.parseColor("#AAAAAA");
         switch (order.getStatus()) {
-            case PAID:
+            case PENDING:
+            case PROCESSING:
                 btn.setText("Messages");
                 btn.setBackgroundTintList(
                         android.content.res.ColorStateList.valueOf(black));
                 btn.setOnClickListener(v -> { /* mở chat */ });
                 break;
 
+            case PARTIALLY_SHIPPED:
             case SHIPPED:
                 btn.setText("Track Package");
                 btn.setBackgroundTintList(
@@ -131,19 +135,15 @@ public class OrderCardAdapter extends RecyclerView.Adapter<OrderCardAdapter.View
                 });
                 break;
 
-            case DELIVERED:
-                btn.setText("Leave Review");
-                btn.setBackgroundTintList(
-                        android.content.res.ColorStateList.valueOf(black));
-                btn.setOnClickListener(v -> { /* mở review */ });
-                break;
-
             case RETURNED:
             case CANCELLED:
                 btn.setText("Contact Support");
                 btn.setBackgroundTintList(
                         android.content.res.ColorStateList.valueOf(gray));
                 btn.setOnClickListener(v -> { /* mở support */ });
+                break;
+            default:
+                btn.setVisibility(View.GONE);
                 break;
         }
     }

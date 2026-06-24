@@ -173,13 +173,14 @@
                     android:id="@+id/hsv_room_tabs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="12dp"
+                    android:paddingVertical="12dp"
                     android:scrollbars="none">
 
                     <LinearLayout
                         android:id="@+id/ll_room_tabs"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingHorizontal="16dp"
                         android:orientation="horizontal" />
                 </HorizontalScrollView>
 
@@ -249,20 +250,26 @@
                 </LinearLayout>
 
                 <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
-                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_media_play"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/inspiration" android:textSize="10sp"/>
+                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_media_play" app:tint="@color/gray_text"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/inspiration" android:textSize="10sp" android:textColor="@color/gray_text"/>
                 </LinearLayout>
 
                 <View android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
 
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
-                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/ic_heart"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/lists" android:textSize="10sp"/>
+                <LinearLayout
+                    android:id="@+id/btn_lists"
+                    android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center"
+                    android:clickable="true" android:focusable="true" android:background="?attr/selectableItemBackground">
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_heart" app:tint="@color/gray_text"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="@string/lists" android:textColor="@color/gray_text" android:textSize="9sp"/>
                 </LinearLayout>
 
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
-                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_myplaces"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/account" android:textSize="10sp"/>
+                <LinearLayout
+                    android:id="@+id/btn_account"
+                    android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center"
+                    android:clickable="true" android:focusable="true" android:background="?attr/selectableItemBackground">
+                    <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_myplaces" app:tint="@color/gray_text" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/account" android:textColor="@color/gray_text" android:textSize="10sp"/>
                 </LinearLayout>
 
             </LinearLayout>

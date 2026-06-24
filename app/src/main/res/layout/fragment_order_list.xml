@@ -24,38 +24,20 @@
         android:visibility="gone"
         android:padding="40dp">
 
-        <!-- Box icon placeholder -->
-        <FrameLayout
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginBottom="20dp">
-
-            <TextView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:text="📦"
-                android:textSize="44sp"
-                android:gravity="center"/>
-        </FrameLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="No orders yet"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            android:textColor="#111111"
-            android:layout_marginBottom="8dp"/>
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_empty_order"
+            android:layout_marginBottom="16dp" />
 
         <TextView
             android:id="@+id/tvEmpty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/no_orders_found"
-            android:textSize="14sp"
-            android:textColor="#AAAAAA"
-            android:lineSpacingExtra="4dp"/>
+            android:text="No orders yet!"
+            android:textSize="16sp"
+            android:textColor="#333333" />
 
     </LinearLayout>
 

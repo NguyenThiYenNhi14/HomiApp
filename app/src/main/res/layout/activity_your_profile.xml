@@ -1,233 +1,321 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:background="@color/white">
 
-    <LinearLayout
+    <!-- Header Row: Title and Icons aligned -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ll_auth_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp">
+        android:paddingStart="24dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="35dp"
+        android:paddingBottom="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackground"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Header: nút Back + tiêu đề -->
-        <RelativeLayout
+        <TextView
+            android:id="@+id/tv_auth_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Sign In / Register >"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/playfair_display"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ll_toolbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/ll_toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_auth_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_auth_title">
+
+            <ImageView
+                android:id="@+id/iv_fav"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_heart"
+                app:tint="@color/black" />
+
+            <ImageView
+                android:id="@+id/iv_cart"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_shopping_cart"
+                app:tint="@color/black" />
+
+            <ImageView
+                android:id="@+id/iv_settings"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_settings"
+                app:tint="@color/black" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bottom_nav_container"
+        app:layout_constraintTop_toBottomOf="@id/ll_auth_header">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp">
+            android:orientation="vertical"
+            android:paddingBottom="32dp">
 
-            <ImageButton
-                android:id="@+id/btnBack"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_centerVertical="true"
-                android:layout_alignParentStart="true"
-                android:src="@drawable/arrow"
-                android:background="@null"
-                android:padding="8dp"
-                android:scaleType="fitCenter"
-                android:contentDescription="@string/back"
-                app:tint="#111111" />
+            <!-- Stats Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="16dp"
+                android:paddingBottom="24dp">
 
+                <LinearLayout style="@style/ProfileStatItem">
+                    <TextView android:id="@+id/tv_coupons_count" style="@style/ProfileStatValue" android:text="0" />
+                    <TextView style="@style/ProfileStatLabel" android:text="Coupons" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/ProfileStatItem">
+                    <TextView android:id="@+id/tv_points_count" style="@style/ProfileStatValue" android:text="0" />
+                    <TextView style="@style/ProfileStatLabel" android:text="Points" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/ProfileStatItem">
+                    <TextView android:id="@+id/tv_wishlists_count" style="@style/ProfileStatValue" android:text="0" />
+                    <TextView style="@style/ProfileStatLabel" android:text="Wishlists" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/ProfileStatItem">
+                    <TextView android:id="@+id/tv_views_count" style="@style/ProfileStatValue" android:text="0" />
+                    <TextView style="@style/ProfileStatLabel" android:text="Views" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="8dp" android:background="#F5F5F5" />
+
+            <!-- My Orders Section -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="My Orders"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tv_view_all_orders"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="View All >"
+                    android:textColor="@color/gray_text"
+                    android:textSize="13sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="20dp">
+
+                <LinearLayout
+                    android:id="@+id/ll_unpaid"
+                    style="@style/ProfileServiceItem">
+                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@android:drawable/ic_menu_agenda" app:tint="@color/black" />
+                    <TextView style="@style/ProfileServiceLabel" android:text="Unpaid" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_processing"
+                    style="@style/ProfileServiceItem">
+                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@android:drawable/ic_menu_day" app:tint="@color/black" />
+                    <TextView style="@style/ProfileServiceLabel" android:text="Processing" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_shipped"
+                    style="@style/ProfileServiceItem">
+                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@android:drawable/ic_dialog_map" app:tint="@color/black" />
+                    <TextView style="@style/ProfileServiceLabel" android:text="Shipped" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_returns"
+                    style="@style/ProfileServiceItem">
+                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@android:drawable/ic_menu_recent_history" app:tint="@color/black" />
+                    <TextView style="@style/ProfileServiceLabel" android:text="Returns" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="8dp" android:background="#F5F5F5" />
+
+            <!-- More Services -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/your_profile"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:textColor="#111111"
-                android:layout_centerInParent="true" />
-
-        </RelativeLayout>
-
-        <!-- Đường kẻ dưới title -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#EEEEEE"
-            android:layout_marginBottom="24dp"/>
-
-        <!-- Avatar (chỉ xem) -->
-        <FrameLayout
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="32dp">
-
-            <ImageView
-                android:id="@+id/ivAvatar"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                android:src="@drawable/icon_account_circle"
-                android:scaleType="centerCrop"/>
-
-            <!-- Badge camera góc dưới phải -->
-            <ImageView
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-                android:layout_gravity="bottom|end"
-                android:src="@drawable/icon_photo_camera"
-                android:background="@drawable/bg_circle_camera"
-                android:padding="4dp"/>
-        </FrameLayout>
-
-        <!-- Full name -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/full_name"
-            android:textSize="12sp"
-            android:textColor="@color/black"
-            android:layout_marginBottom="6dp"/>
-
-        <TextView
-            android:id="@+id/tvFullName"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:gravity="center_vertical"
-            android:hint="@string/bob_smith"
-            android:textColor="@color/black"
-            android:textColorHint="#BBBBBB"
-            android:paddingStart="14dp"
-            android:paddingEnd="14dp"
-            android:background="@drawable/bg_field_outline"
-            android:layout_marginBottom="16dp"/>
-
-        <!-- Phone number -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/phone_number"
-            android:textSize="12sp"
-            android:textColor="@color/black"
-            android:layout_marginBottom="6dp"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/bg_field_outline">
-
-            <TextView
-                android:id="@+id/tvPhone"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:hint="@string/_1_800_2738_9700"
+                android:padding="16dp"
+                android:text="More Services"
                 android:textColor="@color/black"
-                android:textColorHint="#BBBBBB"
-                android:paddingStart="14dp"
-                android:paddingEnd="52dp"/>
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-            <ImageButton
-                android:id="@+id/btnTogglePhone"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="6dp"
-                android:src="@drawable/ic_eye_off"
-                android:background="@null"
-                android:padding="8dp"
-                android:contentDescription="Toggle phone visibility"/>
-
-        </RelativeLayout>
-
-        <!-- Email Address -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/email_address"
-            android:textSize="12sp"
-            android:textColor="@color/black"
-            android:layout_marginBottom="6dp"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/bg_field_outline">
-
-            <TextView
-                android:id="@+id/tvEmail"
+            <GridLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:hint="@string/bob_smith_gmail_com"
-                android:textColor="#111111"
-                android:textColorHint="#BBBBBB"
-                android:paddingStart="14dp"
-                android:paddingEnd="52dp"/>
+                android:layout_height="wrap_content"
+                android:columnCount="4"
+                android:paddingBottom="16dp">
 
-            <ImageButton
-                android:id="@+id/btnToggleEmail"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="6dp"
-                android:src="@drawable/ic_eye_off"
-                android:background="@null"
-                android:padding="8dp"
-                android:contentDescription="Toggle email visibility"/>
+                <LinearLayout style="@style/ProfileServiceItem">
+                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@android:drawable/ic_menu_call" app:tint="@color/black" />
+                    <TextView style="@style/ProfileServiceLabel" android:text="Customer" />
+                </LinearLayout>
 
-        </RelativeLayout>
+                <LinearLayout style="@style/ProfileServiceItem">
+                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@android:drawable/ic_menu_info_details" app:tint="@color/black" />
+                    <TextView style="@style/ProfileServiceLabel" android:text="About" />
+                </LinearLayout>
 
-        <!-- Gender -->
-        <TextView
+                <LinearLayout style="@style/ProfileServiceItem" android:id="@+id/ll_address">
+                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_location" app:tint="@color/black" />
+                    <TextView style="@style/ProfileServiceLabel" android:text="Address" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/ProfileServiceItem" android:id="@+id/ll_account_setting">
+                    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/ic_person" app:tint="@color/black" />
+                    <TextView style="@style/ProfileServiceLabel" android:text="Account Setting" />
+                </LinearLayout>
+            </GridLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="8dp" android:background="#F5F5F5" />
+
+            <!-- Recently Browsed -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Recently Browsed"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/ll_recently_empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="32dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="You have not saved anything recently."
+                    android:textColor="@color/gray_text"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="24dp" />
+
+                <Button
+                    android:id="@+id/btn_login_account"
+                    android:layout_width="160dp"
+                    android:layout_height="48dp"
+                    android:text="LOG IN"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/bg_button_outline_orange_pill"
+                    app:backgroundTint="@null" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Bottom Navigation (Đồng bộ từ Home) -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottom_nav_container"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/white"
+        android:elevation="16dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:id="@+id/btn_shop"
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center"
+                android:clickable="true" android:focusable="true" android:background="?attr/selectableItemBackground">
+                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_gallery" app:tint="@color/gray_text"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/shop" android:textSize="10sp" android:textColor="@color/gray_text"/>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_media_play" app:tint="@color/gray_text"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/inspiration" android:textSize="10sp" android:textColor="@color/gray_text"/>
+            </LinearLayout>
+
+            <View android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"/>
+
+            <LinearLayout
+                android:id="@+id/btn_lists"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" android:orientation="vertical" android:gravity="center"
+                android:clickable="true" android:focusable="true" android:background="?attr/selectableItemBackground">
+                <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/ic_heart" app:tint="@color/gray_text" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:text="@string/lists" android:textColor="@color/gray_text" android:textSize="9sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_account"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_myplaces" app:tint="@color/orange" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/account" android:textColor="@color/orange" android:textSize="10sp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/gender"
-            android:textSize="12sp"
-            android:textColor="@color/black"
-            android:layout_marginBottom="6dp"/>
+            android:layout_marginBottom="12dp"
+            android:src="@android:drawable/ic_menu_send"
+            app:backgroundTint="@color/orange"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:tint="@color/white" />
 
-        <TextView
-            android:id="@+id/tvGender"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:gravity="center_vertical"
-            android:hint="@string/male"
-            android:textColor="@color/black"
-            android:textColorHint="#BBBBBB"
-            android:paddingStart="14dp"
-            android:paddingEnd="14dp"
-            android:background="@drawable/bg_field_outline"
-            android:layout_marginBottom="16dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Date of birth -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/date_of_birth"
-            android:textSize="12sp"
-            android:textColor="@color/black"
-            android:layout_marginBottom="6dp"/>
-
-        <TextView
-            android:id="@+id/tvDob"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:gravity="center_vertical"
-            android:hint="@string/_19_05_2005"
-            android:textColor="@color/black"
-            android:textColorHint="#BBBBBB"
-            android:paddingStart="14dp"
-            android:paddingEnd="14dp"
-            android:background="@drawable/bg_field_outline"
-            android:layout_marginBottom="32dp"/>
-
-        <!-- Nút Edit -->
-        <Button
-            android:id="@+id/btnEdit"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:text="@string/edit"
-            android:backgroundTint="@color/black"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"/>
-
-    </LinearLayout>
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

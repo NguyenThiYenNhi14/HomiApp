@@ -31,7 +31,7 @@ public class OrderListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_order_list, container, false);
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        TextView tvEmpty = view.findViewById(R.id.tvEmpty);
+        View layoutEmpty = view.findViewById(R.id.layoutEmpty);
 
         // Lấy danh sách theo status
         String statusStr = getArguments() != null
@@ -39,16 +39,22 @@ public class OrderListFragment extends Fragment {
 
         List<Order> orders;
         if (statusStr.equals("ALL")) {
-            orders = MockDataProvider.getAllOrders();
+            orders = MockDataProvider.getAllOrders(getContext());
         } else {
-            Order.Status status = Order.Status.valueOf(statusStr);
-            orders = MockDataProvider.getOrdersByStatus(status);
+            try {
+                Order.Status status = Order.Status.valueOf(statusStr);
+                orders = MockDataProvider.getOrdersByStatus(getContext(), status);
+            } catch (IllegalArgumentException e) {
+                orders = java.util.Collections.emptyList();
+            }
         }
 
         if (orders.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
-            tvEmpty.setVisibility(View.VISIBLE);
+            layoutEmpty.setVisibility(View.VISIBLE);
         } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            layoutEmpty.setVisibility(View.GONE);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(new OrderCardAdapter(getContext(), orders));
         }

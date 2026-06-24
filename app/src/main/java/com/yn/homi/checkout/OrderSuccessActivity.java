@@ -13,11 +13,16 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.yn.homi.R;
 
+import com.yn.homi.cart.CartManager;
+
 public class OrderSuccessActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Cart is now cleared in CheckoutActivity.proceedToSuccess() before coming here
+        // to ensure the order data is captured before clearing.
 
         EdgeToEdge.enable(this);
 
@@ -38,9 +43,15 @@ public class OrderSuccessActivity extends AppCompatActivity {
         });
 
         btnViewOrder.setOnClickListener(v -> {
+            Intent intent = new Intent(this, com.yn.homi.setting.order.MyOrdersActivity.class);
+            startActivity(intent);
+            finish();
         });
 
         btnBackToHome.setOnClickListener(v -> {
+            Intent intent = new Intent(this, com.yn.homi.HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
             finish();
         });
 

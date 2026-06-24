@@ -109,7 +109,26 @@ public class ShopActivity extends AppCompatActivity {
         FloatingActionButton fabHome = findViewById(R.id.fab_home);
         fabHome.setOnClickListener(v -> {
             Intent intent = new Intent(ShopActivity.this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
+            finish();
+        });
+
+        setupBottomNavigation();
+    }
+
+    private void setupBottomNavigation() {
+        findViewById(R.id.btn_shop).setOnClickListener(v -> {
+            // Already here
+        });
+
+        findViewById(R.id.btn_lists).setOnClickListener(v -> {
+            startActivity(new Intent(this, com.yn.homi.setting.wishlist.WishlistActivity.class));
+            finish();
+        });
+
+        findViewById(R.id.btn_account).setOnClickListener(v -> {
+            startActivity(new Intent(this, com.yn.homi.setting.profile.YourProfileActivity.class));
             finish();
         });
     }

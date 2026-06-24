@@ -48,27 +48,6 @@ public class CartActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_cart);
-
-        // DATA GIẢ 6 SẢN PHẨM
-        if (com.yn.homi.cart.CartManager.getInstance().getItems().isEmpty()) {
-            List<com.yn.homi.model.Product> products = com.yn.homi.data.ProductRepository.getProducts(this);
-            if (products != null && !products.isEmpty()) {
-                for (int i = 0; i < Math.min(6, products.size()); i++) {
-                    com.yn.homi.model.Product p = products.get(i);
-                    com.yn.homi.cart.CartManager.getInstance().addItem(new com.yn.homi.model.CartItem(
-                            p.getProductId(), p.getName(), p.getPrice(), 1, p.getFirstImage()));
-                }
-            } else {
-                com.yn.homi.cart.CartManager manager = com.yn.homi.cart.CartManager.getInstance();
-                manager.addItem(new com.yn.homi.model.CartItem("1", "Modern L-Shaped Sofa", 13500000.0, 1, "https://www.ikea.com/sg/en/images/products/ektorp-3-seat-sofa-with-chaise-longue-hakebo-dark-grey__1194857_pe902107_s5.jpg"));
-                manager.addItem(new com.yn.homi.model.CartItem("2", "Ergonomic Chair", 4500000.0, 1, "https://v-f-f.com/cdn/shop/files/E3-1-3.jpg?v=1701332821"));
-                manager.addItem(new com.yn.homi.model.CartItem("3", "Wooden Dining Table", 8200000.0, 1, "https://m.media-amazon.com/images/I/71Y87G6YjHL._AC_SL1500_.jpg"));
-                manager.addItem(new com.yn.homi.model.CartItem("4", "King Size Bed", 21000000.0, 1, "https://m.media-amazon.com/images/I/81I7I-7Xf+L._AC_SL1500_.jpg"));
-                manager.addItem(new com.yn.homi.model.CartItem("5", "Bedside Table", 1200000.0, 1, "https://m.media-amazon.com/images/I/71X87G6YjHL._AC_SL1500_.jpg"));
-                manager.addItem(new com.yn.homi.model.CartItem("6", "Wardrobe with Mirror", 15500000.0, 1, "https://m.media-amazon.com/images/I/61X87G6YjHL._AC_SL1500_.jpg"));
-            }
-        }
-
         View main = findViewById(R.id.main);
         View bottomContainer = findViewById(R.id.layoutBottomContainer);
         if (main != null && bottomContainer != null) {
@@ -105,7 +84,7 @@ public class CartActivity extends AppCompatActivity
 
     private void loadData() {
         setupRecyclerView();
-        com.yn.homi.cart.CartManager.getInstance().setCartChangeListener(this);
+        com.yn.homi.cart.CartManager.getInstance(this).setCartChangeListener(this);
         updateSummary();
     }
 
@@ -119,7 +98,7 @@ public class CartActivity extends AppCompatActivity
     }
 
     private void setupRecyclerView() {
-        cartItems = com.yn.homi.cart.CartManager.getInstance().getItems();
+        cartItems = com.yn.homi.cart.CartManager.getInstance(this).getItems();
         adapter   = new com.yn.homi.adapter.CartAdapter(this, cartItems, this);
 
         RecyclerView rvCartItems = findViewById(R.id.rvCartItems);
@@ -148,7 +127,7 @@ public class CartActivity extends AppCompatActivity
                 public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                     int position = viewHolder.getAdapterPosition();
                     CartItem swipedItem = cartItems.get(position);
-                    com.yn.homi.cart.CartManager.getInstance().removeItem(swipedItem.getId());
+                    com.yn.homi.cart.CartManager.getInstance(CartActivity.this).removeItem(swipedItem.getId());
                     Toast.makeText(CartActivity.this, "Đã xoá " + swipedItem.getName(), Toast.LENGTH_SHORT).show();
                 }
 
@@ -204,7 +183,7 @@ public class CartActivity extends AppCompatActivity
 
     @Override
     public void onItemQuantityChanged(String itemId, int newQuantity) {
-        com.yn.homi.cart.CartManager.getInstance().updateQuantity(itemId, newQuantity);
+        com.yn.homi.cart.CartManager.getInstance(this).updateQuantity(itemId, newQuantity);
     }
 
     @Override
@@ -214,7 +193,7 @@ public class CartActivity extends AppCompatActivity
     }
 
     private void updateSummary() {
-        com.yn.homi.cart.CartManager manager = com.yn.homi.cart.CartManager.getInstance();
+        com.yn.homi.cart.CartManager manager = com.yn.homi.cart.CartManager.getInstance(this);
         boolean isEmpty = manager.getItems().isEmpty();
 
         if (layoutBottomContainer != null) {

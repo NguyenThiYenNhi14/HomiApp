@@ -1,10 +1,13 @@
 package com.yn.homi.models;
 
 import com.google.firebase.firestore.PropertyName;
+import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class Product {
+public class Product implements Serializable {
+    @SerializedName("product_id")
     private String id;
     private String name;
     private double price;
@@ -19,8 +22,11 @@ public class Product {
     @PropertyName("thumbnailUrl")
     private String thumbnailUrl;
     @PropertyName("imageUrls")
+    @SerializedName("image_url")
     private List<String> imageUrls;
+    @SerializedName("color")
     private List<String> colors;
+    @SerializedName("material")
     private List<String> materials;
     private List<String> features;
     private String style;
@@ -227,5 +233,8 @@ public class Product {
     public void setSizeVariants(List<SizeVariant> sizeVariants) { this.sizeVariants = sizeVariants; }
 
     // Compatibility getter
-    public String getImageUrl() { return thumbnailUrl; }
+    public String getImageUrl() {
+        if (thumbnailUrl != null && !thumbnailUrl.isEmpty()) return thumbnailUrl;
+        return (imageUrls != null && !imageUrls.isEmpty()) ? imageUrls.get(0) : "";
+    }
 }

@@ -12,6 +12,8 @@ import com.yn.homi.R;
 import com.google.android.material.button.MaterialButton;
 import com.yn.homi.setting.MockDataProvider;
 
+import java.util.Locale;
+
 public class OrderDetailActivity extends AppCompatActivity {
 
     @Override
@@ -33,7 +35,7 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     private Order findOrderById(String orderId) {
         if (orderId == null) return null;
-        for (Order o : MockDataProvider.getAllOrders()) {
+        for (Order o : MockDataProvider.getAllOrders(this)) {
             if (o.getOrderId().equals(orderId)) return o;
         }
         return null;
@@ -66,19 +68,19 @@ public class OrderDetailActivity extends AppCompatActivity {
 
         // Payment summary
         TextView tvSubtotal = findViewById(R.id.tvSubtotal);
-        tvSubtotal.setText(String.format("$%.2f", order.getSubtotal()));
+        tvSubtotal.setText(String.format(Locale.US, "$%.2f", order.getSubtotal()));
 
         TextView tvShipping = findViewById(R.id.tvShippingFee);
         tvShipping.setText(order.getShippingFee() == 0 ? "Free" :
-                String.format("$%.2f", order.getShippingFee()));
+                String.format(Locale.US, "$%.2f", order.getShippingFee()));
 
         TextView tvTotal = findViewById(R.id.tvTotalDetail);
-        tvTotal.setText(String.format("$%.2f", order.getTotal()));
+        tvTotal.setText(String.format(Locale.US, "$%.2f", order.getTotal()));
 
-        // Tracking card — show only for SHIPPED
+        // Tracking card — show for SHIPPED or PARTIALLY_SHIPPED
         View cardTracking = findViewById(R.id.cardTracking);
-        if (order.getStatus() == Order.Status.SHIPPED &&
-                order.getTrackingCode() != null && !order.getTrackingCode().isEmpty()) {
+        boolean isShipping = order.getStatus() == Order.Status.SHIPPED || order.getStatus() == Order.Status.PARTIALLY_SHIPPED;
+        if (isShipping && order.getTrackingCode() != null && !order.getTrackingCode().isEmpty()) {
             cardTracking.setVisibility(View.VISIBLE);
             TextView tvTracking = findViewById(R.id.tvTrackingCode);
             tvTracking.setText(order.getTrackingCode());
@@ -93,6 +95,7 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     private void configureActionButton(MaterialButton btn, Order order) {
         switch (order.getStatus()) {
+            case PARTIALLY_SHIPPED:
             case SHIPPED:
                 btn.setText("Track Package");
                 btn.setOnClickListener(v -> {
@@ -101,11 +104,8 @@ public class OrderDetailActivity extends AppCompatActivity {
                     startActivity(intent);
                 });
                 break;
-            case DELIVERED:
-                btn.setText("Leave a Review");
-                btn.setOnClickListener(v -> { /* open review */ });
-                break;
-            case PAID:
+            case PENDING:
+            case PROCESSING:
                 btn.setText("Messages");
                 btn.setOnClickListener(v -> { /* open chat */ });
                 break;
@@ -122,9 +122,10 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     private String formatStatus(Order.Status status) {
         switch (status) {
-            case PAID: return "Paid";
+            case PENDING: return "Pending";
+            case PROCESSING: return "Processing";
+            case PARTIALLY_SHIPPED: return "Partially Shipped";
             case SHIPPED: return "Shipped";
-            case DELIVERED: return "Delivered";
             case RETURNED: return "Returned";
             case CANCELLED: return "Cancelled";
             default: return status.name();

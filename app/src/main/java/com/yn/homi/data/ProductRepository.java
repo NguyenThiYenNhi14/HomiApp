@@ -3,7 +3,7 @@ package com.yn.homi.data;
 import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.yn.homi.model.Product;
+import com.yn.homi.models.Product;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class ProductRepository {
 
     public static Product getProductById(Context context, String id) {
         for (Product p : getProducts(context)) {
-            if (p.getProductId().equals(id)) return p;
+            if (p.getId().equals(id)) return p;
         }
         return null;
     }

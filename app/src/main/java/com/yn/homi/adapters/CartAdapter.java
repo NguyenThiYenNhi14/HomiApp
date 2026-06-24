@@ -53,6 +53,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 listener.onQuantityChanged(item.getProduct().getId(), item.getQuantity() - 1);
             }
         });
+        // Tạm thời comment nút xóa vì layout item_cart.xml không có nút này
         // holder.ivRemove.setOnClickListener(v -> listener.onRemoveItem(item.getProduct().getId()));
     }
 
@@ -63,8 +64,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     static class CartViewHolder extends RecyclerView.ViewHolder {
         ImageView ivProduct;
-        View btnPlus, btnMinus;
-        TextView tvName, tvPrice, tvQuantity;
+        TextView btnPlus, btnMinus, tvName, tvPrice, tvQuantity;
 
         public CartViewHolder(@NonNull View itemView) {
             super(itemView);

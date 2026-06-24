@@ -29,8 +29,11 @@ import com.yn.homi.setting.order.MyOrdersActivity;
 import com.yn.homi.setting.preferences.LanguageActivity;
 import com.yn.homi.setting.preferences.ThemePreference;
 import com.yn.homi.setting.profile.PasswordSecurityActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.yn.homi.authentication.LoginActivity;
+import com.yn.homi.setting.profile.EditProfileActivity;
 import com.yn.homi.setting.profile.UserProfile;
-import com.yn.homi.setting.profile.YourProfileActivity;
 import com.yn.homi.setting.wishlist.WishlistActivity;
 
 public class SettingActivity extends AppCompatActivity {
@@ -45,32 +48,24 @@ public class SettingActivity extends AppCompatActivity {
 
     UserProfile currentProfile;
     SharedPrefManager spm;
+    FirebaseAuth mAuth;
 
-    private final ActivityResultLauncher<Intent> profileLauncher =
+    private final ActivityResultLauncher<Intent> editProfileLauncher =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
                     result -> {
                         if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                            UserProfile updated = result.getData()
-                                    .getParcelableExtra("UPDATED_PROFILE");
+                            UserProfile updated = null;
+                            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                                updated = result.getData().getParcelableExtra("UPDATED_PROFILE", UserProfile.class);
+                            } else {
+                                updated = result.getData().getParcelableExtra("UPDATED_PROFILE");
+                            }
 
                             if (updated != null) {
                                 currentProfile = updated;
-                                tvUserName.setText(updated.fullName);
-                                tvUserEmail.setText(updated.email);
-
-                                if (updated.avatarUri != null && !updated.avatarUri.isEmpty()) {
-                                    imgAvatar.clearColorFilter();
-                                    Glide.with(this)
-                                            .load(Uri.parse(updated.avatarUri))
-                                            .circleCrop()
-                                            .placeholder(R.drawable.icon_account_circle)
-                                            .into(imgAvatar);
-                                } else {
-                                    imgAvatar.setImageResource(R.drawable.icon_account_circle);
-                                    imgAvatar.setColorFilter(Color.parseColor("#333333"));
-                                }
-
+                                updateProfileUI();
+                                // Lưu vào local storage
                                 spm.saveProfile(updated.fullName, updated.email, updated.avatarUri);
                             }
                         }
@@ -83,12 +78,14 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setting);
 
         spm = SharedPrefManager.getInstance(this);
+        mAuth = FirebaseAuth.getInstance();
 
-        currentProfile          = new UserProfile();
-        currentProfile.fullName = spm.getUserName();
-        currentProfile.email    = spm.getUserEmail();
+        initViews();
+        checkUserStatus();
+        setupClickListeners();
+    }
 
-        // Link views
+    private void initViews() {
         layoutProfile          = findViewById(R.id.layoutProfile);
         layoutMyOrders         = findViewById(R.id.layoutMyOrders);
         layoutMyWishlist       = findViewById(R.id.layoutMyWishlist);
@@ -105,23 +102,36 @@ public class SettingActivity extends AppCompatActivity {
         imgAvatar              = findViewById(R.id.imgAvatar);
         tvUserName             = findViewById(R.id.tvUserName);
         tvUserEmail            = findViewById(R.id.tvUserEmail);
+    }
 
-        tvUserName.setText(currentProfile.fullName);
-        tvUserEmail.setText(currentProfile.email);
+    private void checkUserStatus() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        currentProfile = new UserProfile();
 
-        boolean isDark = ThemePreference.isDarkMode(this);
-        switchDarkMode.setChecked(isDark);
+        if (user != null) {
+            // Đã đăng nhập: Lấy data từ SharedPref hoặc Firebase (tạm thời dùng SharedPref)
+            currentProfile.fullName = spm.getUserName().isEmpty() ? user.getDisplayName() : spm.getUserName();
+            currentProfile.email = user.getEmail();
+            currentProfile.avatarUri = spm.getAvatarUri();
+            // Có thể lấy thêm phone, address... từ database nếu đã lưu
+        } else {
+            // Chưa đăng nhập
+            currentProfile.fullName = getString(R.string.sign_in_register);
+            currentProfile.email = getString(R.string.guest);
+        }
+        updateProfileUI();
+    }
 
-        boolean notifEnabled = spm.isNotificationsEnabled();
-        switchNotification.setChecked(notifEnabled);
+    private void updateProfileUI() {
+        tvUserName.setText(currentProfile.fullName != null && !currentProfile.fullName.isEmpty() 
+                ? currentProfile.fullName : getString(R.string.sign_in_register));
+        tvUserEmail.setText(currentProfile.email != null && !currentProfile.email.isEmpty() 
+                ? currentProfile.email : getString(R.string.guest));
 
-        setupClickListeners();
-
-        String savedAvatarUri = spm.getAvatarUri();
-        if (!savedAvatarUri.isEmpty()) {
+        if (currentProfile.avatarUri != null && !currentProfile.avatarUri.isEmpty()) {
             imgAvatar.clearColorFilter();
             Glide.with(this)
-                    .load(Uri.parse(savedAvatarUri))
+                    .load(Uri.parse(currentProfile.avatarUri))
                     .circleCrop()
                     .placeholder(R.drawable.icon_account_circle)
                     .into(imgAvatar);
@@ -135,9 +145,13 @@ public class SettingActivity extends AppCompatActivity {
 
         // ===== PROFILE =====
         layoutProfile.setOnClickListener(v -> {
-            Intent intent = new Intent(this, YourProfileActivity.class);
-            intent.putExtra("USER_PROFILE", currentProfile);
-            profileLauncher.launch(intent);
+            if (mAuth.getCurrentUser() != null) {
+                Intent intent = new Intent(this, EditProfileActivity.class);
+                intent.putExtra("USER_PROFILE", currentProfile);
+                editProfileLauncher.launch(intent);
+            } else {
+                startActivity(new Intent(this, LoginActivity.class));
+            }
         });
 
         // ===== ACCOUNT =====

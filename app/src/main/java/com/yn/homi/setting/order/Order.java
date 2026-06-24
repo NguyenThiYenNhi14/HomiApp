@@ -3,7 +3,7 @@ package com.yn.homi.setting.order;
 import java.util.List;
 
 public class Order {
-    public enum Status { PAID, SHIPPED, DELIVERED, RETURNED, CANCELLED }
+    public enum Status { ALL, PENDING, PROCESSING, PARTIALLY_SHIPPED, SHIPPED, RETURNED, CANCELLED }
 
     private String orderId;
     private Status status;

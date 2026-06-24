@@ -19,6 +19,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="#111111"
+            android:layout_marginTop="20dp"
             android:gravity="center"
             android:paddingBottom="20dp"/>
 

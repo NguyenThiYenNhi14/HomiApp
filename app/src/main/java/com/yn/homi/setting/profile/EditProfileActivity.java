@@ -39,7 +39,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private Uri cameraUri = null;
 
     private ImageView ivAvatar;
-    private EditText etFullName, etPhone, etEmail, etDob;
+    private EditText etFullName, etPhone, etEmail, etDob, etAddress;
     private RadioGroup rgGender;
     private RadioButton rbMale, rbFemale;
     private Button btnSave;
@@ -82,6 +82,7 @@ public class EditProfileActivity extends AppCompatActivity {
         etPhone    = findViewById(R.id.etPhone);
         etEmail    = findViewById(R.id.etEmail);
         etDob      = findViewById(R.id.etDob);
+        etAddress  = findViewById(R.id.etAddress);
         rgGender   = findViewById(R.id.rgGender);
         rbMale     = findViewById(R.id.rbMale);
         rbFemale   = findViewById(R.id.rbFemale);
@@ -92,6 +93,7 @@ public class EditProfileActivity extends AppCompatActivity {
         etFullName.setText(profile.fullName);
         etPhone.setText(profile.phoneNumber);
         etEmail.setText(profile.email);
+        etAddress.setText(profile.address);
         etDob.setText(profile.dateOfBirth);
 
         // Set gender radio button
@@ -236,6 +238,7 @@ public class EditProfileActivity extends AppCompatActivity {
         profile.fullName    = etFullName.getText().toString().trim();
         profile.phoneNumber = etPhone.getText().toString().trim();
         profile.email       = etEmail.getText().toString().trim();
+        profile.address     = etAddress.getText().toString().trim();
         profile.dateOfBirth = etDob.getText().toString().trim();
         profile.gender      = rbFemale.isChecked() ? "Female" : "Male";
 

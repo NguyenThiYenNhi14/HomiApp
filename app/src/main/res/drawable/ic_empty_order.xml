@@ -1,0 +1,49 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <!-- Outer Box -->
+    <path
+        android:strokeColor="#DDDDDD"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M35,25 L65,25 L75,35 L75,75 L25,75 L25,35 Z" />
+    <!-- Box Flaps -->
+    <path
+        android:strokeColor="#DDDDDD"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M25,35 L75,35 M50,25 L50,35" />
+    <!-- Lines inside -->
+    <path
+        android:strokeColor="#EEEEEE"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M40,45 L60,45 M40,55 L60,55 M40,65 L50,65" />
+    <!-- Clock circle -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeColor="#CCCCCC"
+        android:strokeWidth="1.5"
+        android:pathData="M75,75 m-10,0 a10,10 0 1,0 20,0 a10,10 0 1,0 -20,0" />
+    <!-- Clock hands -->
+    <path
+        android:strokeColor="#CCCCCC"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M75,75 L75,70 M75,75 L80,75" />
+    <!-- Decoration elements -->
+    <path
+        android:fillColor="#DDDDDD"
+        android:pathData="M20,30 m-1,0 a1,1 0 1,0 2,0 a1,1 0 1,0 -2,0" />
+    <path
+        android:fillColor="#EEEEEE"
+        android:pathData="M80,25 m-1.5,0 a1.5,1.5 0 1,0 3,0 a1.5,1.5 0 1,0 -3,0" />
+    <path
+        android:strokeColor="#DDDDDD"
+        android:strokeWidth="1"
+        android:pathData="M20,60 L24,60 M22,58 L22,62" />
+</vector>

@@ -47,7 +47,7 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.View
         }
 
         Glide.with(context)
-                .load(item.getImageResId())
+                .load(item.getImageUrl())
                 .into(holder.imgProduct);
     }
 
