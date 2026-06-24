@@ -17,6 +17,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.yn.homi.R;
 
 public class VerificationActivity extends AppCompatActivity {
@@ -25,7 +28,8 @@ public class VerificationActivity extends AppCompatActivity {
     private AppCompatButton btnContinue;
     private TextView txtContactInfo, txtInstruction, txtBackToLogin;
     private ImageView btnBack;
-    private String flow, contact, type;
+    private String flow, contact, type, verificationId;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,8 @@ public class VerificationActivity extends AppCompatActivity {
         contact = intent.getStringExtra("contact");
         type = intent.getStringExtra("type");
         flow = intent.getStringExtra("flow");
+        verificationId = intent.getStringExtra("verificationId");
+        mAuth = FirebaseAuth.getInstance();
 
         initViews();
         setupOTPInputs();
@@ -153,20 +159,57 @@ public class VerificationActivity extends AppCompatActivity {
             return;
         }
 
-        // Mock verification (Always correct if "123456")
-        if (otp.equals("123456")) {
-            Toast.makeText(this, "Verification Successful!", Toast.LENGTH_SHORT).show();
-            if ("FORGOT_PASSWORD".equals(flow)) {
-                startActivity(new Intent(VerificationActivity.this, ResetPasswordActivity.class));
-            } else {
-                // From Register
-                Intent intent = new Intent(VerificationActivity.this, LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-            finish();
+        if ("PHONE".equals(type)) {
+            verifyPhoneOTP(otp);
         } else {
-            Toast.makeText(this, "Invalid code. Try 123456", Toast.LENGTH_SHORT).show();
+            // Email verification logic (usually via Backend API)
+            verifyEmailOTP(otp);
         }
+    }
+
+    private void verifyPhoneOTP(String code) {
+        if (verificationId == null) {
+            Toast.makeText(this, "Lỗi: Không tìm thấy ID xác thực", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        setLoading(true);
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+        
+        mAuth.signInWithCredential(credential).addOnCompleteListener(task -> {
+            setLoading(false);
+            if (task.isSuccessful()) {
+                handleSuccess();
+            } else {
+                Toast.makeText(this, "Mã xác thực không hợp lệ", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void verifyEmailOTP(String code) {
+        // Giả lập cho luồng Email (Bạn nên thay bằng gọi API Backend)
+        if (code.equals("123456")) {
+            handleSuccess();
+        } else {
+            Toast.makeText(this, "Mã xác thực Email sai. (Test: 123456)", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void handleSuccess() {
+        Toast.makeText(this, "Xác thực thành công!", Toast.LENGTH_SHORT).show();
+        if ("FORGOT_PASSWORD".equals(flow)) {
+            startActivity(new Intent(VerificationActivity.this, ResetPasswordActivity.class));
+        } else {
+            // From Register
+            Intent intent = new Intent(VerificationActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+        finish();
+    }
+
+    private void setLoading(boolean isLoading) {
+        btnContinue.setEnabled(!isLoading);
+        btnContinue.setAlpha(isLoading ? 0.5f : 1.0f);
     }
 }

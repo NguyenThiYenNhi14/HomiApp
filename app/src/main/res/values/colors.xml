@@ -9,6 +9,7 @@
     <color name="red_badge">#D32F2F</color>
     <color name="yellow_sale">#FFC107</color>
     <color name="black_overlay">#80000000</color>
+    <color name="brown_black">#261907</color>
 
     <color name="bg_card_accent">#FFF5E6</color>
     <color name="bg_card">#FFFFFF</color>
@@ -22,4 +23,5 @@
     <color name="pp_gray_medium">#9E9E9E</color>
     <color name="text_muted">#888888</color>
     <color name="text_secondary">#555555</color>
+    <color name="bg_welcome_card">#FFF8F4</color>
 </resources>

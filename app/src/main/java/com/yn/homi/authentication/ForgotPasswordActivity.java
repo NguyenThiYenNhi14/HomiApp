@@ -13,7 +13,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.yn.homi.R;
+import com.yn.homi.utils.OTPManager;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
@@ -21,6 +23,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private AppCompatButton btnSendCode;
     private ImageView btnBack;
     private TextView txtBackToLogin;
+    private OTPManager otpManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         initViews();
         setupListeners();
+        otpManager = new OTPManager(this);
     }
 
     private void initViews() {
@@ -63,17 +67,37 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         setLoading(true);
 
-        // Mock Send Code API
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            setLoading(false);
-            Toast.makeText(ForgotPasswordActivity.this, "Verification code sent to " + contact, Toast.LENGTH_SHORT).show();
-            
-            Intent intent = new Intent(ForgotPasswordActivity.this, VerificationActivity.class);
-            intent.putExtra("contact", contact);
-            intent.putExtra("type", isEmail ? "EMAIL" : "PHONE");
-            intent.putExtra("flow", "FORGOT_PASSWORD");
-            startActivity(intent);
-        }, 1200);
+        OTPManager.OTPCallback callback = new OTPManager.OTPCallback() {
+            @Override
+            public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
+                setLoading(false);
+                Intent intent = new Intent(ForgotPasswordActivity.this, VerificationActivity.class);
+                intent.putExtra("contact", contact);
+                intent.putExtra("verificationId", verificationId);
+                intent.putExtra("type", isEmail ? "EMAIL" : "PHONE");
+                intent.putExtra("flow", "FORGOT_PASSWORD");
+                startActivity(intent);
+            }
+
+            @Override
+            public void onVerificationSuccess() {
+                setLoading(false);
+                startActivity(new Intent(ForgotPasswordActivity.this, ResetPasswordActivity.class));
+                finish();
+            }
+
+            @Override
+            public void onFailure(String error) {
+                setLoading(false);
+                Toast.makeText(ForgotPasswordActivity.this, "Lỗi: " + error, Toast.LENGTH_LONG).show();
+            }
+        };
+
+        if (isPhone) {
+            otpManager.sendOTPToPhone(contact, callback);
+        } else {
+            otpManager.sendOTPToEmail(contact, callback);
+        }
     }
 
     private void setLoading(boolean isLoading) {

@@ -21,7 +21,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.yn.homi.R;
+import com.yn.homi.utils.OTPManager;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -37,6 +39,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private ImageView btnDatePicker;
     private TextView txtLogin;
     private boolean isPasswordVisible = false;
+    private OTPManager otpManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class RegistrationActivity extends AppCompatActivity {
         initViews();
         setupGenderSpinner();
         setupListeners();
+        otpManager = new OTPManager(this);
     }
 
     private void initViews() {
@@ -123,17 +127,35 @@ public class RegistrationActivity extends AppCompatActivity {
         if (validateInput(username, email, phone, address, password, dob)) {
             setLoading(true);
 
-            // Mock Registration API call
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                setLoading(false);
-                Toast.makeText(RegistrationActivity.this, "Verification code sent to " + email, Toast.LENGTH_LONG).show();
-                
-                Intent intent = new Intent(RegistrationActivity.this, VerificationActivity.class);
-                intent.putExtra("contact", email);
-                intent.putExtra("type", "EMAIL");
-                intent.putExtra("flow", "REGISTER");
-                startActivity(intent);
-            }, 1500);
+            // Gửi OTP thực tế qua Phone
+            otpManager.sendOTPToPhone(phone, new OTPManager.OTPCallback() {
+                @Override
+                public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
+                    setLoading(false);
+                    Toast.makeText(RegistrationActivity.this, "OTP sent to " + phone, Toast.LENGTH_SHORT).show();
+                    
+                    Intent intent = new Intent(RegistrationActivity.this, VerificationActivity.class);
+                    intent.putExtra("contact", phone);
+                    intent.putExtra("verificationId", verificationId);
+                    intent.putExtra("type", "PHONE");
+                    intent.putExtra("flow", "REGISTER");
+                    startActivity(intent);
+                }
+
+                @Override
+                public void onVerificationSuccess() {
+                    setLoading(false);
+                    // Chuyển thẳng đến Login hoặc Home tùy logic app
+                    startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
+                    finish();
+                }
+
+                @Override
+                public void onFailure(String error) {
+                    setLoading(false);
+                    Toast.makeText(RegistrationActivity.this, "Gửi OTP thất bại: " + error, Toast.LENGTH_LONG).show();
+                }
+            });
         }
     }
 

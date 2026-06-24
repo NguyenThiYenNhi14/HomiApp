@@ -16,8 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.yn.homi.BaseActivity;
 import com.yn.homi.HomeActivity;
 import com.yn.homi.MainActivity;
 import com.yn.homi.R;
@@ -27,7 +26,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     private EditText edtEmail, edtpsw;
     private CheckBox chkRemember;

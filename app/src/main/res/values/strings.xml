@@ -229,7 +229,7 @@
     <string name="str_dob_placeholder">DD/MM/YYYY</string>
     <string name="str_sign_up">SIGN UP</string>
     <string name="str_already_have_account_text">Already have an account?</string>
-    <string name="str_log_in">Log In</string>
+    <string name="str_log_in"><u>Sign In</u></string>
     <string name="str_new_password_title">Reset Password</string>
 
     <string name="str_new_password_subtitle">Your new password must be different from previously used passwords.</string>
@@ -256,5 +256,10 @@
     <string name="str_button_cancel">Cancel</string>
     <string name="str_button_logout">Logout</string>
     <string name="sale_text">Sale</string>
-
+    <string name="str_lets_get_started">Let\'s Get Started</string>
+    <string name="str_welcome_title">WELCOME TO YOUR DREAM SPACE</string>
+    <string name="str_welcome_subtitle">Discover curated luxury furniture collections tailored for you</string>
+    <string name="en">EN</string>
+    <string name="vi">VI</string>
+    <string name="str_homiapp">Homi</string>
 </resources>

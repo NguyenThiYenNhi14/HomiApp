@@ -12,62 +12,102 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Homi">
 
-        <!-- Authentication Activities -->
         <activity
-            android:name=".authentication.LoginActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".authentication.RegistrationActivity" android:exported="false" />
-        <activity android:name=".authentication.ForgotPasswordActivity" android:exported="false" />
-        <activity android:name=".authentication.VerificationActivity" android:exported="false" />
-        <activity android:name=".authentication.ResetPasswordActivity" android:exported="false" />
 
-        <!-- Main Feature Activities -->
-        <activity android:name=".HomeActivity" android:exported="false" />
-        <activity android:name=".ShopActivity" android:exported="false" />
-        <activity android:name=".ProductListActivity" android:exported="false" />
-        <activity android:name=".ProductDetailActivity" android:exported="false" />
-        <activity android:name=".MainActivity" android:exported="false" />
-
-        <!-- Cart & Checkout Activities -->
-        <activity android:name=".CartActivity" android:exported="false" />
-        <activity android:name=".checkout.CheckoutActivity" android:exported="false" />
-        <activity android:name=".checkout.OrderSuccessActivity" android:exported="false" />
-
-        <!-- Setting Activities -->
-        <activity android:name=".setting.SettingActivity" android:exported="false" />
-
-        <!-- Profile -->
-        <activity android:name=".setting.profile.YourProfileActivity" android:exported="false" />
-        <activity android:name=".setting.profile.EditProfileActivity" android:exported="false" />
-        <activity android:name=".setting.profile.PasswordSecurityActivity" android:exported="false" />
-
-        <!-- Address -->
-        <activity android:name=".setting.address.SavedAddressesActivity" android:exported="false" />
-        <activity android:name=".setting.address.AddAddressActivity" android:exported="false" />
-
-        <!-- Order -->
-        <activity android:name=".setting.order.MyOrdersActivity" android:exported="false" />
-        <activity android:name=".setting.order.OrderDetailActivity" android:exported="false" />
-        <activity android:name=".setting.order.TrackPackageActivity" android:exported="false" />
-
-        <!-- Wishlist -->
-        <activity android:name=".setting.wishlist.WishlistActivity" android:exported="false" />
-
-        <!-- Preferences -->
-        <activity android:name=".setting.preferences.notification.NotificationActivity" android:exported="false" />
-        <activity android:name=".setting.preferences.LanguageActivity" android:exported="false" />
-
-        <!-- About -->
-        <activity android:name=".setting.about.AboutActivity" android:exported="false" />
-        <activity android:name=".setting.about.PrivacyPolicyActivity" android:exported="false" />
-        <activity android:name=".setting.about.TermsConditionsActivity" android:exported="false" />
-        <activity android:name=".setting.about.HelpActivity" android:exported="false" />
-
+        <activity
+            android:name=".WelcomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".authentication.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".authentication.RegistrationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".authentication.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".authentication.VerificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".authentication.ResetPasswordActivity"
+            android:exported="false" /> <!-- Main Feature Activities -->
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ShopActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProductListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProductDetailActivity"
+            android:exported="false" /> <!-- Cart & Checkout Activities -->
+        <activity
+            android:name=".CartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".checkout.CheckoutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".checkout.OrderSuccessActivity"
+            android:exported="false" /> <!-- Setting Activities -->
+        <activity
+            android:name=".setting.SettingActivity"
+            android:exported="false" /> <!-- Profile -->
+        <activity
+            android:name=".setting.profile.YourProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".setting.profile.EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".setting.profile.PasswordSecurityActivity"
+            android:exported="false" /> <!-- Address -->
+        <activity
+            android:name=".setting.address.SavedAddressesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".setting.address.AddAddressActivity"
+            android:exported="false" /> <!-- Order -->
+        <activity
+            android:name=".setting.order.MyOrdersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".setting.order.OrderDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".setting.order.TrackPackageActivity"
+            android:exported="false" /> <!-- Wishlist -->
+        <activity
+            android:name=".setting.wishlist.WishlistActivity"
+            android:exported="false" /> <!-- Preferences -->
+        <activity
+            android:name=".setting.preferences.notification.NotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".setting.preferences.LanguageActivity"
+            android:exported="false" /> <!-- About -->
+        <activity
+            android:name=".setting.about.AboutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".setting.about.PrivacyPolicyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".setting.about.TermsConditionsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".setting.about.HelpActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

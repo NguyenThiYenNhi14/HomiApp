@@ -79,7 +79,7 @@ import java.util.List;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends BaseActivity {
 
     private ProductAdapter productAdapter;
     private IdeaAdapter ideaAdapter;
