@@ -5,196 +5,185 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/onboarding"
     tools:context=".authentication.VerificationActivity">
 
-    <ImageView
-        android:id="@+id/btnBack"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:contentDescription="@string/back"
-        android:padding="8dp"
-        android:src="@drawable/ic_arrow_left"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/black" />
-
-    <TextView
-        android:id="@+id/txtTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/str_verification"
-        android:textColor="@color/black"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnBack" />
-
-    <ImageView
-        android:id="@+id/imgIllustration"
-        android:layout_width="0dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="32dp"
-        android:contentDescription="@null"
-        android:scaleType="fitCenter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtTitle"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
-
-    <TextView
-        android:id="@+id/txtInstruction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:gravity="center"
-        android:text="@string/str_verify_email_hint"
-        android:textColor="#CCCCCC"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imgIllustration" />
-
-    <TextView
-        android:id="@+id/txtContactInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="@string/str_example_email"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtInstruction" />
-
     <LinearLayout
-        android:id="@+id/otpLayout"
-        android:layout_width="wrap_content"
+        android:id="@+id/verificationContainer"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtContactInfo">
-
-        <EditText
-            android:id="@+id/otp1"
-            android:layout_width="48dp"
-            android:layout_height="56dp"
-            android:layout_margin="4dp"
-            android:background="@drawable/bg_otp_box"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="1"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:ignore="Autofill,LabelFor" />
-
-        <EditText
-            android:id="@+id/otp2"
-            android:layout_width="48dp"
-            android:layout_height="56dp"
-            android:layout_margin="4dp"
-            android:background="@drawable/bg_otp_box"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="1"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:ignore="Autofill,LabelFor" />
-
-        <EditText
-            android:id="@+id/otp3"
-            android:layout_width="48dp"
-            android:layout_height="56dp"
-            android:layout_margin="4dp"
-            android:background="@drawable/bg_otp_box"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="1"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:ignore="Autofill,LabelFor" />
-
-        <EditText
-            android:id="@+id/otp4"
-            android:layout_width="48dp"
-            android:layout_height="56dp"
-            android:layout_margin="4dp"
-            android:background="@drawable/bg_otp_box"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="1"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:ignore="Autofill,LabelFor" />
-
-        <EditText
-            android:id="@+id/otp5"
-            android:layout_width="48dp"
-            android:layout_height="56dp"
-            android:layout_margin="4dp"
-            android:background="@drawable/bg_otp_box"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="1"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:ignore="Autofill,LabelFor" />
-
-        <EditText
-            android:id="@+id/otp6"
-            android:layout_width="48dp"
-            android:layout_height="56dp"
-            android:layout_margin="4dp"
-            android:background="@drawable/bg_otp_box"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="1"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:ignore="Autofill,LabelFor" />
-
-    </LinearLayout>
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnContinue"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="24dp"
-        android:background="@drawable/bg_login_button"
-        android:text="@string/str_continue"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/otpLayout" />
-
-    <TextView
-        android:id="@+id/txtBackToLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:text="@string/str_back_login"
-        android:textColor="#5C5C5C"
-        android:textSize="14sp"
+        android:layout_margin="20dp"
+        android:background="@drawable/bg_login_container"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="@string/back"
+                android:padding="8dp"
+                android:src="@drawable/ic_arrow_left"
+                app:tint="#685047" />
+
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:fontFamily="@font/playfair_display"
+                android:text="@string/str_verification"
+                android:textColor="#685047"
+                android:textSize="32sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/txtInstruction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="@string/str_verify_email_hint"
+            android:textColor="#685047"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txtContactInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:text="@string/str_example_email"
+            android:textColor="#685047"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/otpLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/otp1"
+                android:layout_width="40dp"
+                android:layout_height="45dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_edittext_pill"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="#685047"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:ignore="Autofill,LabelFor" />
+
+            <EditText
+                android:id="@+id/otp2"
+                android:layout_width="40dp"
+                android:layout_height="45dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_edittext_pill"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="#685047"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:ignore="Autofill,LabelFor" />
+
+            <EditText
+                android:id="@+id/otp3"
+                android:layout_width="40dp"
+                android:layout_height="45dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_edittext_pill"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="#685047"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:ignore="Autofill,LabelFor" />
+
+            <EditText
+                android:id="@+id/otp4"
+                android:layout_width="40dp"
+                android:layout_height="45dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_edittext_pill"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="#685047"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:ignore="Autofill,LabelFor" />
+
+            <EditText
+                android:id="@+id/otp5"
+                android:layout_width="40dp"
+                android:layout_height="45dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_edittext_pill"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="#685047"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:ignore="Autofill,LabelFor" />
+
+            <EditText
+                android:id="@+id/otp6"
+                android:layout_width="40dp"
+                android:layout_height="45dp"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_edittext_pill"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="#685047"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:ignore="Autofill,LabelFor" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnContinue"
+            android:layout_width="300dp"
+            android:layout_height="29dp"
+            android:layout_marginTop="-20dp"
+            android:layout_marginBottom="15dp"
+            android:background="@android:color/transparent"
+            android:text="@string/str_continue"
+            android:textAllCaps="false"
+            android:textColor="#685047"
+            android:textSize="28sp"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:id="@+id/txtBackToLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_back_login"
+            android:textColor="#F2F0EF"
+            android:textSize="16sp"
+            android:textStyle="bold|italic"
+            android:clickable="true"
+            android:focusable="true"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

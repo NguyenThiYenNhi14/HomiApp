@@ -42,9 +42,45 @@
     <string name="btn_view_all_with_arrow">XEM TẤT CẢ →</string>
     <string name="label_recommendations">Có thể bạn cũng thích</string>
     <string name="btn_add_to_cart">Thêm vào giỏ hàng</string>
+    <string name="btn_buy_now">Mua ngay</string>
+    <string name="buy_now">Mua ngay</string>
 
     <string name="title_cart">Giỏ hàng</string>
+    <string name="search_in_cart">Tìm kiếm trong giỏ</string>
+    <string name="select_all">Chọn tất cả</string>
     <string name="msg_empty_cart">Giỏ hàng của bạn đang trống</string>
     <string name="label_total">Tổng cộng</string>
     <string name="btn_checkout">THANH TOÁN</string>
+    <string name="label_shipping">Vận chuyển</string>
+    <string name="btn_continue">Tiếp tục</string>
+    <string name="msg_deleted_item">Đã xóa %1$s</string>
+    <string name="delete">Xóa</string>
+
+    <string name="color">Màu sắc</string>
+    <string name="size">Kích thước</string>
+    <string name="quantity">Số lượng</string>
+    <string name="confirm">Xác nhận</string>
+    <string name="stock">Kho</string>
+    <string name="stock_format">Kho: %1$s</string>
+    <string name="variant_format">%1$s, %2$s</string>
+    <string name="str_welcome_lets_get">Bắt đầu</string>
+    <string name="str_welcome_started">ngay</string>
+    <string name="str_welcome_desc">Khơi nguồn cảm hứng cho không gian sống của bạn</string>
+    <string name="str_welcome_no_account">Chưa có tài khoản?</string>
+    <string name="str_welcome_sign_up">Đăng ký ngay!</string>
+    <string name="str_welcome_login">Đăng nhập</string>
+    <string name="str_or_continue_google">Hoặc tiếp tục với GOOGLE</string>
+    <string name="add_to_cart_success">Đã thêm vào giỏ hàng</string>
+    <string name="share_product_msg">Khám phá %1$s trên Homi!</string>
+    <string name="share_via">Chia sẻ qua</string>
+    <string name="reviews_count_format">(%1$d %2$s)</string>
+    <string name="add_to_wishlist_success">Đã thêm vào %1$s</string>
+    <!-- Firebase / Google Sign-In -->
+    <string name="default_web_client_id">YOUR_WEB_CLIENT_ID_HERE.apps.googleusercontent.com</string>
+
+    <string name="label_reviews_lowercase">đánh giá</string>
+    <string name="new_wishlist_title">Danh sách yêu thích mới</string>
+    <string name="hint_enter_list_name">Nhập tên danh sách</string>
+    <string name="create">Tạo</string>
+    <string name="label_quantity">Số lượng</string>
 </resources>

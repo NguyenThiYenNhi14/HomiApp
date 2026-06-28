@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.yn.homi.models.Product;
-import com.yn.homi.models.Wishlist;
+import com.yn.homi.data.model.Product;
+import com.yn.homi.data.model.Wishlist;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,10 +57,14 @@ public class FavoritesManager {
     }
 
     public boolean isFavorite(String productId) {
+        if (productId == null || productId.isEmpty()) return false;
         List<Wishlist> wishlists = getWishlists();
+        if (wishlists == null) return false;
+        
         for (Wishlist w : wishlists) {
+            if (w == null || w.getItems() == null) continue;
             for (Product p : w.getItems()) {
-                if (p.getId().equals(productId)) {
+                if (p != null && p.getId() != null && productId.equals(p.getId())) {
                     return true;
                 }
             }

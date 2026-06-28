@@ -56,7 +56,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:contentDescription="@string/todo"
-            android:src="@mipmap/ic_launcher"
+            android:src="@mipmap/ic_logo"
             android:layout_marginBottom="16dp" />
 
         <TextView

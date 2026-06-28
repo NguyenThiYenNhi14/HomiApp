@@ -5,76 +5,81 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_login_main"
+    android:background="@drawable/onboarding"
     android:fillViewport="true"
     tools:context=".authentication.RegistrationActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:orientation="vertical"
         android:padding="20dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/btnBack"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/back"
-                android:padding="8dp"
-                android:src="@drawable/ic_arrow_left"
-                app:tint="@color/white" />
-
-            <TextView
-                android:id="@+id/txtTitle"
-                android:layout_width="323dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="@string/str_create_your_account"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
+            android:id="@+id/registrationContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_login_container"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
             android:padding="24dp">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_marginBottom="20dp">
+
+                <ImageButton
+                    android:id="@+id/btnBack"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/back"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_arrow_left"
+                    app:tint="#685047" />
+
+                <TextView
+                    android:id="@+id/txtTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/playfair_display"
+                    android:text="@string/str_create_your_account"
+                    android:textAlignment="center"
+                    android:textColor="#685047"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="40dp"/>
+            </LinearLayout>
+
             <FrameLayout
                 android:id="@+id/layoutAvatar"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="24dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="16dp"
                 android:clickable="true"
                 android:focusable="true">
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/bg_avatar_circle" />
+                    android:background="@drawable/bg_avatar_circle"
+                    android:alpha="0.3" />
 
                 <ImageView
                     android:id="@+id/imgCameraIcon"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:layout_gravity="center"
                     android:contentDescription="@null"
                     android:src="@drawable/icon_photo_camera"
-                    app:tint="@color/black" />
+                    app:tint="@color/white" />
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/imgAvatar"
@@ -85,73 +90,49 @@
                     android:contentDescription="@null" />
             </FrameLayout>
 
-            <TextView
-                android:id="@+id/txtName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/str_username"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
-
             <EditText
                 android:id="@+id/edtUsername"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="4dp"
+                android:layout_height="45dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_input_white"
-                android:hint="@string/str_enter_username"
+                android:background="@drawable/bg_edittext_pill"
+                android:hint="@string/str_username"
                 android:inputType="text"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:textColor="#685047"
+                android:textColorHint="#685047"
                 android:textSize="14sp"
                 tools:ignore="Autofill" />
-
-            <TextView
-                android:id="@+id/txtEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/str_email_address_label"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/edtEmail"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="4dp"
+                android:layout_height="45dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_input_white"
-                android:hint="@string/str_email_example"
+                android:background="@drawable/bg_edittext_pill"
+                android:hint="@string/str_email_address_label"
                 android:inputType="textEmailAddress"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:textColor="#685047"
+                android:textColorHint="#685047"
                 android:textSize="14sp"
                 tools:ignore="Autofill" />
 
-            <TextView
-                android:id="@+id/txtPhone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/str_phone_number_label"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="4dp"
+                android:layout_height="45dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_input_white"
+                android:background="@drawable/bg_edittext_pill"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp">
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="18dp"
-                    android:layout_marginStart="8dp"
                     android:contentDescription="@null"
                     android:src="@drawable/vietnam_flag" />
 
@@ -160,50 +141,36 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@null"
-                    android:hint="@string/str_phone_code"
+                    android:hint="@string/str_phone_number_label"
                     android:inputType="phone"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
+                    android:textColor="#685047"
+                    android:textColorHint="#685047"
                     android:textSize="14sp"
                     tools:ignore="Autofill" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/txtAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/str_address_label"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
-
             <EditText
                 android:id="@+id/edtAddress"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="4dp"
+                android:layout_height="45dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_input_white"
-                android:hint="@string/str_address_placeholder"
+                android:background="@drawable/bg_edittext_pill"
+                android:hint="@string/str_address_label"
                 android:inputType="textPostalAddress"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:textColor="#685047"
+                android:textColorHint="#685047"
                 android:textSize="14sp"
                 tools:ignore="Autofill" />
 
-            <TextView
-                android:id="@+id/txtPassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/password"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
-
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="4dp"
+                android:layout_height="45dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_input_white">
+                android:background="@drawable/bg_edittext_pill">
 
                 <EditText
                     android:id="@+id/edtPassword"
@@ -212,15 +179,17 @@
                     android:background="@android:color/transparent"
                     android:hint="@string/password"
                     android:inputType="textPassword"
-                    android:paddingStart="16dp"
+                    android:paddingStart="20dp"
                     android:paddingEnd="50dp"
+                    android:textColor="#685047"
+                    android:textColorHint="#685047"
                     android:textSize="14sp"
                     tools:ignore="Autofill" />
 
                 <ImageView
                     android:id="@+id/ivEyeRegister"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="8dp"
@@ -230,23 +199,14 @@
                     android:padding="8dp"
                     android:src="@drawable/ic_eye_off"
                     android:contentDescription="@null"
-                    app:tint="@color/black" />
+                    app:tint="#685047" />
             </RelativeLayout>
-
-            <TextView
-                android:id="@+id/txtGender"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/str_gender_label"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="4dp"
+                android:layout_height="45dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_input_white">
+                android:background="@drawable/bg_edittext_pill">
 
                 <Spinner
                     android:id="@+id/spinnerGender"
@@ -262,27 +222,19 @@
                     android:layout_gravity="end|center_vertical"
                     android:layout_marginEnd="12dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_chevron_down" />
+                    android:src="@drawable/ic_chevron_down"
+                    app:tint="#685047"/>
             </FrameLayout>
-
-            <TextView
-                android:id="@+id/txtBirthdate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/str_dob_label"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="24dp"
-                android:background="@drawable/bg_input_white"
+                android:layout_height="45dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/bg_edittext_pill"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
 
                 <EditText
                     android:id="@+id/edtDob"
@@ -291,8 +243,10 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:focusable="false"
-                    android:hint="@string/str_dob_placeholder"
+                    android:hint="@string/str_dob_label"
                     android:inputType="none"
+                    android:textColor="#685047"
+                    android:textColorHint="#685047"
                     android:textSize="14sp"
                     tools:ignore="Autofill" />
 
@@ -301,44 +255,47 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:contentDescription="@string/pick_date"
-                    android:src="@drawable/calendar" />
+                    android:src="@drawable/calendar"
+                    app:tint="#685047"/>
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnSignUp"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_login_button"
+                android:layout_width="300dp"
+                android:layout_height="29dp"
+                android:layout_marginTop="-9dp"
+                android:layout_marginBottom="10dp"
+                android:background="@android:color/transparent"
                 android:text="@string/str_sign_up"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textColor="#685047"
+                android:textSize="28sp"
+                android:textStyle="bold|italic" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/txtask"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/str_already_have_account_text"
-                    android:textColor="@color/white"
-                    android:textSize="14sp" />
+                    android:textColor="#d9d4bd"
+                    android:textSize="16sp"
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/txtLogin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="6dp"
                     android:text="@string/str_log_in"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textColor="#F2F0EF"
+                    android:textSize="16sp"
+                    android:textStyle="bold|italic"
+                    android:clickable="true"
+                    android:focusable="true"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

@@ -2,10 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/welcomeRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img_onboarding"
+    android:background="@drawable/onboarding"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     tools:context=".WelcomeActivity">
 
     <!-- Language Toggle -->
@@ -13,8 +15,9 @@
         android:id="@+id/langToggle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="20dp"
+        android:alpha="0"
         android:background="@drawable/bg_lang_toggle"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -27,109 +30,210 @@
             android:id="@+id/tvEn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
             android:text="@string/en"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textColor="#9E6539"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"/>
 
         <View
             android:layout_width="1dp"
-            android:layout_height="12dp"
+            android:layout_height="14dp"
             android:layout_marginHorizontal="8dp"
-            android:background="@color/black" />
+            android:background="#9E6539" />
 
         <TextView
             android:id="@+id/tvVi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
             android:text="@string/vi"
-            android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:textColor="#9E6539"
+            android:textSize="14sp"
+            android:clickable="true"
+            android:focusable="true"/>
     </LinearLayout>
 
-    <!-- Bottom Card Container -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@drawable/bg_welcome_card"
-        android:paddingHorizontal="32dp"
-        android:paddingTop="48dp"
-        android:paddingBottom="40dp"
+    <!-- Logo: Starting at absolute center (Splash state) -->
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="255dp"
+        android:layout_height="183dp"
+        android:alpha="1"
+        android:adjustViewBounds="true"
+        android:src="@drawable/logoname"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent="0.52">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvWelcomeDesc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="-45dp"
+        android:alpha="0"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:text="@string/str_welcome_desc"
+        android:textColor="#55433C"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivLogo" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutGetStarted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="110dp"
+        android:layout_marginHorizontal="24dp"
+        app:layout_constrainedWidth="true"
+        android:alpha="0"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvWelcomeDesc">
 
         <TextView
-            android:id="@+id/textViewTitle"
-            android:layout_width="0dp"
+            android:id="@+id/tvLetsGet"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/playfair_display"
-            android:lineSpacingExtra="4dp"
-            android:text="@string/str_welcome_title"
-            android:textColor="@color/brown_black"
-            android:textSize="28sp"
-            android:textStyle="bold|italic"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:includeFontPadding="false"
+            android:letterSpacing="-0.02"
+            android:textColor="#42342F"
+            android:textSize="36sp"
+            android:maxLines="1"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toStartOf="@+id/tvStarted"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textViewSubtitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:lineSpacingExtra="4dp"
-            android:text="@string/str_welcome_subtitle"
-            android:textColor="@color/gray_text"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewTitle" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonGetStarted"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/bg_pill_button"
-            android:text="@string/str_lets_get_started"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/footerLayout" />
-
-        <LinearLayout
-            android:id="@+id/footerLayout"
+            android:id="@+id/tvStarted"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/playfair_display"
+            android:includeFontPadding="false"
+            android:letterSpacing="-0.02"
+            android:textColor="#BC5B39"
+            android:textSize="36sp"
+            android:maxLines="1"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toStartOf="@+id/dot1"
+            app:layout_constraintStart_toEndOf="@id/tvLetsGet"
+            app:layout_constraintTop_toTopOf="@id/tvLetsGet" />
+
+        <!-- Decorative Dots -->
+        <View
+            android:id="@+id/dot1"
+            android:layout_width="4dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_circle_terracotta"
+            app:layout_constraintEnd_toStartOf="@+id/dot2"
+            app:layout_constraintStart_toEndOf="@id/tvStarted"
+            app:layout_constraintTop_toTopOf="@id/tvLetsGet" />
+
+        <View
+            android:id="@+id/dot2"
+            android:layout_width="2dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/bg_circle_terracotta"
+            android:alpha="0.6"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toEndOf="@id/dot1"
+            app:layout_constraintTop_toTopOf="@id/tvLetsGet" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:layout_constraintWidth_max="240dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvLetsGet">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.9dp"
+                android:layout_centerInParent="true"
+                android:alpha="0.1"
+                android:background="#B66143" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/str_already_have_account_text"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:layout_centerInParent="true"
+                android:alpha="0.8"
+                android:background="@android:color/transparent"
+                android:paddingHorizontal="10dp"
+                android:text="@string/str_welcome_star"
+                android:textColor="#BC5B39"
+                android:textSize="14sp" />
+        </RelativeLayout>
 
-            <TextView
-                android:id="@+id/buttonLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text="@string/str_log_in"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                android:textStyle="bold" />
-        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/layoutSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:alpha="0"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/btnLoginWelcome"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_welcome_no_account"
+            android:textColor="#d9d4bd"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/tvSignUpNow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="@string/str_welcome_sign_up"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold|italic"
+            android:clickable="true"
+            android:focusable="true"/>
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnLoginWelcome"
+        android:layout_width="150dp"
+        android:layout_height="39dp"
+        android:layout_marginBottom="30dp"
+        android:alpha="0"
+        android:background="@drawable/bg_button_transparent_outline"
+        android:text="@string/str_welcome_login"
+        android:textAllCaps="false"
+        android:textColor="#CC9B72"
+        android:textSize="20sp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

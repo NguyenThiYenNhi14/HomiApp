@@ -1,4 +1,4 @@
-package com.yn.homi;
+package com.yn.homi.core;
 
 import android.content.Context;
 
