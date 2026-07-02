@@ -361,6 +361,26 @@ public class FirestoreRepository {
                 .addOnFailureListener(listener::onError);
     }
 
+    public void getIdeaById(String ideaId, OnIdeaLoadedListener listener) {
+        db.collection("ideas").document(ideaId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    Idea idea = documentSnapshot.toObject(Idea.class);
+                    if (idea != null) {
+                        idea.setId(documentSnapshot.getId());
+                        listener.onLoaded(idea);
+                    } else {
+                        listener.onError(new Exception("Idea not found"));
+                    }
+                })
+                .addOnFailureListener(listener::onError);
+    }
+
+    public interface OnIdeaLoadedListener {
+        void onLoaded(Idea idea);
+        void onError(Exception e);
+    }
+
     public void getRoomCategories(OnRoomCategoriesLoadedListener listener) {
         db.collection("roomCategories").orderBy("order").get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {

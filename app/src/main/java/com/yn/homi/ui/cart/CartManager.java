@@ -48,6 +48,20 @@ public class CartManager {
 
     /** Thêm sản phẩm. Nếu đã có cùng ID, cùng màu và cùng size thì tăng quantity. */
     public void addItem(CartItem newItem) {
+        addItemInternal(newItem);
+        saveCartItems();
+        notifyChanged();
+    }
+
+    public void addItems(List<CartItem> newItems) {
+        for (CartItem item : newItems) {
+            addItemInternal(item);
+        }
+        saveCartItems();
+        notifyChanged();
+    }
+
+    private void addItemInternal(CartItem newItem) {
         boolean found = false;
         for (CartItem item : items) {
             // Kiểm tra cả ID, Màu sắc và Kích thước
@@ -66,8 +80,6 @@ public class CartManager {
         if (!found) {
             items.add(newItem);
         }
-        saveCartItems();
-        notifyChanged();
     }
 
     /** Xoá một item cụ thể dựa trên ID, màu sắc và size. */

@@ -1119,6 +1119,14 @@ public class HomeActivity extends com.yn.homi.core.BaseActivity {
         rvProducts.setLayoutManager(new GridLayoutManager(this, 2));
         productAdapter = new ProductAdapter(new ArrayList<>());
         ideaAdapter = new IdeaAdapter();
+        ideaAdapter.setOnIdeaClickListener(idea -> {
+            Intent intent = new Intent(HomeActivity.this, RoomDetailActivity.class);
+            intent.putExtra("IDEA_ID", idea.getId());
+            intent.putExtra("IDEA_TITLE", idea.getTitle());
+            intent.putExtra("IDEA_IMAGE", idea.getThumbnailUrl());
+            intent.putExtra("IDEA_DESC", idea.getDescription());
+            startActivity(intent);
+        });
         
         // Setup Idea Categories
         List<String> ideaCats = new ArrayList<>();

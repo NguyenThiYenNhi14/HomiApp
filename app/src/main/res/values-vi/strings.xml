@@ -83,4 +83,7 @@
     <string name="hint_enter_list_name">Nhập tên danh sách</string>
     <string name="create">Tạo</string>
     <string name="label_quantity">Số lượng</string>
+    <string name="label_view_detail">Xem chi tiết</string>
+    <string name="placeholder_product_name">Ghế bành nhung</string>
+    <string name="placeholder_product_price">$320.00</string>
 </resources>

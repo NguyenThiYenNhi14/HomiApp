@@ -17,6 +17,15 @@ import java.util.List;
 public class IdeaAdapter extends RecyclerView.Adapter<IdeaAdapter.IdeaViewHolder> {
 
     private List<Idea> ideaList = new ArrayList<>();
+    private OnIdeaClickListener listener;
+
+    public interface OnIdeaClickListener {
+        void onIdeaClick(Idea idea);
+    }
+
+    public void setOnIdeaClickListener(OnIdeaClickListener listener) {
+        this.listener = listener;
+    }
 
     public void updateData(List<Idea> newList) {
         this.ideaList = newList;
@@ -43,6 +52,12 @@ public class IdeaAdapter extends RecyclerView.Adapter<IdeaAdapter.IdeaViewHolder
                 .error(R.color.gray_light)
                 .centerCrop()
                 .into(holder.ivThumbnail);
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onIdeaClick(idea);
+            }
+        });
     }
 
     @Override

@@ -336,4 +336,7 @@
     <string name="default_web_client_id">YOUR_WEB_CLIENT_ID_HERE.apps.googleusercontent.com</string>
 
     <string name="label_reviews_lowercase">reviews</string>
+    <string name="label_view_detail">View details</string>
+    <string name="placeholder_product_name">Velvet Armchair</string>
+    <string name="placeholder_product_price">$320.00</string>
 </resources>
