@@ -25,8 +25,6 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.yn.homi.R;
 
 import java.io.File;
@@ -50,6 +48,9 @@ public class EditProfileActivity extends AppCompatActivity {
     private RadioButton rbMale, rbFemale;
     private Button btnSave;
     private FrameLayout flAvatar;
+
+    private static final String CLOUDINARY_CLOUD_NAME = "ddkaekbnb";
+    private static final String CLOUDINARY_UPLOAD_PRESET = "Homi_Avatar";
 
     // ---- Launcher mở Gallery ----
     private final ActivityResultLauncher<String> galleryLauncher =
@@ -129,11 +130,12 @@ public class EditProfileActivity extends AppCompatActivity {
         // Click Save → hiện confirm dialog
         btnSave.setOnClickListener(v -> showConfirmDialog());
 
-        ImageButton icCalendar = findViewById(R.id.icCalendar);
-        icCalendar.getDrawable().setColorFilter(
-                new PorterDuffColorFilter(0xFF111111, PorterDuff.Mode.SRC_IN)
-        );
-
+        ImageView icCalendar = findViewById(R.id.icCalendar);
+        if (icCalendar != null && icCalendar.getDrawable() != null) {
+            icCalendar.getDrawable().setColorFilter(
+                    new PorterDuffColorFilter(0xFF757575, PorterDuff.Mode.SRC_IN)
+            );
+        }
     }
 
     // ---- Dialog chọn ảnh (giữa màn hình) ----
@@ -175,13 +177,13 @@ public class EditProfileActivity extends AppCompatActivity {
             );
             cameraUri = FileProvider.getUriForFile(
                     this,
-                    getPackageName() + ".provider",
+                    getPackageName() + ".fileprovider",
                     imageFile
             );
             cameraLauncher.launch(cameraUri);
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Cannot open camera", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.msg_camera_error), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -216,7 +218,7 @@ public class EditProfileActivity extends AppCompatActivity {
         // Validate trước
         String name = etFullName.getText().toString().trim();
         if (name.isEmpty()) {
-            etFullName.setError("Please enter your name");
+            etFullName.setError(getString(R.string.msg_enter_name));
             etFullName.requestFocus();
             return;
         }
@@ -243,35 +245,75 @@ public class EditProfileActivity extends AppCompatActivity {
     private void saveProfile() {
         String uid = FirebaseAuth.getInstance().getUid();
         if (uid == null) {
-            Toast.makeText(this, "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.msg_not_logged_in), Toast.LENGTH_SHORT).show();
             return;
         }
 
         btnSave.setEnabled(false);
 
+        // LUÔN gọi updateFirestore trước để lưu các trường text ngay lập tức (không chờ ảnh)
+        updateFirestore(uid, profile.avatarUri);
+
+        // Nếu có ảnh mới, gọi upload Cloudinary
         if (selectedAvatarUri != null && !selectedAvatarUri.toString().startsWith("http")) {
-            // Nếu có chọn ảnh mới (không phải link web cũ), upload lên Storage
-            uploadAvatarAndSave(uid);
-        } else {
-            // Không chọn ảnh mới, chỉ cập nhật thông tin text
-            updateFirestore(uid, profile.avatarUri);
+            uploadAvatarToCloudinary(uid);
         }
     }
 
-    private void uploadAvatarAndSave(String uid) {
-        StorageReference storageRef = FirebaseStorage.getInstance().getReference()
-                .child("avatars/" + uid + ".jpg");
+    private void uploadAvatarToCloudinary(String uid) {
+        new Thread(() -> {
+            try {
+                java.io.InputStream inputStream = getContentResolver().openInputStream(selectedAvatarUri);
+                byte[] imageBytes = new byte[inputStream.available()];
+                inputStream.read(imageBytes);
+                inputStream.close();
 
-        storageRef.putFile(selectedAvatarUri)
-                .addOnSuccessListener(taskSnapshot -> {
-                    storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                        updateFirestore(uid, uri.toString());
-                    });
-                })
-                .addOnFailureListener(e -> {
-                    btnSave.setEnabled(true);
-                    Toast.makeText(this, "Upload ảnh thất bại: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                okhttp3.OkHttpClient client = new okhttp3.OkHttpClient();
+                okhttp3.RequestBody fileBody = okhttp3.RequestBody.create(imageBytes, okhttp3.MediaType.parse("image/*"));
+
+                okhttp3.MultipartBody requestBody = new okhttp3.MultipartBody.Builder()
+                        .setType(okhttp3.MultipartBody.FORM)
+                        .addFormDataPart("file", "avatar.jpg", fileBody)
+                        .addFormDataPart("upload_preset", CLOUDINARY_UPLOAD_PRESET)
+                        .build();
+
+                okhttp3.Request request = new okhttp3.Request.Builder()
+                        .url("https://api.cloudinary.com/v1_1/" + CLOUDINARY_CLOUD_NAME + "/image/upload")
+                        .post(requestBody)
+                        .build();
+
+                okhttp3.Response response = client.newCall(request).execute();
+                String responseBody = response.body().string();
+
+                runOnUiThread(() -> {
+                    if (response.isSuccessful()) {
+                        try {
+                            org.json.JSONObject json = new org.json.JSONObject(responseBody);
+                            String secureUrl = json.getString("secure_url");
+                            updateAvatarUrlOnly(uid, secureUrl);
+                        } catch (Exception e) {
+                            Toast.makeText(this, getString(R.string.msg_image_process_error, e.getMessage()), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(this, getString(R.string.msg_upload_failed, responseBody), Toast.LENGTH_SHORT).show();
+                    }
                 });
+            } catch (Exception e) {
+                runOnUiThread(() ->
+                        Toast.makeText(this, getString(R.string.msg_upload_error, e.getMessage()), Toast.LENGTH_SHORT).show());
+            }
+        }).start();
+    }
+
+    private void updateAvatarUrlOnly(String uid, String avatarUrl) {
+        FirebaseFirestore.getInstance().collection("users").document(uid)
+                .update("avatarUrl", avatarUrl)
+                .addOnSuccessListener(aVoid -> {
+                    profile.avatarUri = avatarUrl;
+                    Toast.makeText(this, getString(R.string.msg_avatar_updated), Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, getString(R.string.msg_avatar_save_failed, e.getMessage()), Toast.LENGTH_SHORT).show());
     }
 
     private void updateFirestore(String uid, String avatarUrl) {
@@ -291,7 +333,15 @@ public class EditProfileActivity extends AppCompatActivity {
         updates.put("address", address);
         updates.put("dateOfBirth", dob);
         updates.put("gender", gender);
-        updates.put("avatarUrl", avatarUrl);
+
+        // Bỏ tham số avatarUrl khỏi Map updates nếu không có ảnh mới được chọn
+        // Không ghi đè avatarUrl bằng giá trị cũ nếu không cần thiết
+        if (selectedAvatarUri != null && !selectedAvatarUri.toString().startsWith("http")) {
+            // Có ảnh mới, sẽ cập nhật qua Cloudinary sau
+        } else {
+            // Không có ảnh mới, giữ nguyên field trên Firestore
+        }
+
         updates.put("updatedAt", java.text.DateFormat.getDateTimeInstance().format(new java.util.Date()));
 
         FirebaseFirestore.getInstance().collection("users").document(uid)
@@ -306,7 +356,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     profile.gender = gender;
                     profile.avatarUri = avatarUrl;
 
-                    Toast.makeText(EditProfileActivity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditProfileActivity.this, getString(R.string.msg_update_success), Toast.LENGTH_SHORT).show();
 
                     Intent result = new Intent();
                     result.putExtra("UPDATED_PROFILE", profile);
@@ -315,7 +365,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> {
                     btnSave.setEnabled(true);
-                    Toast.makeText(EditProfileActivity.this, "Lỗi khi lưu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditProfileActivity.this, getString(R.string.msg_save_error, e.getMessage()), Toast.LENGTH_SHORT).show();
                 });
     }
 }

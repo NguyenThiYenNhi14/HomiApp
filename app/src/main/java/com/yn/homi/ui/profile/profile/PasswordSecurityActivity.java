@@ -107,21 +107,21 @@ public class PasswordSecurityActivity extends AppCompatActivity {
                 bar1.setBackgroundColor(red);
                 bar2.setBackgroundColor(gray);
                 bar3.setBackgroundColor(gray);
-                tvStrengthLabel.setText("Weak");
+                tvStrengthLabel.setText(R.string.label_weak);
                 tvStrengthLabel.setTextColor(red);
                 break;
             case 2: // Medium — bar1+bar2 orange
                 bar1.setBackgroundColor(orange);
                 bar2.setBackgroundColor(orange);
                 bar3.setBackgroundColor(gray);
-                tvStrengthLabel.setText("Medium");
+                tvStrengthLabel.setText(R.string.label_medium);
                 tvStrengthLabel.setTextColor(orange);
                 break;
             case 3: // Strong — all bars green
                 bar1.setBackgroundColor(green);
                 bar2.setBackgroundColor(green);
                 bar3.setBackgroundColor(green);
-                tvStrengthLabel.setText("Strong");
+                tvStrengthLabel.setText(R.string.label_strong);
                 tvStrengthLabel.setTextColor(green);
                 break;
         }
@@ -141,37 +141,37 @@ public class PasswordSecurityActivity extends AppCompatActivity {
 
             // Validate — check each field
             if (current.isEmpty()) {
-                tilCurrentPassword.setError("Vui lòng nhập mật khẩu hiện tại");
+                tilCurrentPassword.setError(getString(R.string.msg_enter_current_password));
                 etCurrentPassword.requestFocus();
                 return;
             }
 
             if (newPass.isEmpty()) {
-                tilNewPassword.setError("Vui lòng nhập mật khẩu mới");
+                tilNewPassword.setError(getString(R.string.msg_enter_new_password));
                 etNewPassword.requestFocus();
                 return;
             }
 
             if (newPass.length() < 8) {
-                tilNewPassword.setError("Mật khẩu phải có ít nhất 8 ký tự");
+                tilNewPassword.setError(getString(R.string.msg_password_too_short));
                 etNewPassword.requestFocus();
                 return;
             }
 
             if (confirm.isEmpty()) {
-                tilConfirmPassword.setError("Vui lòng xác nhận mật khẩu mới");
+                tilConfirmPassword.setError(getString(R.string.msg_confirm_new_password));
                 etConfirmPassword.requestFocus();
                 return;
             }
 
             if (!newPass.equals(confirm)) {
-                tilConfirmPassword.setError("Mật khẩu xác nhận không khớp");
+                tilConfirmPassword.setError(getString(R.string.msg_passwords_dont_match));
                 etConfirmPassword.requestFocus();
                 return;
             }
 
             if (newPass.equals(current)) {
-                tilNewPassword.setError("Mật khẩu mới phải khác mật khẩu hiện tại");
+                tilNewPassword.setError(getString(R.string.msg_new_pass_same_as_old));
                 etNewPassword.requestFocus();
                 return;
             }
@@ -183,12 +183,12 @@ public class PasswordSecurityActivity extends AppCompatActivity {
     private void performChangePassword(String currentPassword, String newPassword) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null || user.getEmail() == null) {
-            Toast.makeText(this, "Phiên đăng nhập hết hạn!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.msg_session_expired), Toast.LENGTH_SHORT).show();
             return;
         }
 
         btnSavePassword.setEnabled(false);
-        btnSavePassword.setText("Đang xử lý...");
+        btnSavePassword.setText(getString(R.string.msg_processing));
 
         // Firebase yêu cầu re-authenticate cho các thao tác nhạy cảm
         AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), currentPassword);
@@ -199,20 +199,20 @@ public class PasswordSecurityActivity extends AppCompatActivity {
                     user.updatePassword(newPassword)
                             .addOnSuccessListener(aVoid2 -> {
                                 Toast.makeText(PasswordSecurityActivity.this,
-                                        "Đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
+                                        getString(R.string.msg_change_pass_success), Toast.LENGTH_SHORT).show();
                                 finish();
                             })
                             .addOnFailureListener(e -> {
                                 btnSavePassword.setEnabled(true);
-                                btnSavePassword.setText("LƯU THAY ĐỔI");
+                                btnSavePassword.setText(getString(R.string.btn_save_changes));
                                 Toast.makeText(PasswordSecurityActivity.this,
-                                        "Lỗi đổi mật khẩu: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        getString(R.string.msg_change_pass_error, e.getMessage()), Toast.LENGTH_SHORT).show();
                             });
                 })
                 .addOnFailureListener(e -> {
                     btnSavePassword.setEnabled(true);
-                    btnSavePassword.setText("LƯU THAY ĐỔI");
-                    tilCurrentPassword.setError("Mật khẩu hiện tại không chính xác");
+                    btnSavePassword.setText(getString(R.string.btn_save_changes));
+                    tilCurrentPassword.setError(getString(R.string.msg_wrong_current_password));
                     etCurrentPassword.requestFocus();
                 });
     }

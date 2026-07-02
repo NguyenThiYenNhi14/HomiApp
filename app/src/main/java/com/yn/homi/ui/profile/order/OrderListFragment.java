@@ -9,13 +9,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.yn.homi.R;
-import com.yn.homi.ui.profile.MockDataProvider;
+import com.yn.homi.ui.profile.order.OrderManager;
 
 import java.util.List;
 
-public class OrderListFragment extends Fragment {
+public class OrderListFragment extends Fragment implements OrderManager.OrderChangeListener {
 
     private static final String ARG_STATUS = "status";
+    private RecyclerView recyclerView;
+    private View layoutEmpty;
+    private String statusStr;
 
     public static OrderListFragment newInstance(String status) {
         OrderListFragment fragment = new OrderListFragment();
@@ -30,20 +33,27 @@ public class OrderListFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_order_list, container, false);
 
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        View layoutEmpty = view.findViewById(R.id.layoutEmpty);
+        recyclerView = view.findViewById(R.id.recyclerView);
+        layoutEmpty = view.findViewById(R.id.layoutEmpty);
 
         // Lấy danh sách theo status
-        String statusStr = getArguments() != null
+        statusStr = getArguments() != null
                 ? getArguments().getString(ARG_STATUS, "ALL") : "ALL";
 
+        loadOrders();
+        OrderManager.getInstance(getContext()).addOrderChangeListener(this);
+
+        return view;
+    }
+
+    private void loadOrders() {
         List<Order> orders;
         if (statusStr.equals("ALL")) {
-            orders = MockDataProvider.getAllOrders(getContext());
+            orders = OrderManager.getInstance(getContext()).getOrders();
         } else {
             try {
                 Order.Status status = Order.Status.valueOf(statusStr);
-                orders = MockDataProvider.getOrdersByStatus(getContext(), status);
+                orders = OrderManager.getInstance(getContext()).getOrdersByStatus(status);
             } catch (IllegalArgumentException e) {
                 orders = java.util.Collections.emptyList();
             }
@@ -58,7 +68,18 @@ public class OrderListFragment extends Fragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(new OrderCardAdapter(getContext(), orders));
         }
+    }
 
-        return view;
+    @Override
+    public void onOrdersChanged() {
+        if (isAdded()) {
+            getActivity().runOnUiThread(this::loadOrders);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        OrderManager.getInstance(getContext()).removeOrderChangeListener(this);
     }
 }

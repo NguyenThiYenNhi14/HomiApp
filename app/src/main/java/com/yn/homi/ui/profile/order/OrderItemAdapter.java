@@ -1,6 +1,7 @@
 package com.yn.homi.ui.profile.order;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.google.android.material.button.MaterialButton;
 import com.yn.homi.R;
 
 import java.util.List;
@@ -17,10 +19,17 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.View
 
     private Context context;
     private List<OrderItem> items;
+    private String orderId;
+    private Order.Status orderStatus;
 
     public OrderItemAdapter(Context context, List<OrderItem> items) {
         this.context = context;
         this.items = items;
+    }
+
+    public void setOrderInfo(String orderId, Order.Status orderStatus) {
+        this.orderId = orderId;
+        this.orderStatus = orderStatus;
     }
 
     @NonNull
@@ -49,6 +58,19 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.View
         Glide.with(context)
                 .load(item.getImageUrl())
                 .into(holder.imgProduct);
+
+        if (orderStatus == Order.Status.COMPLETED) {
+            holder.btnWriteReview.setVisibility(View.VISIBLE);
+            holder.btnWriteReview.setOnClickListener(v -> {
+                Intent intent = new Intent(context, WriteReviewActivity.class);
+                intent.putExtra("PRODUCT_ID", item.getProductId());
+                intent.putExtra("PRODUCT_NAME", item.getName());
+                intent.putExtra("ORDER_ID", orderId);
+                context.startActivity(intent);
+            });
+        } else {
+            holder.btnWriteReview.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -57,6 +79,7 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.View
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgProduct;
         TextView tvName, tvPrice, tvColorQty, tvStatus;
+        MaterialButton btnWriteReview;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -65,6 +88,7 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.View
             tvPrice = itemView.findViewById(R.id.tvPrice);
             tvColorQty = itemView.findViewById(R.id.tvColorQty);
             tvStatus = itemView.findViewById(R.id.tvStatus);
+            btnWriteReview = itemView.findViewById(R.id.btnWriteReview);
         }
     }
 }

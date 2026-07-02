@@ -14,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -115,13 +118,37 @@ public class LoginActivity extends com.yn.homi.core.BaseActivity {
                         FirebaseFirestore.getInstance().collection("users")
                                 .document(user.getUid())
                                 .set(profile)
-                                .addOnCompleteListener(t -> navigateToHome("USER"));
+                                .addOnCompleteListener(t -> {
+                                    syncManagers();
+                                    grantWelcomeCoupon(user.getUid());
+                                    navigateToHome("USER");
+                                });
                     } else {
                         String role = documentSnapshot.getString("role");
+                        syncManagers();
                         navigateToHome(role != null ? role : "USER");
                     }
                 })
                 .addOnFailureListener(e -> navigateToHome("USER"));
+    }
+
+    private void grantWelcomeCoupon(String uid) {
+        Map<String, Object> coupon = new HashMap<>();
+        coupon.put("type", "welcome");
+        coupon.put("code", "WELCOME10");
+        coupon.put("discountType", "percent");
+        coupon.put("discountValue", 10);
+        coupon.put("isUsed", false);
+        coupon.put("createdAt", com.google.firebase.Timestamp.now());
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.add(java.util.Calendar.DAY_OF_MONTH, 30);
+        coupon.put("expiryDate", new com.google.firebase.Timestamp(cal.getTime()));
+
+        FirebaseFirestore.getInstance().collection("users").document(uid)
+                .collection("coupons").document("welcome_" + uid).set(coupon);
+        
+        FirebaseFirestore.getInstance().collection("users").document(uid)
+                .update("stats.coupons", com.google.firebase.firestore.FieldValue.increment(1));
     }
 
     private void navigateToHome(String role) {
@@ -231,6 +258,7 @@ public class LoginActivity extends com.yn.homi.core.BaseActivity {
                                         String roleMessage = role.equals("ADMIN") ? "Login successful as Admin!" : "Login successful!";
                                         Toast.makeText(LoginActivity.this, roleMessage, Toast.LENGTH_SHORT).show();
 
+                                        syncManagers();
                                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                         intent.putExtra("USER_ROLE", role);
                                         startActivity(intent);
@@ -239,6 +267,7 @@ public class LoginActivity extends com.yn.homi.core.BaseActivity {
                                     .addOnFailureListener(e -> {
                                         // Mặc định là USER nếu không query được role
                                         Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
+                                        syncManagers();
                                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                         intent.putExtra("USER_ROLE", "USER");
                                         startActivity(intent);
@@ -250,6 +279,12 @@ public class LoginActivity extends com.yn.homi.core.BaseActivity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void syncManagers() {
+        com.yn.homi.ui.cart.CartManager.getInstance(this).syncFromFirestore();
+        new com.yn.homi.utils.FavoritesManager(this).syncFromFirestore();
+        com.yn.homi.ui.profile.order.OrderManager.getInstance(this).syncFromFirestore();
     }
 
     private void setLoading(boolean isLoading) {

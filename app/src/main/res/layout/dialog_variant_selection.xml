@@ -43,7 +43,7 @@
                 android:textColor="#EE4D2D"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                tools:text="118.600đ"/>
+                tools:text="$118.60"/>
 
             <TextView
                 android:id="@+id/tvStock"
@@ -52,7 +52,7 @@
                 android:textColor="#888888"
                 android:textSize="14sp"
                 android:layout_marginTop="4dp"
-                tools:text="Kho: 96"/>
+                tools:text="Stock: 96"/>
         </LinearLayout>
 
         <ImageButton
@@ -83,7 +83,26 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_color_variant_chip"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/size"
+        android:textColor="#333333"
+        android:textSize="16sp"
+        android:layout_marginTop="20dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSizes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_size_variant_chip"/>
+
     <RelativeLayout
+        android:id="@+id/layoutQuantitySelector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp">

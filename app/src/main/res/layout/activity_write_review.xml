@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/onboarding"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginBottom="20dp">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/back"
+                android:padding="8dp"
+                android:src="@drawable/ic_arrow_left"
+                app:tint="#685047" />
+
+            <TextView
+                android:id="@+id/tvReviewHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/playfair_display"
+                android:text="@string/label_write_review_header"
+                android:textAlignment="center"
+                android:textColor="#685047"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="40dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_login_container"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="16dp"
+                android:numStars="5"
+                android:stepSize="1.0"
+                android:progressTint="#685047"
+                android:secondaryProgressTint="#685047" />
+
+            <EditText
+                android:id="@+id/etReviewTitle"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_edittext_pill"
+                android:hint="@string/hint_review_title"
+                android:inputType="textCapSentences"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:textColor="#685047"
+                android:textColorHint="#685047"
+                android:textSize="14sp"
+                android:importantForAutofill="no" />
+
+            <EditText
+                android:id="@+id/etReviewBody"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_edittext_pill"
+                android:gravity="top"
+                android:hint="@string/hint_review_body"
+                android:minHeight="120dp"
+                android:padding="16dp"
+                android:textColor="#685047"
+                android:textColorHint="#685047"
+                android:textSize="14sp"
+                android:inputType="textMultiLine"
+                android:importantForAutofill="no" />
+
+            <LinearLayout
+                android:id="@+id/layoutSelectImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:background="@drawable/bg_edittext_pill"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/imgReview"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/icon_photo_camera"
+                    app:tint="#685047"
+                    android:layout_marginEnd="12dp"
+                    android:contentDescription="@string/select_image" />
+
+                <TextView
+                    android:id="@+id/tvAddPhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/select_image"
+                    android:textColor="#685047"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSubmitReview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_edittext_pill"
+                android:text="@string/btn_submit_review"
+                android:textAllCaps="false"
+                android:textColor="#685047"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

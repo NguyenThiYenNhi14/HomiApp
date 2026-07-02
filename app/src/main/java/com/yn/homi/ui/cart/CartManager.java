@@ -5,15 +5,19 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.yn.homi.data.model.CartItem;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Singleton quản lý danh sách CartItem trong SharedPreferences.
- * Dùng CartManager.getInstance(context) từ bất kỳ đâu để add/remove/update.
+ * Singleton quản lý danh sách CartItem trong SharedPreferences và Firestore.
  */
 public class CartManager {
 
@@ -24,6 +28,8 @@ public class CartManager {
     private final List<CartItem> items;
     private final SharedPreferences sharedPreferences;
     private final Gson gson;
+    private final FirebaseFirestore db;
+    private final FirebaseAuth auth;
 
     // Listener để CartActivity cập nhật UI khi cart thay đổi từ màn hình khác
     public interface CartChangeListener {
@@ -34,6 +40,8 @@ public class CartManager {
     private CartManager(Context context) {
         sharedPreferences = context.getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         gson = new Gson();
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
         items = loadCartItems();
     }
 
@@ -44,27 +52,81 @@ public class CartManager {
         return instance;
     }
 
-    public void setCartChangeListener(CartChangeListener l) { this.listener = l; }
+    public void setCartChangeListener(CartChangeListener listener) {
+        this.listener = listener;
+    }
+
+    private String getUserId() {
+        return auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : null;
+    }
+
+    private String getDocId(CartItem item) {
+        String color = item.getSelectedColor() != null ? item.getSelectedColor() : "none";
+        String size = item.getSelectedSize() != null ? item.getSelectedSize() : "none";
+        return item.getId() + "_" + color + "_" + size;
+    }
+
+    public void syncFromFirestore() {
+        String uid = getUserId();
+        if (uid == null) return;
+
+        // 1. Push local items to Firestore (Migration/Sync)
+        for (CartItem item : new ArrayList<>(items)) {
+            updateFirestore(item);
+        }
+
+        // 2. Pull all items from Firestore to get the full picture
+        db.collection("users").document(uid).collection("cart")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    items.clear();
+                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                        CartItem item = doc.toObject(CartItem.class);
+                        if (item != null) {
+                            items.add(item);
+                        }
+                    }
+                    saveCartItemsLocal();
+                    notifyChanged();
+                });
+    }
+
+    private void updateFirestore(CartItem item) {
+        String uid = getUserId();
+        if (uid == null) return;
+
+        // Không đồng bộ trạng thái isSelected theo yêu cầu
+        Map<String, Object> data = new HashMap<>();
+        data.put("id", item.getId());
+        data.put("name", item.getName());
+        data.put("price", item.getPrice());
+        data.put("quantity", item.getQuantity());
+        data.put("imageUrl", item.getImageUrl());
+        data.put("selectedColor", item.getSelectedColor());
+        data.put("selectedSize", item.getSelectedSize());
+
+        db.collection("users").document(uid).collection("cart")
+                .document(getDocId(item))
+                .set(data);
+    }
+
+    private void removeFromFirestore(String itemId, String color, String size) {
+        String uid = getUserId();
+        if (uid == null) return;
+
+        String colorId = color != null ? color : "none";
+        String sizeId = size != null ? size : "none";
+        String docId = itemId + "_" + colorId + "_" + sizeId;
+
+        db.collection("users").document(uid).collection("cart")
+                .document(docId)
+                .delete();
+    }
 
     /** Thêm sản phẩm. Nếu đã có cùng ID, cùng màu và cùng size thì tăng quantity. */
     public void addItem(CartItem newItem) {
-        addItemInternal(newItem);
-        saveCartItems();
-        notifyChanged();
-    }
-
-    public void addItems(List<CartItem> newItems) {
-        for (CartItem item : newItems) {
-            addItemInternal(item);
-        }
-        saveCartItems();
-        notifyChanged();
-    }
-
-    private void addItemInternal(CartItem newItem) {
-        boolean found = false;
+        CartItem targetItem = null;
         for (CartItem item : items) {
-            // Kiểm tra cả ID, Màu sắc và Kích thước
             boolean sameId = item.getId().equals(newItem.getId());
             boolean sameColor = (item.getSelectedColor() == null && newItem.getSelectedColor() == null) ||
                                (item.getSelectedColor() != null && item.getSelectedColor().equals(newItem.getSelectedColor()));
@@ -73,13 +135,17 @@ public class CartManager {
 
             if (sameId && sameColor && sameSize) {
                 item.setQuantity(item.getQuantity() + newItem.getQuantity());
-                found = true;
+                targetItem = item;
                 break;
             }
         }
-        if (!found) {
+        if (targetItem == null) {
             items.add(newItem);
+            targetItem = newItem;
         }
+        saveCartItemsLocal();
+        updateFirestore(targetItem);
+        notifyChanged();
     }
 
     /** Xoá một item cụ thể dựa trên ID, màu sắc và size. */
@@ -89,7 +155,8 @@ public class CartManager {
                  (item.getSelectedColor() != null && item.getSelectedColor().equals(color))) &&
                 ((item.getSelectedSize() == null && size == null) ||
                  (item.getSelectedSize() != null && item.getSelectedSize().equals(size))));
-        saveCartItems();
+        saveCartItemsLocal();
+        removeFromFirestore(itemId, color, size);
         notifyChanged();
     }
 
@@ -108,7 +175,8 @@ public class CartManager {
             
             if (sameId && sameColor && sameSize) {
                 item.setQuantity(newQty);
-                saveCartItems();
+                saveCartItemsLocal();
+                updateFirestore(item);
                 notifyChanged();
                 return;
             }
@@ -117,10 +185,10 @@ public class CartManager {
 
     /** Cập nhật thông tin variant (màu/size/image) cho một item. */
     public void updateItemVariant(CartItem oldItem, String newColor, String newSize, int newQty, String newImageUrl) {
-        // Tìm item cũ và xoá đi (vì khi đổi variant nó có thể gộp vào item khác đã có variant đó)
+        // Xoá item cũ khỏi Firestore và Local
         removeItem(oldItem.getId(), oldItem.getSelectedColor(), oldItem.getSelectedSize());
         
-        // Thêm item mới với variant và ảnh mới
+        // Thêm item mới (addItem sẽ lo việc update Firestore)
         CartItem updatedItem = new CartItem(oldItem.getId(), oldItem.getName(), oldItem.getPrice(), newQty, newImageUrl, newColor, newSize);
         addItem(updatedItem);
     }
@@ -155,7 +223,7 @@ public class CartManager {
         for (CartItem item : items) {
             item.setSelected(selected);
         }
-        saveCartItems();
+        saveCartItemsLocal();
         notifyChanged();
     }
 
@@ -169,10 +237,7 @@ public class CartManager {
 
             if (sameId && sameColor && sameSize) {
                 item.setSelected(isSelected);
-                saveCartItems();
-                // Chúng ta không nhất thiết phải notifyChanged ở đây nếu adapter đã tự update UI,
-                // nhưng gọi để đảm bảo các thành phần khác (nếu có) cũng đồng bộ.
-                // Tuy nhiên, CartActivity đang lắng nghe và sẽ update summary.
+                saveCartItemsLocal();
                 notifyChanged();
                 return;
             }
@@ -180,7 +245,6 @@ public class CartManager {
     }
 
     public double getShipping() {
-        // Shipping is FREE as requested
         return 0.0;
     }
 
@@ -189,12 +253,19 @@ public class CartManager {
     }
 
     public void clear() {
+        String uid = getUserId();
+        if (uid != null) {
+            for (CartItem item : items) {
+                db.collection("users").document(uid).collection("cart")
+                        .document(getDocId(item)).delete();
+            }
+        }
         items.clear();
-        saveCartItems();
+        saveCartItemsLocal();
         notifyChanged();
     }
 
-    private void saveCartItems() {
+    private void saveCartItemsLocal() {
         String json = gson.toJson(items);
         sharedPreferences.edit().putString(KEY_CART_ITEMS, json).apply();
     }

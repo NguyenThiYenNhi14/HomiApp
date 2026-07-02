@@ -54,6 +54,9 @@ dependencies {
     implementation(libs.mlkit.image.labeling)
     implementation(libs.palette)
 
+    //Cloudinary
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
     // Networking & Security
     implementation(libs.okhttp)
     implementation(libs.jbcrypt)

@@ -62,10 +62,17 @@ public class WishlistActivity extends AppCompatActivity {
 
         // Load data from FavoritesManager
         updateWishlistUI();
+        syncFromFirestore();
 
         setupSwipeToDelete();
         setupRecommendations();
         setupBottomNavigation();
+    }
+
+    private void syncFromFirestore() {
+        favoritesManager.syncFromFirestore();
+        // The sync is async, but we can set up a listener if FavoritesManager supported it.
+        // For now, we rely on onResume or manual refresh.
     }
 
     private void setupSwipeToDelete() {

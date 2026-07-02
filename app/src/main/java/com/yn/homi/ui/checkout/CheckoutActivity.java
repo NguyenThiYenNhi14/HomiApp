@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +14,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.bumptech.glide.Glide;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,14 +25,11 @@ import com.yn.homi.data.model.Product;
 import com.yn.homi.data.repository.ProductRepository;
 import com.yn.homi.ui.cart.CartManager;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Locale;
-import java.text.NumberFormat;
 
 import com.yn.homi.ui.profile.order.Order;
 import com.yn.homi.ui.profile.order.OrderItem;
@@ -41,19 +38,21 @@ import com.yn.homi.data.local.SharedPrefManager;
 import com.yn.homi.utils.FavoritesManager;
 import com.yn.homi.data.repository.FirestoreRepository;
 import com.google.firebase.auth.FirebaseAuth;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import com.google.firebase.firestore.FirebaseFirestore;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class CheckoutActivity extends AppCompatActivity {
     private List<CartItem> cartItems;
     private final double DELIVERY_FEE = 0.0; // FREE shipping
     private PaymentMethod selectedPayment = null;
+    private com.yn.homi.data.model.Coupon selectedCoupon = null;
     private boolean isFromWishlist = false;
     private String wishlistName = null;
 
-    private TextView tvItemCost, tvOrderTotal, tvPaymentMethod, tvDeliveryCost;
+    private TextView tvItemCost, tvOrderTotal, tvPaymentMethod, tvDeliveryCost, tvVoucher;
+    private View layoutDiscountRow;
     private RecyclerView rvCheckoutItems;
     private CartAdapter adapter;
     private FirestoreRepository firestoreRepository;
@@ -93,6 +92,8 @@ public class CheckoutActivity extends AppCompatActivity {
         tvOrderTotal = findViewById(R.id.tvOrderTotal);
         tvPaymentMethod = findViewById(R.id.tvPaymentMethod);
         tvDeliveryCost = findViewById(R.id.tvDeliveryCost);
+        tvVoucher = findViewById(R.id.tvVoucher);
+        layoutDiscountRow = findViewById(R.id.layoutDiscountRow);
         rvCheckoutItems = findViewById(R.id.rvCheckoutItems);
     }
 
@@ -144,9 +145,13 @@ public class CheckoutActivity extends AppCompatActivity {
 
     private void setupListeners() {
         findViewById(R.id.layoutPaymentMethod).setOnClickListener(v -> openPaymentSheet());
+        findViewById(R.id.layoutVoucher).setOnClickListener(v -> openVoucherSheet());
         findViewById(R.id.btnCheckout).setOnClickListener(v -> {
-            if (selectedPayment == null) openPaymentSheet();
-            else proceedToSuccess();
+            if (selectedPayment == null) {
+                openPaymentSheet();
+            } else {
+                proceedToSuccess();
+            }
         });
     }
 
@@ -185,10 +190,18 @@ public class CheckoutActivity extends AppCompatActivity {
             }
         }
         
-        double total = subtotal + DELIVERY_FEE;
-
+        double discount = selectedCoupon != null ? selectedCoupon.calculateDiscount(subtotal) : 0;
+        double total = subtotal + DELIVERY_FEE - discount;
         if (tvItemCost != null) tvItemCost.setText(getUSDString(subtotal));
         if (tvDeliveryCost != null) tvDeliveryCost.setText("FREE");
+        View layoutDiscountRowLocal = findViewById(R.id.layoutDiscountRow);
+        TextView tvDiscountAmount = findViewById(R.id.tvDiscountAmount);
+        if (selectedCoupon != null && discount > 0) {
+            if (layoutDiscountRowLocal != null) layoutDiscountRowLocal.setVisibility(View.VISIBLE);
+            if (tvDiscountAmount != null) tvDiscountAmount.setText("-" + getUSDString(discount));
+        } else if (layoutDiscountRowLocal != null) {
+            layoutDiscountRowLocal.setVisibility(View.GONE);
+        }
         if (tvOrderTotal != null) tvOrderTotal.setText(getUSDString(total));
         
         TextView tvItemLabel = findViewById(R.id.tvItemLabel);
@@ -218,6 +231,20 @@ public class CheckoutActivity extends AppCompatActivity {
         sheet.show(getSupportFragmentManager(), "PaymentSheet");
     }
 
+    private void openVoucherSheet() {
+        com.yn.homi.ui.checkout.VoucherBottomSheet sheet = new com.yn.homi.ui.checkout.VoucherBottomSheet();
+        sheet.setOnVoucherSelectedListener(coupon -> {
+            selectedCoupon = coupon;
+            TextView tvVoucherLocal = findViewById(R.id.tvVoucher);
+            if (tvVoucherLocal != null) {
+                tvVoucherLocal.setText(coupon.getCode());
+                tvVoucherLocal.setTextColor(androidx.core.content.ContextCompat.getColor(this, android.R.color.black));
+            }
+            updatePricingUI();
+        });
+        sheet.show(getSupportFragmentManager(), "VoucherSheet");
+    }
+
     private void proceedToSuccess() {
         // 1. Tạo đơn hàng mới từ danh sách items đang hiển thị
         if (cartItems == null || cartItems.isEmpty()) return;
@@ -230,18 +257,20 @@ public class CheckoutActivity extends AppCompatActivity {
                     ci.getId(),
                     ci.getName(),
                     ci.getPrice(),
-                    ci.getSelectedColor() != null ? ci.getSelectedColor() : "Standard",
+                    ci.getSelectedColor() != null ? ci.getSelectedColor() : getString(R.string.color_standard),
+                    ci.getSelectedSize() != null ? ci.getSelectedSize() : "Default",
                     ci.getQuantity(),
                     ci.getImageUrl(),
-                    "Packing"
+                    getString(R.string.status_packing)
             ));
         }
 
+        double discount = selectedCoupon != null ? selectedCoupon.calculateDiscount(subtotal) : 0;
         String orderId = String.valueOf(100000 + new Random().nextInt(900000));
         String date = new SimpleDateFormat("MMM dd, yyyy", Locale.US).format(new Date());
         
         TextView tvAddress = findViewById(R.id.tvAddress);
-        String address = tvAddress != null ? tvAddress.getText().toString() : "No address provided";
+        String address = tvAddress != null ? tvAddress.getText().toString() : getString(R.string.no_address_provided);
 
         Order newOrder = new Order(
                 orderId,
@@ -251,11 +280,34 @@ public class CheckoutActivity extends AppCompatActivity {
                 DELIVERY_FEE,
                 date,
                 address,
-                ""
+                "TRK" + orderId,
+                selectedPayment != null ? selectedPayment.getName() : "Cash on hand",
+                selectedCoupon != null ? selectedCoupon.getCode() : null,
+                discount
         );
 
         // 2. Lưu vào OrderManager
         OrderManager.getInstance(this).addOrder(newOrder);
+
+        if (selectedCoupon != null && mAuth.getCurrentUser() != null) {
+            com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                    .collection("users").document(mAuth.getCurrentUser().getUid())
+                    .collection("coupons").document(selectedCoupon.getId())
+                    .update("isUsed", true);
+        }
+
+        if (mAuth.getCurrentUser() != null) {
+            String uid = mAuth.getCurrentUser().getUid();
+            com.google.firebase.firestore.FirebaseFirestore db = com.google.firebase.firestore.FirebaseFirestore.getInstance();
+            
+            db.collection("users").document(uid)
+                    .update("stats.points", com.google.firebase.firestore.FieldValue.increment(1000))
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(this, getString(R.string.msg_earn_points, 1000), Toast.LENGTH_SHORT).show();
+                    });
+            
+            checkLoyaltyCoupon(uid);
+        }
 
         // 3. Xoá các items đã mua khỏi giỏ hàng hoặc wishlist
         if (isFromWishlist && wishlistName != null) {
@@ -263,22 +315,45 @@ public class CheckoutActivity extends AppCompatActivity {
             for (CartItem ci : cartItems) {
                 favoritesManager.removeProductFromWishlist(wishlistName, ci.getId());
             }
-        } else if (getIntent().hasExtra("SELECTED_CART_ITEMS") || getIntent().hasExtra("SELECTED_PRODUCTS")) {
-            // Mua trực tiếp: Xóa các sản phẩm này khỏi giỏ hàng nếu chúng đang tồn tại trong đó
-            CartManager cartManager = CartManager.getInstance(this);
-            for (CartItem ci : cartItems) {
-                cartManager.removeItem(ci.getId(), ci.getSelectedColor(), ci.getSelectedSize());
-            }
-        } else {
-            // Thanh toán từ giỏ hàng (CartActivity) - Chỉ xóa các items đã chọn
-            CartManager cartManager = CartManager.getInstance(this);
-            for (CartItem ci : cartItems) {
-                cartManager.removeItem(ci.getId(), ci.getSelectedColor(), ci.getSelectedSize());
-            }
+        }
+        
+        // Luôn kiểm tra và xóa khỏi giỏ hàng nếu item đó tồn tại (kể cả mua từ Checkout hay Wishlist)
+        CartManager cartManager = CartManager.getInstance(this);
+        for (CartItem ci : cartItems) {
+            cartManager.removeItem(ci.getId(), ci.getSelectedColor(), ci.getSelectedSize());
         }
 
         // 4. Chuyển sang màn hình thành công
         startActivity(new Intent(this, OrderSuccessActivity.class));
         finish();
+    }
+
+    private void checkLoyaltyCoupon(String uid) {
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.add(java.util.Calendar.DAY_OF_MONTH, -30);
+        com.google.firebase.Timestamp thirtyDaysAgo = new com.google.firebase.Timestamp(cal.getTime());
+
+        FirebaseFirestore.getInstance()
+                .collection("users").document(uid).collection("orders")
+                .whereGreaterThanOrEqualTo("createdAt", thirtyDaysAgo)
+                .get()
+                .addOnSuccessListener(snapshot -> {
+                    if (snapshot.size() >= 5) {
+                        Map<String, Object> coupon = new HashMap<>();
+                        coupon.put("type", "loyalty");
+                        coupon.put("code", "LOYAL" + System.currentTimeMillis());
+                        coupon.put("discountType", "percent");
+                        coupon.put("discountValue", 15);
+                        coupon.put("isUsed", false);
+                        coupon.put("createdAt", com.google.firebase.Timestamp.now());
+
+                        FirebaseFirestore.getInstance()
+                                .collection("users").document(uid).collection("coupons")
+                                .add(coupon);
+
+                        FirebaseFirestore.getInstance().collection("users").document(uid)
+                                .update("stats.coupons", com.google.firebase.firestore.FieldValue.increment(1));
+                    }
+                });
     }
 }

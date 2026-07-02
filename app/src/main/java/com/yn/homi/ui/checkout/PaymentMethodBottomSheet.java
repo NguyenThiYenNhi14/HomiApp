@@ -67,19 +67,13 @@ public class PaymentMethodBottomSheet extends BottomSheetDialogFragment {
         methods.add(new PaymentMethod(
                 R.drawable.ic_momo,
                 "Momo",
-                "Ví điện tử Momo",
+                "Thanh toán qua ví Momo khi nhận hàng",
                 preSelectedName.equals("Momo")));
-
-        methods.add(new PaymentMethod(
-                R.drawable.ic_apple_pay,
-                "Apple Pay",
-                "Thanh toán qua Apple",
-                preSelectedName.equals("Apple Pay")));
 
         methods.add(new PaymentMethod(
                 R.drawable.ic_zalopay,
                 "ZaloPay",
-                "Ví điện tử ZaloPay",
+                "Thanh toán qua ví ZaloPay khi nhận hàng",
                 preSelectedName.equals("ZaloPay")));
 
         // Tìm phương thức đang được tick để gán vào selectedMethod ban đầu

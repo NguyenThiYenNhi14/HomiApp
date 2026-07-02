@@ -10,6 +10,7 @@
         android:required="false" />
 
     <application
+        android:name=".HomiApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -19,114 +20,79 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Homi"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".ui.home.RoomDetailActivity"
-            android:exported="false" />
+
         <activity
             android:name=".ui.home.WelcomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.home.SplashActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.home.HomeActivity"
             android:exported="false" />
-        <activity
-            android:name=".core.MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".OnboardingActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.shop.ShopActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.shop.ProductListActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.shop.ProductDetailActivity"
-            android:exported="false" /> <!-- Cart & Checkout -->
-        <activity
-            android:name=".ui.cart.CartActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.checkout.CheckoutActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.checkout.OrderSuccessActivity"
-            android:exported="false" /> <!-- Authentication -->
-        <activity
-            android:name=".ui.auth.LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.auth.RegistrationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.auth.VerificationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.auth.ForgotPasswordActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.auth.ResetPasswordActivity"
-            android:exported="false" /> <!-- Settings & Profile -->
-        <activity
-            android:name=".ui.profile.SettingActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.profile.profile.YourProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.profile.profile.EditProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.profile.profile.PasswordSecurityActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.profile.wishlist.WishlistActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.profile.wishlist.WishlistDetailActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.profile.address.SavedAddressesActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.profile.address.AddAddressActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.profile.order.MyOrdersActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.profile.order.OrderDetailActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.profile.order.TrackPackageActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.profile.preferences.LanguageActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.profile.preferences.notification.NotificationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.profile.about.AboutActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.profile.about.HelpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.profile.about.PrivacyPolicyActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.profile.about.TermsConditionsActivity"
-            android:exported="false" />
+
+        <activity android:name=".core.MainActivity" android:exported="false" />
+        <activity android:name=".ui.shop.ShopActivity" android:exported="false" />
+        <activity android:name=".ui.shop.ProductListActivity" android:exported="false" />
+        <activity android:name=".ui.shop.ProductDetailActivity" android:exported="false" />
+
+        <!-- Cart & Checkout -->
+        <activity android:name=".ui.cart.CartActivity" android:exported="false" />
+        <activity android:name=".ui.checkout.CheckoutActivity" android:exported="false" />
+        <activity android:name=".ui.checkout.OrderSuccessActivity" android:exported="false" />
+
+        <!-- Authentication -->
+        <activity android:name=".ui.auth.LoginActivity" android:exported="false" />
+        <activity android:name=".ui.auth.RegistrationActivity" android:exported="false" />
+        <activity android:name=".ui.auth.VerificationActivity" android:exported="true">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="homi-47e58.firebaseapp.com" />
+                <data
+                    android:scheme="https"
+                    android:host="homi-47e58.web.app" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.auth.ForgotPasswordActivity" android:exported="false" />
+        <activity android:name=".ui.auth.ResetPasswordActivity" android:exported="false" />
+
+        <!-- Settings & Profile -->
+        <activity android:name=".ui.profile.SettingActivity" android:exported="false" />
+        <activity android:name=".ui.profile.profile.YourProfileActivity" android:exported="false" />
+        <activity android:name=".ui.profile.profile.EditProfileActivity" android:exported="false" />
+        <activity android:name=".ui.profile.profile.PasswordSecurityActivity" android:exported="false" />
+
+        <activity android:name=".ui.profile.wishlist.WishlistActivity" android:exported="false" />
+        <activity android:name=".ui.profile.wishlist.WishlistDetailActivity" android:exported="false" />
+
+        <activity android:name=".ui.profile.address.SavedAddressesActivity" android:exported="false" />
+        <activity android:name=".ui.profile.address.AddAddressActivity" android:exported="false" />
+
+        <activity android:name=".ui.profile.order.MyOrdersActivity" android:exported="false" />
+        <activity android:name=".ui.profile.order.OrderDetailActivity" android:exported="false" />
+        <activity android:name=".ui.profile.order.TrackPackageActivity" android:exported="false" />
+        <activity android:name=".ui.profile.order.WriteReviewActivity" android:exported="false" />
+
+        <activity android:name=".ui.profile.coupon.MyCouponsActivity" android:exported="false" />
+
+        <activity android:name=".ui.profile.preferences.LanguageActivity" android:exported="false" />
+        <activity android:name=".ui.profile.preferences.notification.NotificationActivity" android:exported="false" />
+
+        <activity android:name=".ui.profile.about.AboutActivity" android:exported="false" />
+        <activity android:name=".ui.profile.about.HelpActivity" android:exported="false" />
+        <activity android:name=".ui.profile.about.PrivacyPolicyActivity" android:exported="false" />
+        <activity android:name=".ui.profile.about.TermsConditionsActivity" android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -12,7 +12,20 @@
           "package_name": "com.yn.homi"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1043972421209-jcrg77c8skma2rg6kt276c0mejne28s0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yn.homi",
+            "certificate_hash": "754e5718d030456703e44d71d39851a5bf553aed"
+          }
+        },
+        {
+          "client_id": "1043972421209-ii5jeq8dpsslmeq538fc3knhp1hqo7t6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBEvfkWUxZT69oRGqINTilgDDsRk9a3XWo"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1043972421209-ii5jeq8dpsslmeq538fc3knhp1hqo7t6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

@@ -174,12 +174,19 @@ public class HomeActivity extends com.yn.homi.core.BaseActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         Log.d("HomeActivity", "signInAnonymously:success");
+                        syncManagers();
                     } else {
                         Log.w("HomeActivity", "signInAnonymously:failure", task.getException());
                     }
                     // Load data anyway, rules might be public or auth might have failed but we try
                     refreshData();
                 });
+    }
+
+    private void syncManagers() {
+        com.yn.homi.ui.cart.CartManager.getInstance(this).syncFromFirestore();
+        new com.yn.homi.utils.FavoritesManager(this).syncFromFirestore();
+        com.yn.homi.ui.profile.order.OrderManager.getInstance(this).syncFromFirestore();
     }
 
     private void refreshData() {

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yn.homi.R;
 import com.google.android.material.button.MaterialButton;
-import com.yn.homi.ui.profile.MockDataProvider;
+import com.yn.homi.ui.profile.order.OrderManager;
 
 import java.util.Locale;
 
@@ -35,7 +35,7 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     private Order findOrderById(String orderId) {
         if (orderId == null) return null;
-        for (Order o : MockDataProvider.getAllOrders(this)) {
+        for (Order o : OrderManager.getInstance(this).getOrders()) {
             if (o.getOrderId().equals(orderId)) return o;
         }
         return null;
@@ -44,22 +44,24 @@ public class OrderDetailActivity extends AppCompatActivity {
     private void bindOrderData(Order order) {
         // Toolbar title
         TextView tvTitle = findViewById(R.id.tvToolbarTitle);
-        tvTitle.setText("Order #" + order.getOrderId());
+        tvTitle.setText(getString(R.string.label_order_number, order.getOrderId()));
 
         // Status card
         TextView tvOrderId = findViewById(R.id.tvOrderIdDetail);
-        tvOrderId.setText("Order #" + order.getOrderId());
+        tvOrderId.setText(getString(R.string.label_order_number, order.getOrderId()));
 
         TextView tvStatus = findViewById(R.id.tvStatusDetail);
         tvStatus.setText(formatStatus(order.getStatus()));
 
         TextView tvDate = findViewById(R.id.tvOrderDateDetail);
-        tvDate.setText("Placed on " + order.getPlacedAt());
+        tvDate.setText(getString(R.string.label_placed_on, order.getPlacedAt()));
 
         // Items RecyclerView
         RecyclerView rvItems = findViewById(R.id.rvDetailItems);
         rvItems.setLayoutManager(new LinearLayoutManager(this));
-        rvItems.setAdapter(new OrderItemAdapter(this, order.getItems()));
+        OrderItemAdapter adapter = new OrderItemAdapter(this, order.getItems());
+        adapter.setOrderInfo(order.getOrderId(), order.getStatus());
+        rvItems.setAdapter(adapter);
         rvItems.setNestedScrollingEnabled(false);
 
         // Shipping address
@@ -71,11 +73,17 @@ public class OrderDetailActivity extends AppCompatActivity {
         tvSubtotal.setText(String.format(Locale.US, "$%.2f", order.getSubtotal()));
 
         TextView tvShipping = findViewById(R.id.tvShippingFee);
-        tvShipping.setText(order.getShippingFee() == 0 ? "Free" :
+        tvShipping.setText(order.getShippingFee() == 0 ? getString(R.string.free) :
                 String.format(Locale.US, "$%.2f", order.getShippingFee()));
 
         TextView tvTotal = findViewById(R.id.tvTotalDetail);
         tvTotal.setText(String.format(Locale.US, "$%.2f", order.getTotal()));
+
+        // Payment method
+        TextView tvPaymentMethodDetail = findViewById(R.id.tvPaymentMethodDetail);
+        if (tvPaymentMethodDetail != null && order.getPaymentMethod() != null) {
+            tvPaymentMethodDetail.setText(order.getPaymentMethod());
+        }
 
         // Tracking card — show for SHIPPED or PARTIALLY_SHIPPED
         View cardTracking = findViewById(R.id.cardTracking);
@@ -97,7 +105,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         switch (order.getStatus()) {
             case PARTIALLY_SHIPPED:
             case SHIPPED:
-                btn.setText("Track Package");
+                btn.setText(R.string.btn_track_package);
                 btn.setOnClickListener(v -> {
                     Intent intent = new Intent(this, TrackPackageActivity.class);
                     intent.putExtra("ORDER_ID", order.getOrderId());
@@ -106,12 +114,12 @@ public class OrderDetailActivity extends AppCompatActivity {
                 break;
             case PENDING:
             case PROCESSING:
-                btn.setText("Messages");
+                btn.setText(R.string.btn_messages);
                 btn.setOnClickListener(v -> { /* open chat */ });
                 break;
             case RETURNED:
             case CANCELLED:
-                btn.setText("Contact Support");
+                btn.setText(R.string.btn_contact_support);
                 btn.setOnClickListener(v -> { /* open support */ });
                 break;
             default:
@@ -122,12 +130,12 @@ public class OrderDetailActivity extends AppCompatActivity {
 
     private String formatStatus(Order.Status status) {
         switch (status) {
-            case PENDING: return "Pending";
-            case PROCESSING: return "Processing";
-            case PARTIALLY_SHIPPED: return "Partially Shipped";
-            case SHIPPED: return "Shipped";
-            case RETURNED: return "Returned";
-            case CANCELLED: return "Cancelled";
+            case PENDING: return getString(R.string.status_pending);
+            case PROCESSING: return getString(R.string.status_processing);
+            case PARTIALLY_SHIPPED: return getString(R.string.status_partially_shipped);
+            case SHIPPED: return getString(R.string.status_shipped);
+            case RETURNED: return getString(R.string.status_returned);
+            case CANCELLED: return getString(R.string.status_cancelled);
             default: return status.name();
         }
     }

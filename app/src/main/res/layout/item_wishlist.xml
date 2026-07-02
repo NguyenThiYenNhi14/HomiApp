@@ -84,10 +84,16 @@
                 android:id="@+id/tvColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Beige"
-                android:textColor="#888888"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/bg_variant_selector"
+                app:drawableEndCompat="@drawable/ic_arrow_down"
+                android:drawablePadding="6dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:textColor="#333333"
                 android:textSize="13sp"
-                android:layout_marginTop="2dp"/>
+                tools:text="Color" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -122,7 +128,7 @@
                         android:minWidth="0dp"
                         android:minHeight="0dp"
                         android:paddingHorizontal="8dp"
-                        android:text="Buy Now"
+                        android:text="@string/btn_buy_now"
                         android:textAllCaps="false"
                         android:textSize="10sp"
                         android:textColor="#685047"
@@ -139,7 +145,7 @@
                         android:minWidth="0dp"
                         android:minHeight="0dp"
                         android:paddingHorizontal="8dp"
-                        android:text="Add to Cart"
+                        android:text="@string/btn_add_to_cart"
                         android:textAllCaps="false"
                         android:textSize="10sp"
                         android:textColor="#FFFFFF"

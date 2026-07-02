@@ -106,59 +106,13 @@
                 tools:ignore="Autofill" />
 
             <EditText
-                android:id="@+id/edtEmail"
+                android:id="@+id/edtContact"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_edittext_pill"
-                android:hint="@string/str_email_address_label"
-                android:inputType="textEmailAddress"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:textColor="#685047"
-                android:textColorHint="#685047"
-                android:textSize="14sp"
-                tools:ignore="Autofill" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_edittext_pill"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="18dp"
-                    android:contentDescription="@null"
-                    android:src="@drawable/vietnam_flag" />
-
-                <EditText
-                    android:id="@+id/edtPhone"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:hint="@string/str_phone_number_label"
-                    android:inputType="phone"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:textColor="#685047"
-                    android:textColorHint="#685047"
-                    android:textSize="14sp"
-                    tools:ignore="Autofill" />
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/edtAddress"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/bg_edittext_pill"
-                android:hint="@string/str_address_label"
-                android:inputType="textPostalAddress"
+                android:hint="Email or Phone Number"
+                android:inputType="text"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
                 android:textColor="#685047"
@@ -201,6 +155,21 @@
                     android:contentDescription="@null"
                     app:tint="#685047" />
             </RelativeLayout>
+
+            <EditText
+                android:id="@+id/edtAddress"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_edittext_pill"
+                android:hint="@string/str_address_label"
+                android:inputType="textPostalAddress"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:textColor="#685047"
+                android:textColorHint="#685047"
+                android:textSize="14sp"
+                tools:ignore="Autofill" />
 
             <FrameLayout
                 android:layout_width="match_parent"

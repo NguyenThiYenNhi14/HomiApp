@@ -77,7 +77,7 @@ public class SettingActivity extends AppCompatActivity {
 
                                         @Override
                                         public void onError(Exception e) {
-                                            Toast.makeText(SettingActivity.this, "Failed to sync with cloud", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(SettingActivity.this, getString(R.string.msg_sync_cloud_failed), Toast.LENGTH_SHORT).show();
                                             updateProfileUI();
                                         }
                                     });
@@ -134,7 +134,7 @@ public class SettingActivity extends AppCompatActivity {
                     } else {
                         // Nếu chưa có trên Firestore, lấy từ Auth
                         currentProfile.fullName = (user.getDisplayName() != null && !user.getDisplayName().isEmpty()) 
-                                ? user.getDisplayName() : "New User";
+                                ? user.getDisplayName() : getString(R.string.label_new_user);
                         currentProfile.email = user.getEmail();
                         currentProfile.avatarUri = "";
                     }
@@ -145,7 +145,7 @@ public class SettingActivity extends AppCompatActivity {
                 public void onError(Exception e) {
                     // Fallback nếu lỗi kết nối
                     currentProfile.fullName = (user.getDisplayName() != null && !user.getDisplayName().isEmpty()) 
-                            ? user.getDisplayName() : "User";
+                            ? user.getDisplayName() : getString(R.string.label_user);
                     currentProfile.email = user.getEmail();
                     updateProfileUI();
                 }
@@ -262,7 +262,7 @@ public class SettingActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(v -> {
             dialog.dismiss();
             mAuth.signOut();
-            Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.msg_logged_out), Toast.LENGTH_SHORT).show();
             
             Intent i = new Intent(this, LoginActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

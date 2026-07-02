@@ -14,7 +14,15 @@ import com.yn.homi.R;
 
 public class MyOrdersActivity extends AppCompatActivity {
 
-    private static final String[] TAB_TITLES = {"All Orders", "Pending", "Processing", "Partially Shipped", "Shipped", "Completed", "Return"};
+    private int[] TAB_TITLES_RES = {
+            R.string.tab_all_orders,
+            R.string.tab_pending,
+            R.string.tab_processing,
+            R.string.tab_partially_shipped,
+            R.string.tab_shipped,
+            R.string.tab_completed,
+            R.string.tab_return
+    };
     private static final String[] TAB_STATUS = {"ALL", "PENDING", "PROCESSING", "PARTIALLY_SHIPPED", "SHIPPED", "COMPLETED", "RETURNED"};
 
     @Override
@@ -32,12 +40,12 @@ public class MyOrdersActivity extends AppCompatActivity {
         viewPager.setAdapter(new OrderPagerAdapter(this));
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) ->
-                tab.setText(TAB_TITLES[position])
+                tab.setText(TAB_TITLES_RES[position])
         ).attach();
 
         // Handle target tab from Intent
         int targetTab = getIntent().getIntExtra("TARGET_TAB", 0);
-        if (targetTab >= 0 && targetTab < TAB_TITLES.length) {
+        if (targetTab >= 0 && targetTab < TAB_TITLES_RES.length) {
             viewPager.setCurrentItem(targetTab, false);
         }
     }
@@ -52,6 +60,6 @@ public class MyOrdersActivity extends AppCompatActivity {
         }
 
         @Override
-        public int getItemCount() { return TAB_TITLES.length; }
+        public int getItemCount() { return TAB_TITLES_RES.length; }
     }
 }

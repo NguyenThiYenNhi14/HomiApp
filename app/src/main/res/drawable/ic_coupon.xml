@@ -1,0 +1,25 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <!-- Nền vé -->
+    <path
+        android:strokeColor="#CCCCCC"
+        android:strokeWidth="1.2"
+        android:pathData="M20,35 L80,35 C80,35 80,42 75,45 C70,48 70,52 75,55 C80,58 80,65 80,65 L20,65 C20,65 20,58 25,55 C30,52 30,48 25,45 C20,42 20,35 20,35 Z" />
+    <!-- Hình tròn % -->
+    <path
+        android:strokeColor="#CCCCCC"
+        android:strokeWidth="1.2"
+        android:pathData="M65,50 m-7,0 a7,7 0 1,1 14,0 a7,7 0 1,1 -14,0" />
+    <!-- Ký hiệu % nhỏ -->
+    <path
+        android:fillColor="#CCCCCC"
+        android:pathData="M63,48 L67,52 M63,52 L63.5,51.5 M66.5,48.5 L67,48" />
+    <!-- Các đường gạch ngang -->
+    <path
+        android:strokeColor="#CCCCCC"
+        android:strokeWidth="0.8"
+        android:pathData="M35,45 L55,45 M35,50 L50,50 M35,55 L55,55" />
+</vector>

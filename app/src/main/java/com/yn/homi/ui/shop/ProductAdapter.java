@@ -20,8 +20,11 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import android.util.Log;
+import com.yn.homi.ui.cart.CartManager;
+import com.yn.homi.data.model.CartItem;
 import com.yn.homi.data.model.Product;
 import com.yn.homi.R;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Locale;
@@ -54,7 +57,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, parent, false);
         if (useHorizontalStyle) {
-            view.getLayoutParams().width = (int) (parent.getResources().getDisplayMetrics().widthPixels * 0.6);
+            ViewGroup.LayoutParams lp = view.getLayoutParams();
+            lp.width = (int) (parent.getResources().getDisplayMetrics().widthPixels * 0.45);
+            view.setLayoutParams(lp);
         }
         return new ProductViewHolder(view);
     }
@@ -97,7 +102,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         }
 
         // 3. Hiển thị rating kèm reviewCount: "★ 4.8  (215)"
-        holder.tvRating.setText(String.format("★ %.1f  (%d)", product.getRating(), product.getReviewCount()));
+        holder.tvRating.setText(String.format(Locale.US, "★ %.1f  (%d)", product.getRating(), product.getReviewCount()));
 
         // 1. Dùng ảnh chất lượng cao nếu có
         String imageUrl = product.getThumbnailUrl();
@@ -141,7 +146,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         if (holder.ivAddToCart != null) {
             holder.ivAddToCart.setOnClickListener(v -> {
-                // TODO: Implement add to cart logic
+                CartManager.getInstance(holder.itemView.getContext()).addItem(
+                        new CartItem(product.getId(), product.getName(), product.getPrice(), 1, product.getThumbnailUrl(), null, null)
+                );
+                Toast.makeText(holder.itemView.getContext(), R.string.add_to_cart_success, Toast.LENGTH_SHORT).show();
             });
         }
     }

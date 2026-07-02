@@ -287,6 +287,7 @@ public class CartActivity extends AppCompatActivity
                 TextView tvStock = dialogView.findViewById(R.id.tvStock);
                 TextView tvQuantity = dialogView.findViewById(R.id.tvQuantity);
                 RecyclerView rvColors = dialogView.findViewById(R.id.rvColors);
+                RecyclerView rvSizes = dialogView.findViewById(R.id.rvSizes);
                 
                 com.bumptech.glide.Glide.with(CartActivity.this).load(cartItem.getImageUrl()).into(imgProduct);
                 tvPrice.setText(getUSDString(cartItem.getPrice()));
@@ -312,7 +313,7 @@ public class CartActivity extends AppCompatActivity
                 final String[] selectedImageUrl = {cartItem.getImageUrl()};
 
                 // Setup Colors
-                if (product.getColorVariants() != null) {
+                if (product.getColorVariants() != null && rvColors != null) {
                     rvColors.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(CartActivity.this, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false));
                     VariantColorAdapter colorAdapter = new VariantColorAdapter(product.getColorVariants(), selectedColor[0], variant -> {
                         selectedColor[0] = variant.getName();
@@ -322,6 +323,15 @@ public class CartActivity extends AppCompatActivity
                         }
                     });
                     rvColors.setAdapter(colorAdapter);
+                }
+
+                // Setup Sizes
+                if (product.getSizeVariants() != null && rvSizes != null) {
+                    rvSizes.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(CartActivity.this, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false));
+                    VariantSizeAdapter sizeAdapter = new VariantSizeAdapter(product.getSizeVariants(), selectedSize[0], variant -> {
+                        selectedSize[0] = variant.getLabel();
+                    });
+                    rvSizes.setAdapter(sizeAdapter);
                 }
 
                 dialogView.findViewById(R.id.btnConfirm).setOnClickListener(v -> {
@@ -434,6 +444,7 @@ public class CartActivity extends AppCompatActivity
             ViewHolder(View v) { super(v); tvLabel = v.findViewById(R.id.tvSizeLabel); card = (com.google.android.material.card.MaterialCardView) v.findViewById(R.id.cardContainer); }
         }
     }
+
 
     @Override
     public void onCartChanged() {

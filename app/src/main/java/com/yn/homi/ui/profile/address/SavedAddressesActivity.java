@@ -62,7 +62,7 @@ public class SavedAddressesActivity extends AppCompatActivity {
         if (userId != null) {
             loadAddressesFromFirestore();
         } else {
-            Toast.makeText(this, "Please login to manage addresses", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.msg_please_login_address, Toast.LENGTH_SHORT).show();
             finish();
         }
 
@@ -87,7 +87,7 @@ public class SavedAddressesActivity extends AppCompatActivity {
                     renderAddressList();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Failed to load addresses: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.msg_failed_load_addresses, e.getMessage()), Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -123,11 +123,11 @@ public class SavedAddressesActivity extends AppCompatActivity {
 
     private void showOptionsMenu(View anchor, Address address) {
         PopupMenu popup = new PopupMenu(this, anchor);
-        popup.getMenu().add(0, 1, 0, "Edit");
+        popup.getMenu().add(0, 1, 0, R.string.btn_edit);
         if (!address.isDefault()) {
-            popup.getMenu().add(0, 2, 1, "Set as Default");
+            popup.getMenu().add(0, 2, 1, R.string.btn_set_as_default);
         }
-        popup.getMenu().add(0, 3, 2, "Delete");
+        popup.getMenu().add(0, 3, 2, R.string.delete);
 
         popup.setOnMenuItemClickListener(item -> {
             int id = item.getItemId();
@@ -164,9 +164,9 @@ public class SavedAddressesActivity extends AppCompatActivity {
         
         batch.commit().addOnSuccessListener(aVoid -> {
             loadAddressesFromFirestore();
-            Toast.makeText(this, "Default address updated", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.msg_default_address_updated, Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
-            Toast.makeText(this, "Update failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.msg_update_failed, e.getMessage()), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -175,16 +175,16 @@ public class SavedAddressesActivity extends AppCompatActivity {
                 .delete()
                 .addOnSuccessListener(aVoid -> {
                     loadAddressesFromFirestore();
-                    Toast.makeText(this, "Address deleted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.msg_address_deleted, Toast.LENGTH_SHORT).show();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Delete failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.msg_delete_failed, e.getMessage()), Toast.LENGTH_SHORT).show();
                 });
     }
 
     private void showEmptyState() {
         TextView empty = new TextView(this);
-        empty.setText("No saved addresses yet.\nTap below to add one.");
+        empty.setText(R.string.msg_no_saved_addresses);
         empty.setTextColor(0xFF888888);
         empty.setTextSize(14);
         empty.setGravity(android.view.Gravity.CENTER);

@@ -13,13 +13,17 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.yn.homi.R;
 
+import java.io.Serializable;
+
 public class AddAddressActivity extends AppCompatActivity {
 
-    private String selectedLabel = "Home";
+    private String selectedLabel = "Home"; // Internally keep keys consistent or use string resources
 
     private TextView labelHome, labelWork, labelOther;
     private EditText etFullName, etPhone, etStreet, etWard, etDistrict, etCity;
     private SwitchCompat switchDefault;
+    private Address editingAddress;
+    private boolean isEditMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +54,22 @@ public class AddAddressActivity extends AppCompatActivity {
         switchDefault = findViewById(R.id.switch_default);
 
         // ── Kiểm tra mode: Edit hay Add ──
-        int editId = getIntent().getIntExtra(SavedAddressesActivity.EXTRA_ADDRESS_ID, -1);
-        if (editId != -1) {
+        editingAddress = (Address) getIntent().getSerializableExtra("address_data");
+        isEditMode = editingAddress != null;
+
+        if (isEditMode) {
             TextView toolbarTitle = findViewById(R.id.toolbar_title);
-            toolbarTitle.setText("Edit Address");
+            toolbarTitle.setText(R.string.title_edit_address);
+
+            // Điền sẵn dữ liệu
+            etFullName.setText(editingAddress.getRecipientName());
+            etPhone.setText(editingAddress.getPhone());
+            etStreet.setText(editingAddress.getStreet());
+            etWard.setText(editingAddress.getWard());
+            etDistrict.setText(editingAddress.getDistrict());
+            etCity.setText(editingAddress.getCity());
+            switchDefault.setChecked(editingAddress.isDefault());
+            selectLabel(editingAddress.getLabel());
         }
 
         // ── Label selector ──
@@ -93,36 +109,79 @@ public class AddAddressActivity extends AppCompatActivity {
         String city     = etCity.getText().toString().trim();
 
         if (name.isEmpty()) {
-            etFullName.setError("Please enter full name");
+            etFullName.setError(getString(R.string.err_enter_full_name));
             etFullName.requestFocus();
             return;
         }
         if (phone.isEmpty()) {
-            etPhone.setError("Please enter phone number");
+            etPhone.setError(getString(R.string.err_enter_phone));
             etPhone.requestFocus();
             return;
         }
         if (street.isEmpty()) {
-            etStreet.setError("Please enter street address");
+            etStreet.setError(getString(R.string.err_enter_street));
             etStreet.requestFocus();
             return;
         }
         if (district.isEmpty()) {
-            etDistrict.setError("Please enter district");
+            etDistrict.setError(getString(R.string.err_enter_district));
             etDistrict.requestFocus();
             return;
         }
         if (city.isEmpty()) {
-            etCity.setError("Please enter city");
+            etCity.setError(getString(R.string.err_enter_city));
             etCity.requestFocus();
             return;
         }
 
-        // TODO: lưu vào database / SharedPrefs thực tế ở đây
+        String uid = com.google.firebase.auth.FirebaseAuth.getInstance().getUid();
+        if (uid == null) {
+            Toast.makeText(this, "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        Toast.makeText(this, "Address saved!", Toast.LENGTH_SHORT).show();
-        setResult(RESULT_OK);
-        finish();
+        com.google.firebase.firestore.FirebaseFirestore db = com.google.firebase.firestore.FirebaseFirestore.getInstance();
+        com.google.firebase.firestore.CollectionReference addressesRef =
+                db.collection("users").document(uid).collection("addresses");
+
+        boolean setAsDefault = switchDefault.isChecked();
+
+        Runnable saveAction = () -> {
+            Address address = new Address(
+                    null, selectedLabel, name, phone, street, ward, district, city, setAsDefault
+            );
+
+            com.google.firebase.firestore.DocumentReference docRef;
+            if (isEditMode && editingAddress.getId() != null) {
+                docRef = addressesRef.document(editingAddress.getId());
+            } else {
+                docRef = addressesRef.document(); // tạo ID mới tự động
+            }
+
+            docRef.set(address)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(this, R.string.msg_address_saved, Toast.LENGTH_SHORT).show();
+                        setResult(RESULT_OK);
+                        finish();
+                    })
+                    .addOnFailureListener(e ->
+                            Toast.makeText(this, "Lỗi khi lưu: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+        };
+
+        if (setAsDefault) {
+            // Bỏ default của các địa chỉ khác trước khi set địa chỉ này làm default
+            addressesRef.get().addOnSuccessListener(snapshot -> {
+                com.google.firebase.firestore.WriteBatch batch = db.batch();
+                for (com.google.firebase.firestore.DocumentSnapshot doc : snapshot.getDocuments()) {
+                    if (!doc.getId().equals(isEditMode ? editingAddress.getId() : "")) {
+                        batch.update(doc.getReference(), "isDefault", false);
+                    }
+                }
+                batch.commit().addOnSuccessListener(v -> saveAction.run());
+            });
+        } else {
+            saveAction.run();
+        }
     }
 
     @Override

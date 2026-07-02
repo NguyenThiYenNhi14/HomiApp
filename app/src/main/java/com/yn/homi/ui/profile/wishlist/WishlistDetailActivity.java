@@ -3,10 +3,14 @@ package com.yn.homi.ui.profile.wishlist;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.graphics.Color;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +25,7 @@ import com.yn.homi.utils.FavoritesManager;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class WishlistDetailActivity extends AppCompatActivity {
 
@@ -217,6 +222,7 @@ public class WishlistDetailActivity extends AppCompatActivity {
             llSelectionOptions.setVisibility(enabled ? View.VISIBLE : View.GONE);
         });
         adapter.setOnCartUpdateListener(this::updateCartBadge);
+        adapter.setOnVariantClickListener(this::showVariantSelectionDialog);
         adapter.setOnBuyNowListener(product -> {
             ArrayList<CartItem> cartItemsToBuy = new ArrayList<>();
             String defaultColor = (product.getColorVariants() != null && !product.getColorVariants().isEmpty()) 
@@ -246,6 +252,147 @@ public class WishlistDetailActivity extends AppCompatActivity {
             adapter.setSelectionMode(false);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    private void showVariantSelectionDialog(Product product) {
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_variant_selection, null);
+        com.google.android.material.bottomsheet.BottomSheetDialog dialog = new com.google.android.material.bottomsheet.BottomSheetDialog(this);
+        dialog.setContentView(dialogView);
+
+        ImageView imgProduct = dialogView.findViewById(R.id.imgProduct);
+        TextView tvPrice = dialogView.findViewById(R.id.tvPrice);
+        TextView tvStock = dialogView.findViewById(R.id.tvStock);
+        TextView tvQuantity = dialogView.findViewById(R.id.tvQuantity);
+        RecyclerView rvColors = dialogView.findViewById(R.id.rvColors);
+        
+        com.bumptech.glide.Glide.with(this).load(product.getThumbnailUrl()).into(imgProduct);
+        tvPrice.setText(getUSDString(product.getPrice()));
+        tvStock.setText(getString(R.string.stock, product.getStockStatus()));
+        
+        // Wishlist usually doesn't store quantity, default to 1
+        tvQuantity.setText("1");
+        dialogView.findViewById(R.id.layoutQuantitySelector).setVisibility(View.GONE);
+
+        final String[] selectedColor = {null};
+        if (product.getColorVariants() != null && !product.getColorVariants().isEmpty()) {
+            selectedColor[0] = product.getColorVariants().get(0).getName();
+        }
+
+        // Setup Colors
+        if (product.getColorVariants() != null) {
+            rvColors.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false));
+            VariantColorAdapter colorAdapter = new VariantColorAdapter(product.getColorVariants(), selectedColor[0], variant -> {
+                selectedColor[0] = variant.getName();
+                if (variant.getImageUrl() != null && !variant.getImageUrl().isEmpty()) {
+                    com.bumptech.glide.Glide.with(this).load(variant.getImageUrl()).into(imgProduct);
+                }
+            });
+            rvColors.setAdapter(colorAdapter);
+        }
+
+        dialogView.findViewById(R.id.btnConfirm).setOnClickListener(v -> {
+            // Cập nhật UI ngay lập tức
+            for (Product p : items) {
+                if (p.getId().equals(product.getId())) {
+                    // Cập nhật list color variants để giữ lại lựa chọn (giả lập vì model Product k lưu selectedColor)
+                    if (product.getColorVariants() != null) {
+                        List<Product.ColorVariant> newVariants = new ArrayList<>();
+                        for (Product.ColorVariant cv : product.getColorVariants()) {
+                            if (cv.getName().equals(selectedColor[0])) {
+                                newVariants.add(0, cv); // Đưa màu đã chọn lên đầu
+                            } else {
+                                newVariants.add(cv);
+                            }
+                        }
+                        p.setColorVariants(newVariants);
+                    }
+                    break;
+                }
+            }
+            
+            // Lưu vào SharedPreferences qua FavoritesManager
+            List<Wishlist> wishlists = favoritesManager.getWishlists();
+            for (Wishlist w : wishlists) {
+                if (w.getName().equals(wishlistName)) {
+                    for (Product p : w.getItems()) {
+                        if (p.getId().equals(product.getId())) {
+                            if (product.getColorVariants() != null) {
+                                List<Product.ColorVariant> newVariants = new ArrayList<>();
+                                for (Product.ColorVariant cv : product.getColorVariants()) {
+                                    if (cv.getName().equals(selectedColor[0])) {
+                                        newVariants.add(0, cv);
+                                    } else {
+                                        newVariants.add(cv);
+                                    }
+                                }
+                                p.setColorVariants(newVariants);
+                            }
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+            favoritesManager.saveWishlists(wishlists);
+            
+            adapter.notifyDataSetChanged();
+            dialog.dismiss();
+            Toast.makeText(this, R.string.msg_variant_updated, Toast.LENGTH_SHORT).show();
+        });
+
+        dialogView.findViewById(R.id.btnClose).setOnClickListener(v -> dialog.dismiss());
+        dialog.show();
+    }
+
+    private String getUSDString(double amount) {
+        return String.format(Locale.US, "$%.2f", amount);
+    }
+
+    private static class VariantColorAdapter extends RecyclerView.Adapter<VariantColorAdapter.ViewHolder> {
+        private final List<Product.ColorVariant> variants;
+        private String selectedColor;
+        private final OnColorSelectedListener listener;
+
+        interface OnColorSelectedListener { void onColorSelected(Product.ColorVariant variant); }
+
+        VariantColorAdapter(List<Product.ColorVariant> variants, String selectedColor, OnColorSelectedListener listener) {
+            this.variants = variants;
+            this.selectedColor = selectedColor;
+            this.listener = listener;
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_color_variant_chip, parent, false));
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            Product.ColorVariant v = variants.get(position);
+            holder.tvName.setText(v.getName());
+            com.bumptech.glide.Glide.with(holder.itemView.getContext()).load(v.getImageUrl()).into(holder.ivImage);
+            
+            boolean isSelected = v.getName().equals(selectedColor);
+            holder.card.setCardBackgroundColor(isSelected ? Color.parseColor("#FFF1F0") : Color.parseColor("#F5F5F5"));
+            holder.tvName.setTextColor(isSelected ? Color.parseColor("#EE4D2D") : Color.parseColor("#333333"));
+            holder.card.setStrokeColor(isSelected ? Color.parseColor("#EE4D2D") : Color.TRANSPARENT);
+            holder.card.setStrokeWidth(isSelected ? 2 : 0);
+
+            holder.itemView.setOnClickListener(view -> {
+                selectedColor = v.getName();
+                notifyDataSetChanged();
+                listener.onColorSelected(v);
+            });
+        }
+
+        @Override
+        public int getItemCount() { return variants.size(); }
+
+        static class ViewHolder extends RecyclerView.ViewHolder {
+            ImageView ivImage; TextView tvName; com.google.android.material.card.MaterialCardView card;
+            ViewHolder(View v) { super(v); ivImage = v.findViewById(R.id.ivVariantImage); tvName = v.findViewById(R.id.tvVariantName); card = (com.google.android.material.card.MaterialCardView) v.findViewById(R.id.cardContainer); }
         }
     }
 }

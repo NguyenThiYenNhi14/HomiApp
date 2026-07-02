@@ -14,6 +14,8 @@ public class Review implements Serializable {
     private String body;
     private boolean verifiedBuyer;
     private String imageUrl;
+    private com.google.firebase.Timestamp createdAt;
+    private String orderId;
 
     public Review() {}
 
@@ -94,4 +96,22 @@ public class Review implements Serializable {
     public String getImageUrlFs() { return imageUrl; }
     @PropertyName("image_url")
     public void setImageUrlFs(String imageUrl) { this.imageUrl = imageUrl; }
+
+    @com.google.firebase.firestore.PropertyName("createdAt")
+    public com.google.firebase.Timestamp getCreatedAt() { return createdAt; }
+    @com.google.firebase.firestore.PropertyName("createdAt")
+    public void setCreatedAt(com.google.firebase.Timestamp createdAt) { this.createdAt = createdAt; }
+
+    @com.google.firebase.firestore.PropertyName("orderId")
+    public String getOrderId() { return orderId; }
+    @com.google.firebase.firestore.PropertyName("orderId")
+    public void setOrderId(String orderId) { this.orderId = orderId; }
+
+    @com.google.firebase.firestore.Exclude
+    public boolean isEditable() {
+        if (createdAt == null) return false;
+        long tenDaysInSeconds = 10L * 24 * 60 * 60;
+        long now = com.google.firebase.Timestamp.now().getSeconds();
+        return (now - createdAt.getSeconds()) <= tenDaysInSeconds;
+    }
 }

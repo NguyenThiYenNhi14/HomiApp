@@ -9,6 +9,9 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,6 +25,7 @@ import com.yn.homi.models.Review;
 import com.yn.homi.ui.cart.CartActivity;
 import com.yn.homi.ui.cart.CartManager;
 import com.yn.homi.utils.FavoritesManager;
+import com.yn.homi.utils.RecentlyViewedManager;
 import com.yn.homi.data.repository.FirestoreRepository;
 import com.yn.homi.data.repository.FirestoreRepository.OnProductLoadedListener;
 import com.yn.homi.data.repository.FirestoreRepository.OnProductsLoadedListener;
@@ -52,6 +56,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private FirestoreRepository firestoreRepository;
     private CartManager cartManager;
     private FavoritesManager favoritesManager;
+    private RecentlyViewedManager recentlyViewedManager;
     private String productId;
     private Product product;
     private int quantity = 1;
@@ -69,9 +74,21 @@ public class ProductDetailActivity extends AppCompatActivity {
         firestoreRepository = new FirestoreRepository();
         cartManager = CartManager.getInstance(this);
         favoritesManager = new FavoritesManager(this);
+        recentlyViewedManager = new RecentlyViewedManager(this);
 
         initViews();
         loadProductDetails();
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            FirebaseFirestore.getInstance()
+                    .collection("users").document(user.getUid())
+                    .update("stats.points", com.google.firebase.firestore.FieldValue.increment(1),
+                            "stats.views", com.google.firebase.firestore.FieldValue.increment(1))
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(this, getString(R.string.msg_earn_points, 1), Toast.LENGTH_SHORT).show();
+                    });
+        }
     }
 
     private void initViews() {
@@ -131,6 +148,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 if (pbLoading != null) pbLoading.setVisibility(View.GONE);
                 product = p;
                 if (product != null) {
+                    recentlyViewedManager.addProduct(product);
                     displayProductDetails();
                     setupRecommendations();
                     setupReviews();
@@ -165,7 +183,24 @@ public class ProductDetailActivity extends AppCompatActivity {
                 product.getReviewCount(), 
                 getString(R.string.label_reviews_lowercase)));
 
-        setupImageSlider(product.getImageUrls());
+        // Thu thập tất cả ảnh bao gồm ảnh chính và ảnh biến thể màu sắc
+        List<String> allImages = new ArrayList<>();
+        if (product.getImageUrls() != null && !product.getImageUrls().isEmpty()) {
+            allImages.addAll(product.getImageUrls());
+        } else if (product.getThumbnailUrl() != null && !product.getThumbnailUrl().isEmpty()) {
+            allImages.add(product.getThumbnailUrl());
+        }
+
+        if (product.getColorVariants() != null) {
+            for (Product.ColorVariant variant : product.getColorVariants()) {
+                String variantUrl = variant.getImageUrl();
+                if (variantUrl != null && !variantUrl.isEmpty() && !allImages.contains(variantUrl)) {
+                    allImages.add(variantUrl);
+                }
+            }
+        }
+
+        setupImageSlider(allImages);
         setupColorVariants();
     }
 
@@ -205,11 +240,20 @@ public class ProductDetailActivity extends AppCompatActivity {
                         if (variant.getImageUrl() != null && !variant.getImageUrl().isEmpty()) {
                             List<String> currentImages = imageAdapter.images;
                             int index = currentImages.indexOf(variant.getImageUrl());
-                            if (index != -1) vpProductImages.setCurrentItem(index, true);
+                            if (index != -1) {
+                                vpProductImages.setCurrentItem(index, true);
+                            }
                         }
                     });
             rvColors.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
             rvColors.setAdapter(colorAdapter);
+
+            // Chuyển slider đến ảnh của biến thể đầu tiên nếu có
+            String firstVariantImg = product.getColorVariants().get(0).getImageUrl();
+            if (firstVariantImg != null && !firstVariantImg.isEmpty()) {
+                int index = imageAdapter.images.indexOf(firstVariantImg);
+                if (index != -1) vpProductImages.setCurrentItem(index, false);
+            }
         } else {
             if (findViewById(R.id.ll_color_section) != null) findViewById(R.id.ll_color_section).setVisibility(View.GONE);
         }
@@ -275,16 +319,67 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private void addToCart() {
         if (product == null) return;
-        String color = tvSelectedColor != null ? tvSelectedColor.getText().toString() : null;
-        cartManager.addItem(new com.yn.homi.data.model.CartItem(product.getId(), product.getName(), product.getPrice(), quantity, product.getThumbnailUrl(), color, null));
+        
+        String color = null;
+        String imageUrl = product.getThumbnailUrl();
+        
+        if (product.getColorVariants() != null && !product.getColorVariants().isEmpty()) {
+            com.yn.homi.data.model.Product.ColorVariant firstVariant = product.getColorVariants().get(0);
+            color = firstVariant.getName();
+            if (firstVariant.getImageUrl() != null && !firstVariant.getImageUrl().isEmpty()) {
+                imageUrl = firstVariant.getImageUrl();
+            }
+        }
+        
+        // If user manually selected a color, use that instead
+        if (tvSelectedColor != null && !tvSelectedColor.getText().toString().isEmpty()) {
+            String selected = tvSelectedColor.getText().toString();
+            color = selected;
+            // Find corresponding image for selected color
+            if (product.getColorVariants() != null) {
+                for (com.yn.homi.data.model.Product.ColorVariant v : product.getColorVariants()) {
+                    if (v.getName().equals(selected) && v.getImageUrl() != null && !v.getImageUrl().isEmpty()) {
+                        imageUrl = v.getImageUrl();
+                        break;
+                    }
+                }
+            }
+        }
+
+        cartManager.addItem(new com.yn.homi.data.model.CartItem(product.getId(), product.getName(), product.getPrice(), quantity, imageUrl, color, null));
         updateCartBadge();
         Toast.makeText(this, getString(R.string.add_to_cart_success), Toast.LENGTH_SHORT).show();
     }
 
     private void buyNow() {
         if (product == null) return;
+        
+        String color = null;
+        String imageUrl = product.getThumbnailUrl();
+        
+        if (product.getColorVariants() != null && !product.getColorVariants().isEmpty()) {
+            com.yn.homi.data.model.Product.ColorVariant firstVariant = product.getColorVariants().get(0);
+            color = firstVariant.getName();
+            if (firstVariant.getImageUrl() != null && !firstVariant.getImageUrl().isEmpty()) {
+                imageUrl = firstVariant.getImageUrl();
+            }
+        }
+        
+        if (tvSelectedColor != null && !tvSelectedColor.getText().toString().isEmpty()) {
+            String selected = tvSelectedColor.getText().toString();
+            color = selected;
+            if (product.getColorVariants() != null) {
+                for (com.yn.homi.data.model.Product.ColorVariant v : product.getColorVariants()) {
+                    if (v.getName().equals(selected) && v.getImageUrl() != null && !v.getImageUrl().isEmpty()) {
+                        imageUrl = v.getImageUrl();
+                        break;
+                    }
+                }
+            }
+        }
+
         ArrayList<com.yn.homi.data.model.CartItem> items = new ArrayList<>();
-        items.add(new com.yn.homi.data.model.CartItem(product.getId(), product.getName(), product.getPrice(), quantity, product.getThumbnailUrl(), null, null));
+        items.add(new com.yn.homi.data.model.CartItem(product.getId(), product.getName(), product.getPrice(), quantity, imageUrl, color, null));
         android.content.Intent intent = new android.content.Intent(this, com.yn.homi.ui.checkout.CheckoutActivity.class);
         intent.putExtra("SELECTED_CART_ITEMS", items);
         startActivity(intent);

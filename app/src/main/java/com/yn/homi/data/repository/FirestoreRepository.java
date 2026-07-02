@@ -430,10 +430,10 @@ public class FirestoreRepository {
             listener.onLoaded(new ArrayList<>());
             return;
         }
-        
+
         String cleanId = productId.trim();
         Log.d(TAG, "===> FETCHING REVIEWS for product ID: [" + cleanId + "]");
-        
+
         // Sử dụng collectionGroup để quét qua tất cả các sub-collection "reviews" của mọi user
         db.collectionGroup("reviews")
                 .whereEqualTo("productId", cleanId)

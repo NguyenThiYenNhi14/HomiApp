@@ -30,6 +30,7 @@ public class UserProfile implements Parcelable {
         public int points = 0;
         public int views = 0;
         public int wishlists = 0;
+        public int lastBirthdayCouponYear = 0;
 
         public UserStats() {}
 
@@ -38,6 +39,7 @@ public class UserProfile implements Parcelable {
             points = in.readInt();
             views = in.readInt();
             wishlists = in.readInt();
+            lastBirthdayCouponYear = in.readInt();
         }
 
         public static final Creator<UserStats> CREATOR = new Creator<UserStats>() {
@@ -53,6 +55,7 @@ public class UserProfile implements Parcelable {
             dest.writeInt(points);
             dest.writeInt(views);
             dest.writeInt(wishlists);
+            dest.writeInt(lastBirthdayCouponYear);
         }
     }
 

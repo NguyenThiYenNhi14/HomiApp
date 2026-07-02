@@ -34,6 +34,7 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
     private OnSelectionModeListener selectionModeListener;
     private OnCartUpdateListener cartUpdateListener;
     private OnBuyNowListener buyNowListener;
+    private OnVariantClickListener variantClickListener;
 
     public interface OnSelectionModeListener {
         void onSelectionModeChanged(boolean enabled);
@@ -47,6 +48,10 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
         void onBuyNow(Product product);
     }
 
+    public interface OnVariantClickListener {
+        void onVariantClicked(Product product);
+    }
+
     public void setOnSelectionModeListener(OnSelectionModeListener listener) {
         this.selectionModeListener = listener;
     }
@@ -57,6 +62,10 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
 
     public void setOnBuyNowListener(OnBuyNowListener listener) {
         this.buyNowListener = listener;
+    }
+
+    public void setOnVariantClickListener(OnVariantClickListener listener) {
+        this.variantClickListener = listener;
     }
 
     public WishlistAdapter(Context context, List<Product> items, String wishlistName) {
@@ -80,7 +89,19 @@ public class WishlistAdapter extends RecyclerView.Adapter<WishlistAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         Product item = items.get(position);
         holder.tvName.setText(item.getName());
-        holder.tvColor.setText("Color: Standard"); // Use default if product has no specific color in wishlist
+        holder.tvColor.setText(context.getString(R.string.label_value_format, context.getString(R.string.color), context.getString(R.string.color_standard)));
+        
+        // Show color variant if available
+        if (item.getColorVariants() != null && !item.getColorVariants().isEmpty()) {
+            holder.tvColor.setText(item.getColorVariants().get(0).getName());
+        }
+
+        holder.tvColor.setOnClickListener(v -> {
+            if (variantClickListener != null) {
+                variantClickListener.onVariantClicked(item);
+            }
+        });
+
         holder.tvPrice.setText(getUSDString(item.getPrice()));
         
         Glide.with(context)

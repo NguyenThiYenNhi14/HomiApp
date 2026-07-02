@@ -284,7 +284,8 @@
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:elevation="8dp"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:layout_marginBottom="30dp">
 
         <Button
             android:id="@+id/btn_save_address"

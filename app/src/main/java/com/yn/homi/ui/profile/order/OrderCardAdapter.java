@@ -38,11 +38,14 @@ public class OrderCardAdapter extends RecyclerView.Adapter<OrderCardAdapter.View
         Order order = orders.get(position);
 
         // Set Order ID
-        holder.tvOrderId.setText("Order ID #" + order.getOrderId());
+        holder.tvOrderId.setText(context.getString(R.string.label_order_id, order.getOrderId()));
 
         // 1. Ngày đặt + số lượng items
         int itemCount = order.getItems().size();
-        holder.tvOrderDate.setText("Placed " + order.getPlacedAt() + " · " + itemCount + " item" + (itemCount > 1 ? "s" : ""));
+        String itemCountStr = itemCount > 1
+                ? context.getString(R.string.label_items_count, itemCount)
+                : context.getString(R.string.label_item_count, itemCount);
+        holder.tvOrderDate.setText(context.getString(R.string.label_placed_at, order.getPlacedAt()) + " · " + itemCountStr);
 
         // 2. Status badge
         applyStatusBadge(holder.tvStatusBadge, order.getStatus());
@@ -53,6 +56,7 @@ public class OrderCardAdapter extends RecyclerView.Adapter<OrderCardAdapter.View
                 : order.getItems();
 
         OrderItemAdapter itemAdapter = new OrderItemAdapter(context, visibleItems);
+        itemAdapter.setOrderInfo(order.getOrderId(), order.getStatus());
         holder.rvItems.setLayoutManager(new LinearLayoutManager(context));
         holder.rvItems.setAdapter(itemAdapter);
         holder.rvItems.setNestedScrollingEnabled(false);
@@ -61,7 +65,10 @@ public class OrderCardAdapter extends RecyclerView.Adapter<OrderCardAdapter.View
         int extra = order.getItems().size() - 2;
         if (extra > 0) {
             holder.tvMoreItems.setVisibility(View.VISIBLE);
-            holder.tvMoreItems.setText("+" + extra + " more item" + (extra > 1 ? "s" : ""));
+            String moreStr = extra > 1
+                    ? context.getString(R.string.label_more_items, extra)
+                    : context.getString(R.string.label_more_item, extra);
+            holder.tvMoreItems.setText(moreStr);
         } else {
             holder.tvMoreItems.setVisibility(View.GONE);
         }
@@ -81,35 +88,37 @@ public class OrderCardAdapter extends RecyclerView.Adapter<OrderCardAdapter.View
     }
 
     private void applyStatusBadge(TextView badge, Order.Status status) {
-        String label;
+        int labelRes;
         int bgColor, textColor;
         switch (status) {
             case PENDING:
-                label = "Pending";
+                labelRes = R.string.status_pending;
                 bgColor = 0xFFF2F2F2; textColor = 0xFF555555; break;
             case PROCESSING:
-                label = "Processing";
+                labelRes = R.string.status_processing;
                 bgColor = 0xFFF2F2F2; textColor = 0xFF555555; break;
             case PARTIALLY_SHIPPED:
-                label = "Partially Shipped";
+                labelRes = R.string.status_partially_shipped;
                 bgColor = 0xFFF2F2F2; textColor = 0xFF555555; break;
             case SHIPPED:
-                label = "Shipped";
+                labelRes = R.string.status_shipped;
                 bgColor = 0xFF111111; textColor = 0xFFFFFFFF; break;
             case COMPLETED:
-                label = "Completed";
+                labelRes = R.string.status_completed;
                 bgColor = 0xFF4CAF50; textColor = 0xFFFFFFFF; break;
             case RETURNED:
-                label = "Returned";
+                labelRes = R.string.status_returned;
                 bgColor = 0xFFEEEEEE; textColor = 0xFF888888; break;
             case CANCELLED:
-                label = "Cancelled";
+                labelRes = R.string.status_cancelled;
                 bgColor = 0xFFEEEEEE; textColor = 0xFF888888; break;
             default:
-                label = status.name();
-                bgColor = 0xFFF2F2F2; textColor = 0xFF888888;
+                badge.setText(status.name());
+                badge.setBackgroundTintList(android.content.res.ColorStateList.valueOf(0xFFF2F2F2));
+                badge.setTextColor(0xFF888888);
+                return;
         }
-        badge.setText(label);
+        badge.setText(labelRes);
         badge.setBackgroundTintList(android.content.res.ColorStateList.valueOf(bgColor));
         badge.setTextColor(textColor);
     }
@@ -120,7 +129,7 @@ public class OrderCardAdapter extends RecyclerView.Adapter<OrderCardAdapter.View
         switch (order.getStatus()) {
             case PENDING:
             case PROCESSING:
-                btn.setText("Messages");
+                btn.setText(R.string.btn_messages);
                 btn.setBackgroundTintList(
                         android.content.res.ColorStateList.valueOf(black));
                 btn.setOnClickListener(v -> { /* mở chat */ });
@@ -128,7 +137,7 @@ public class OrderCardAdapter extends RecyclerView.Adapter<OrderCardAdapter.View
 
             case PARTIALLY_SHIPPED:
             case SHIPPED:
-                btn.setText("Track Package");
+                btn.setText(R.string.btn_track_package);
                 btn.setBackgroundTintList(
                         android.content.res.ColorStateList.valueOf(black));
                 btn.setOnClickListener(v -> {
@@ -139,15 +148,19 @@ public class OrderCardAdapter extends RecyclerView.Adapter<OrderCardAdapter.View
                 break;
 
             case COMPLETED:
-                btn.setText("Review");
+                btn.setText(R.string.btn_review);
                 btn.setBackgroundTintList(
                         android.content.res.ColorStateList.valueOf(black));
-                btn.setOnClickListener(v -> { /* Open Review logic */ });
+                btn.setOnClickListener(v -> {
+                    Intent intent = new Intent(context, OrderDetailActivity.class);
+                    intent.putExtra("ORDER_ID", order.getOrderId());
+                    context.startActivity(intent);
+                });
                 break;
 
             case RETURNED:
             case CANCELLED:
-                btn.setText("Contact Support");
+                btn.setText(R.string.btn_contact_support);
                 btn.setBackgroundTintList(
                         android.content.res.ColorStateList.valueOf(gray));
                 btn.setOnClickListener(v -> { /* mở support */ });
