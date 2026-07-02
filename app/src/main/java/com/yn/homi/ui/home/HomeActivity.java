@@ -69,6 +69,7 @@ import com.yn.homi.ui.shop.ProductAdapter;
 import com.yn.homi.ui.shop.ProductDetailActivity;
 import com.yn.homi.ui.shop.ProductListActivity;
 import com.yn.homi.ui.shop.QuickTabAdapter;
+import com.yn.homi.ui.shop.RoomDetailActivity;
 import com.yn.homi.ui.shop.ShopActivity;
 import com.yn.homi.data.model.Banner;
 import com.yn.homi.data.model.Idea;

@@ -209,6 +209,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         rvReviews.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rvReviews.setAdapter(reviewAdapter);
 
+        // Update: Allow users to click on a review to see it in full screen or zoom the image
+        // (Optional enhancement, for now just ensure it's vertical if there are many reviews or keep it horizontal)
+
         firestoreRepository.getReviewsByProductId(productId, new FirestoreRepository.OnReviewsLoadedListener() {
             @Override
             public void onLoaded(List<Review> reviews) {

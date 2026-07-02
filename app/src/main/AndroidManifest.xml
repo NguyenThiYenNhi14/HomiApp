@@ -42,6 +42,7 @@
         <activity android:name=".ui.shop.ShopActivity" android:exported="false" />
         <activity android:name=".ui.shop.ProductListActivity" android:exported="false" />
         <activity android:name=".ui.shop.ProductDetailActivity" android:exported="false" />
+        <activity android:name=".ui.shop.RoomDetailActivity" android:exported="false" />
 
         <!-- Cart & Checkout -->
         <activity android:name=".ui.cart.CartActivity" android:exported="false" />

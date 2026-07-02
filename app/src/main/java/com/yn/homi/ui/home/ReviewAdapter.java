@@ -3,12 +3,14 @@ package com.yn.homi.ui.home;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.yn.homi.R;
 import com.yn.homi.models.Review;
 
@@ -49,6 +51,15 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         } else {
             holder.tvTitle.setVisibility(View.GONE);
         }
+
+        if (review.getImageUrl() != null && !review.getImageUrl().isEmpty()) {
+            holder.ivReviewImage.setVisibility(View.VISIBLE);
+            Glide.with(holder.itemView.getContext())
+                    .load(review.getImageUrl())
+                    .into(holder.ivReviewImage);
+        } else {
+            holder.ivReviewImage.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -59,6 +70,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvUserName, tvDate, tvContent, tvTitle;
         RatingBar rbRating;
+        ImageView ivReviewImage;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -67,6 +79,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             tvContent = itemView.findViewById(R.id.tv_review_content);
             tvTitle = itemView.findViewById(R.id.tv_review_title);
             rbRating = itemView.findViewById(R.id.rb_review_rating);
+            ivReviewImage = itemView.findViewById(R.id.iv_review_image);
         }
     }
 }

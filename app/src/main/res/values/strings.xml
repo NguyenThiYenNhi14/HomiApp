@@ -442,4 +442,7 @@
     <string name="hint_review_title">Review Title</string>
     <string name="hint_review_body">Write your review here...</string>
     <string name="btn_submit_review">Submit Review</string>
+    <string name="placeholder_product_name">Product Name</string>
+    <string name="placeholder_product_price">$0.00</string>
+    <string name="label_view_detail">View Detail</string>
 </resources>

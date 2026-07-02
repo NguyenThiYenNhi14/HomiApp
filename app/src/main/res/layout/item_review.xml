@@ -78,5 +78,14 @@
             android:textColor="@color/black"
             android:textSize="14sp" />
 
+        <ImageView
+            android:id="@+id/iv_review_image"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="12dp"
+            android:scaleType="centerCrop"
+            android:contentDescription="Review image"
+            android:visibility="gone" />
+
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

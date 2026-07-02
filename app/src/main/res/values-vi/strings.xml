@@ -429,4 +429,7 @@
     <string name="label_order_details">Chi tiết đơn hàng</string>
     <string name="label_order_number">Đơn hàng #%1$s</string>
     <string name="label_placed_on">Đặt ngày %1$s</string>
+    <string name="placeholder_product_name">Tên sản phẩm</string>
+    <string name="placeholder_product_price">0đ</string>
+    <string name="label_view_detail">Xem chi tiết</string>
 </resources>
