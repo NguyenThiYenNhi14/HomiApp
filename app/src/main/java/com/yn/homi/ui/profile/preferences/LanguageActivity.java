@@ -1,138 +1,94 @@
 package com.yn.homi.ui.profile.preferences;
 
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.yn.homi.R;
+import com.yn.homi.core.BaseActivity;
+import com.yn.homi.ui.home.WelcomeActivity;
+import com.yn.homi.utils.LocaleHelper;
 
-import java.util.Locale;
+public class LanguageActivity extends BaseActivity {
 
-public class LanguageActivity extends AppCompatActivity {
-
-    // ── Danh sách ngôn ngữ: { mã ngôn ngữ, tên tiếng Anh, tên bản ngữ, tên drawable cờ } ──
-    private static final String[][] LANGUAGES = {
-            { "en", "English",    "English",    "america_flag" },
-            { "vi", "Vietnamese", "Tiếng Việt", "vietnam_flag" },
-    };
-
-    private static final String PREF_NAME     = "homi_prefs";
-    private static final String PREF_LANG_KEY = "selected_language";
-
+    private LinearLayout layoutVietnamese, layoutEnglish;
+    private ImageView checkVietnamese, checkEnglish;
     private String selectedLanguageCode;
-    private View[] languageRowViews;
+    private View btnApply;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_language);
 
-        // ── 1. Setup Toolbar ──
-        Toolbar toolbar = findViewById(R.id.toolbar_language);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false); // tắt vì dùng custom button
-        }
+        initViews();
+        setupListeners();
 
-        // ── FIX: Gán listener cho nút Back custom ──
+        // Lấy ngôn ngữ hiện tại
+        selectedLanguageCode = LocaleHelper.getLanguage(this);
+        updateUI();
+    }
+
+    private void initViews() {
+        layoutVietnamese = findViewById(R.id.layoutVietnamese);
+        layoutEnglish = findViewById(R.id.layoutEnglish);
+        checkVietnamese = findViewById(R.id.checkVietnamese);
+        checkEnglish = findViewById(R.id.checkEnglish);
+        btnApply = findViewById(R.id.btnApply);
+
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
-
-        // ── 2. Đọc ngôn ngữ đang lưu ──
-        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        selectedLanguageCode = prefs.getString(PREF_LANG_KEY, "en");
-
-        // ── 3. Inflate các row ngôn ngữ ──
-        LinearLayout container = findViewById(R.id.language_list_container);
-        LayoutInflater inflater = LayoutInflater.from(this);
-        languageRowViews = new View[LANGUAGES.length];
-
-        for (int i = 0; i < LANGUAGES.length; i++) {
-            final String code    = LANGUAGES[i][0];
-            final String name    = LANGUAGES[i][1];
-            final String native_ = LANGUAGES[i][2];
-            final String flagRes = LANGUAGES[i][3]; // tên drawable
-
-            View row = inflater.inflate(R.layout.item_language, container, false);
-            languageRowViews[i] = row;
-
-            // ── FIX: Dùng ImageView thay vì TextView để hiển thị cờ ──
-            ImageView flagView = row.findViewById(R.id.iv_language_flag);
-            int resId = getResources().getIdentifier(flagRes, "drawable", getPackageName());
-            flagView.setImageResource(resId);
-
-            ((TextView) row.findViewById(R.id.tv_language_name)).setText(name);
-            ((TextView) row.findViewById(R.id.tv_language_native)).setText(native_);
-
-            updateRowUI(row, code.equals(selectedLanguageCode));
-
-            row.setOnClickListener(v -> {
-                selectedLanguageCode = code;
-                refreshAllRows();
-            });
-
-            container.addView(row);
-        }
-
-        // ── 4. Nút Apply ──
-        findViewById(R.id.btn_apply_language).setOnClickListener(v -> applyLanguage());
     }
 
-    private void updateRowUI(View row, boolean isSelected) {
-        ImageView checkIcon = row.findViewById(R.id.iv_language_check);
-        TextView nameText   = row.findViewById(R.id.tv_language_name);
+    private void setupListeners() {
+        layoutVietnamese.setOnClickListener(v -> {
+            selectedLanguageCode = "vi";
+            updateUI();
+        });
 
-        if (isSelected) {
-            row.setBackground(getResources().getDrawable(R.drawable.bg_language_item_selected, null));
-            checkIcon.setVisibility(View.VISIBLE);
-            nameText.setTextColor(getResources().getColor(R.color.pp_black, null));
+        layoutEnglish.setOnClickListener(v -> {
+            selectedLanguageCode = "en";
+            updateUI();
+        });
+
+        btnApply.setOnClickListener(v -> applyLanguage());
+    }
+
+    private void updateUI() {
+        if (selectedLanguageCode.equals("vi")) {
+            checkVietnamese.setVisibility(View.VISIBLE);
+            checkEnglish.setVisibility(View.GONE);
+            layoutVietnamese.setBackgroundResource(R.drawable.bg_language_item_selected);
+            layoutEnglish.setBackgroundResource(R.drawable.bg_language_item);
         } else {
-            row.setBackground(getResources().getDrawable(R.drawable.bg_language_item, null));
-            checkIcon.setVisibility(View.GONE);
-            nameText.setTextColor(getResources().getColor(R.color.pp_black, null));
-        }
-    }
-
-    private void refreshAllRows() {
-        for (int i = 0; i < LANGUAGES.length; i++) {
-            boolean isSelected = LANGUAGES[i][0].equals(selectedLanguageCode);
-            updateRowUI(languageRowViews[i], isSelected);
+            checkVietnamese.setVisibility(View.GONE);
+            checkEnglish.setVisibility(View.VISIBLE);
+            layoutVietnamese.setBackgroundResource(R.drawable.bg_language_item);
+            layoutEnglish.setBackgroundResource(R.drawable.bg_language_item_selected);
         }
     }
 
     private void applyLanguage() {
-        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        prefs.edit().putString(PREF_LANG_KEY, selectedLanguageCode).apply();
+        // 1. Lưu ngôn ngữ mới
+        LocaleHelper.setLocale(this, selectedLanguageCode);
 
-        String langName = selectedLanguageCode;
-        for (String[] lang : LANGUAGES) {
-            if (lang[0].equals(selectedLanguageCode)) {
-                langName = lang[1];
-                break;
-            }
-        }
+        // 2. Thông báo
+        String msg = selectedLanguageCode.equals("vi") ? "Đã cập nhật ngôn ngữ" : "Language updated";
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
 
-        Locale locale = new Locale(selectedLanguageCode);
-        Locale.setDefault(locale);
-        android.content.res.Configuration config = new android.content.res.Configuration();
-        config.setLocale(locale);
-        getBaseContext().getResources().updateConfiguration(
-                config, getBaseContext().getResources().getDisplayMetrics());
-
-        Toast.makeText(this, "Language set to " + langName, Toast.LENGTH_SHORT).show();
+        // 3. Khởi động lại ứng dụng từ đầu (WelcomeActivity) nhưng bỏ qua splash
+        Intent intent = new Intent(this, WelcomeActivity.class);
+        intent.putExtra("IS_LANGUAGE_SWITCH", true);
+        // Xóa sạch stack để nạp lại toàn bộ resources mới
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        
         finish();
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        finish();
-        return true;
+        
+        // Hiệu ứng mượt mà
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }

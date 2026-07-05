@@ -38,7 +38,7 @@
             android:name=".ui.home.HomeActivity"
             android:exported="false" />
 
-        <activity android:name=".core.MainActivity" android:exported="false" />
+
         <activity android:name=".ui.shop.ShopActivity" android:exported="false" />
         <activity android:name=".ui.shop.ProductListActivity" android:exported="false" />
         <activity android:name=".ui.shop.ProductDetailActivity" android:exported="false" />

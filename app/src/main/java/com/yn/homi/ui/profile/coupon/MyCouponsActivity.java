@@ -3,6 +3,7 @@ package com.yn.homi.ui.profile.coupon;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
+import com.yn.homi.core.BaseActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,7 +16,7 @@ import com.yn.homi.data.model.Coupon;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyCouponsActivity extends AppCompatActivity {
+public class MyCouponsActivity extends BaseActivity {
 
     private RecyclerView rvCoupons;
     private MyCouponsAdapter adapter;

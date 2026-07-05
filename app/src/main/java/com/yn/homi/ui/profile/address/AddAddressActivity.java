@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.yn.homi.core.BaseActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
@@ -15,7 +16,7 @@ import com.yn.homi.R;
 
 import java.io.Serializable;
 
-public class AddAddressActivity extends AppCompatActivity {
+public class AddAddressActivity extends BaseActivity {
 
     private String selectedLabel = "Home"; // Internally keep keys consistent or use string resources
 

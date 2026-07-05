@@ -8,13 +8,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.yn.homi.R;
+import com.yn.homi.core.BaseActivity;
 import com.yn.homi.data.model.CartItem;
 import com.yn.homi.data.model.Product;
 import com.yn.homi.data.repository.FirestoreRepository;
@@ -25,7 +25,7 @@ import com.yn.homi.ui.shop.ProductAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoomDetailActivity extends AppCompatActivity {
+public class RoomDetailActivity extends BaseActivity {
 
     private ImageView ivRoomImage;
     private TextView tvRoomTitle, tvRoomDescription, tvTotalCost;

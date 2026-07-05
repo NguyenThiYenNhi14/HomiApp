@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import com.yn.homi.core.BaseActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -42,7 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class CartActivity extends AppCompatActivity
+public class CartActivity extends BaseActivity
         implements CartAdapter.OnCartItemInteractionListener, CartManager.CartChangeListener {
 
     private List<CartItem> cartItems;

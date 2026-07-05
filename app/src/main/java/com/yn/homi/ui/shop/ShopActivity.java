@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import com.yn.homi.core.BaseActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -60,7 +61,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ShopActivity extends AppCompatActivity {
+public class ShopActivity extends BaseActivity {
 
     private FirestoreRepository firestoreRepository;
     private LinearLayout llRoomTabs;

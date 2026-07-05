@@ -2,11 +2,12 @@ package com.yn.homi.ui.profile.about;
 
 import android.os.Bundle;
 import android.widget.ImageButton;
+import com.yn.homi.core.BaseActivity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.yn.homi.R;
 
-public class AboutActivity extends AppCompatActivity {
+public class AboutActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

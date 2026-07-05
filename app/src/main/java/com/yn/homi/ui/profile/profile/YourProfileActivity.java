@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yn.homi.core.BaseActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -30,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class YourProfileActivity extends AppCompatActivity {
+public class YourProfileActivity extends BaseActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -231,7 +232,7 @@ public class YourProfileActivity extends AppCompatActivity {
             if (name == null || name.isEmpty()) {
                 name = user.getEmail();
             }
-            tvAuthTitle.setText(name + " >");
+            tvAuthTitle.setText(getString(R.string.label_profile_name_format, name));
             updateRecentlyViewedUI();
             // btnRedeem will be handled in updateUIWithProfile based on points
 
@@ -253,7 +254,7 @@ public class YourProfileActivity extends AppCompatActivity {
                     });
         } else {
             // Guest state
-            tvAuthTitle.setText(getString(R.string.sign_in_register) + " >");
+            tvAuthTitle.setText(getString(R.string.label_guest_format));
             ivAvatar.setImageResource(R.drawable.ic_person);
             updateRecentlyViewedUI();
             if (btnRedeem != null) btnRedeem.setVisibility(View.GONE);
@@ -263,7 +264,7 @@ public class YourProfileActivity extends AppCompatActivity {
 
     private void updateUIWithProfile(UserProfile profile) {
         if (profile.fullName != null && !profile.fullName.isEmpty()) {
-            tvAuthTitle.setText(profile.fullName + " >");
+            tvAuthTitle.setText(getString(R.string.label_profile_name_format, profile.fullName));
         }
 
         if (profile.avatarUri != null && !profile.avatarUri.isEmpty()) {

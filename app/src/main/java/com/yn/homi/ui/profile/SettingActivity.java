@@ -19,6 +19,7 @@ import androidx.appcompat.widget.SwitchCompat;
 
 import com.bumptech.glide.Glide;
 import com.yn.homi.R;
+import com.yn.homi.core.BaseActivity;
 import com.yn.homi.ui.auth.LoginActivity;
 import com.yn.homi.ui.profile.about.AboutActivity;
 import com.yn.homi.ui.profile.about.HelpActivity;
@@ -31,14 +32,13 @@ import com.yn.homi.ui.profile.preferences.ThemePreference;
 import com.yn.homi.ui.profile.profile.PasswordSecurityActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.yn.homi.ui.auth.LoginActivity;
 import com.yn.homi.ui.profile.profile.EditProfileActivity;
 import com.yn.homi.ui.profile.profile.UserProfile;
 import com.yn.homi.ui.profile.wishlist.WishlistActivity;
 import com.yn.homi.data.repository.FirestoreRepository;
 import com.yn.homi.data.local.SharedPrefManager;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends BaseActivity {
 
     LinearLayout layoutProfile, layoutMyOrders, layoutMyWishlist;
     LinearLayout layoutLanguage, layoutAboutApp, layoutTerms, layoutPrivacy, layoutHelp, layoutLogout;
@@ -250,6 +250,12 @@ public class SettingActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.dialog_logout, null);
         builder.setView(view);
+
+        // Map UI strings in dialog (if they are not already in XML)
+        TextView tvTitle = view.findViewById(R.id.txtLogout);
+        TextView tvMsg = view.findViewById(R.id.txtLogoutask);
+        if (tvTitle != null) tvTitle.setText(R.string.str_logout);
+        if (tvMsg != null) tvMsg.setText(R.string.str_ask_logout);
 
         AlertDialog dialog = builder.create();
         if (dialog.getWindow() != null) {

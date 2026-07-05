@@ -57,11 +57,25 @@ public class WelcomeActivity extends com.yn.homi.core.BaseActivity {
         initViews();
         setupLanguageToggle();
         
-        // Bước 1: Đưa logo vào giữa màn hình ngay lập tức (không hiệu ứng)
-        prepareSplashState();
+        // Kiểm tra xem có phải quay lại do đổi ngôn ngữ không
+        boolean isLanguageSwitch = getIntent().getBooleanExtra("IS_LANGUAGE_SWITCH", false);
 
-        // Bước 2: Chạy hiệu ứng sau 1.5 giây (thời gian hiển thị Splash)
-        new Handler().postDelayed(this::startTransitionToWelcome, 1500);
+        if (isLanguageSwitch) {
+            // Nếu đổi ngôn ngữ, nhảy thẳng vào trạng thái Welcome (không hiện Splash)
+            // Đặt các view ở trạng thái sẵn sàng để chạy transition
+            langToggle.setAlpha(0);
+            layoutGetStarted.setAlpha(0);
+            tvWelcomeDesc.setAlpha(0);
+            layoutSignUp.setAlpha(0);
+            btnLoginWelcome.setAlpha(0);
+            
+            // Chạy hiệu ứng chuyển cảnh ngay lập tức
+            welcomeRoot.post(this::startTransitionToWelcome);
+        } else {
+            // Lần đầu vào: Chạy hiệu ứng Splash 1.5s
+            prepareSplashState();
+            new Handler().postDelayed(this::startTransitionToWelcome, 1500);
+        }
     }
 
     private void initViews() {
@@ -190,7 +204,17 @@ public class WelcomeActivity extends com.yn.homi.core.BaseActivity {
     private void updateLanguage(String langCode) {
         if (!LocaleHelper.getLanguage(this).equals(langCode)) {
             LocaleHelper.setLocale(this, langCode);
-            recreate();
+            
+            // Khởi động lại chính WelcomeActivity thay vì MainActivity
+            Intent intent = new Intent(this, WelcomeActivity.class);
+            intent.putExtra("IS_LANGUAGE_SWITCH", true);
+            // Xóa các Activity cũ để nạp lại tài nguyên ngôn ngữ mới
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+            
+            // Hiệu ứng chuyển cảnh mượt mà
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         }
     }
 

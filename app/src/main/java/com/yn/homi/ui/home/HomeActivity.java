@@ -48,7 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.yn.homi.core.BaseActivity;
 import com.yn.homi.ui.cart.CartActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;

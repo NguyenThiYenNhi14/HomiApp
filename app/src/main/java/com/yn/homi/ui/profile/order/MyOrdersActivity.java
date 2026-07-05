@@ -1,6 +1,7 @@
 package com.yn.homi.ui.profile.order;
 
 import android.os.Bundle;
+import com.yn.homi.core.BaseActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -12,7 +13,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.yn.homi.R;
 
 
-public class MyOrdersActivity extends AppCompatActivity {
+public class MyOrdersActivity extends BaseActivity {
 
     private int[] TAB_TITLES_RES = {
             R.string.tab_all_orders,

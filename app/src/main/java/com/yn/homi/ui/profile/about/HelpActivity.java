@@ -2,6 +2,7 @@ package com.yn.homi.ui.profile.about;
 
 import android.os.Bundle;
 import android.widget.ImageButton;
+import com.yn.homi.core.BaseActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,7 +12,7 @@ import com.yn.homi.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HelpActivity extends AppCompatActivity {
+public class HelpActivity extends BaseActivity {
 
     private RecyclerView recyclerFaq;
     private FaqAdapter faqAdapter;

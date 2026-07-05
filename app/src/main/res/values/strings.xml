@@ -167,7 +167,6 @@
     <string name="add_new_address">Add New Address</string>
     <string name="address_label">Address Label</string>
     <string name="work">Work</string>
-    <string name="other">Other</string>
     <string name="contact_information">Contact Information</string>
     <string name="full_name">Full Name</string>
     <string name="phone_number">Phone Number</string>
@@ -188,6 +187,7 @@
     <string name="gender">Gender</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <string name="other">Other</string>
     <string name="date_of_birth">Date of Birth</string>
     <string name="dd_mm_yyyy">DD/MM/YYYY</string>
     <string name="pick_date">Pick Date</string>
@@ -363,6 +363,8 @@
     <string name="redeem_success">Redeem coupon successful!</string>
     <string name="not_enough_points">You do not have enough 500 points</string>
     <string name="error_redeem">Error: %1$s</string>
+    <string name="label_profile_name_format">%1$s \u003e</string>
+    <string name="label_guest_format">Sign In / Register \u003e</string>
     <string name="msg_camera_error">Cannot open camera</string>
     <string name="msg_enter_name">Please enter your name</string>
     <string name="msg_not_logged_in">You are not logged in!</string>
@@ -445,4 +447,27 @@
     <string name="placeholder_product_name">Product Name</string>
     <string name="placeholder_product_price">$0.00</string>
     <string name="label_view_detail">View Detail</string>
+    <string name="err_enter_email_phone">Email or Phone required</string>
+    <string name="err_invalid_email_phone">Enter a valid email or phone number</string>
+    <string name="msg_error_prefix">Error: %1$s</string>
+    <string name="optional_label">(Optional)</string>
+    <string name="msg_registration_success">Registration successful!</string>
+    <string name="msg_registration_error">Registration error: %1$s</string>
+    <string name="msg_failed_save_profile">Failed to save profile: %1$s</string>
+    <string name="msg_sms_delivery_error">SMS delivery error: %1$s</string>
+    <string name="err_password_min_length">Password must be at least 6 characters</string>
+    <string-array name="gender_options">
+        <item>@string/male</item>
+        <item>@string/female</item>
+        <item>@string/other</item>
+    </string-array>
+    <string name="msg_reset_link_sent">Password reset link has been sent to %1$s</string>
+    <string name="msg_session_invalid">Session expired or invalid data.</string>
+    <string name="msg_enter_6_digits">Please enter all 6 digits</string>
+    <string name="msg_click_email_link">Please click the link in your email to verify.</string>
+    <string name="err_auth_id_not_found">Error: Authentication ID not found</string>
+    <string name="err_invalid_otp">Invalid verification code</string>
+    <string name="msg_verification_success">Verification successful!</string>
+    <string name="msg_account_creation_error">Account creation error: %1$s</string>
+    <string name="msg_registration_incomplete">Could not complete registration. Please try again.</string>
 </resources>

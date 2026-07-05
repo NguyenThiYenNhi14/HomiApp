@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import com.yn.homi.core.BaseActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -23,7 +24,7 @@ import com.yn.homi.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SavedAddressesActivity extends AppCompatActivity {
+public class SavedAddressesActivity extends BaseActivity {
 
     public static final String EXTRA_ADDRESS_ID = "address_id";
 

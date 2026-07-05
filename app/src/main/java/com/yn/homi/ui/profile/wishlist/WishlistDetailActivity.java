@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.graphics.Color;
 import androidx.annotation.NonNull;
+import com.yn.homi.core.BaseActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class WishlistDetailActivity extends AppCompatActivity {
+public class WishlistDetailActivity extends BaseActivity {
 
     private String wishlistName;
     private RecyclerView recyclerView;

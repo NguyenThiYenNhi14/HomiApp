@@ -2,23 +2,20 @@ package com.yn.homi.ui.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.InputType;
-import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.yn.homi.core.BaseActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.yn.homi.R;
 
-public class ResetPasswordActivity extends AppCompatActivity {
+public class ResetPasswordActivity extends BaseActivity {
 
     private EditText edtPassword, edtConfirmPassword;
     private AppCompatButton btnResetPassword;
@@ -94,7 +91,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         }
 
         if (!password.equals(confirmPassword)) {
-            edtConfirmPassword.setError("Passwords do not match");
+            edtConfirmPassword.setError(getString(R.string.msg_passwords_dont_match));
             return;
         }
 
@@ -104,32 +101,32 @@ public class ResetPasswordActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
 
         if (user != null) {
-            // User đã verified qua Phone OTP và đang được login tạm thời
             user.updatePassword(password)
                     .addOnCompleteListener(task -> {
                         setLoading(false);
                         if (task.isSuccessful()) {
-                            Toast.makeText(ResetPasswordActivity.this, "Mật khẩu đã được cập nhật thành công!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ResetPasswordActivity.this, getString(R.string.msg_change_pass_success), Toast.LENGTH_LONG).show();
                             navigateToLogin();
                         } else {
-                            Toast.makeText(ResetPasswordActivity.this, "Cập nhật thất bại: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            String errorMsg = task.getException() != null ? task.getException().getMessage() : "Unknown";
+                            Toast.makeText(ResetPasswordActivity.this, getString(R.string.msg_update_failed, errorMsg), Toast.LENGTH_LONG).show();
                         }
                     });
         } else if (userEmail != null && userEmail.contains("@")) {
-            // Trường hợp Email, gửi link reset là phương thức chuẩn và bảo mật nhất
             mAuth.sendPasswordResetEmail(userEmail)
                     .addOnCompleteListener(task -> {
                         setLoading(false);
                         if (task.isSuccessful()) {
-                            Toast.makeText(ResetPasswordActivity.this, "Liên kết đặt lại mật khẩu đã được gửi tới " + userEmail, Toast.LENGTH_LONG).show();
+                            Toast.makeText(ResetPasswordActivity.this, getString(R.string.msg_reset_link_sent, userEmail), Toast.LENGTH_LONG).show();
                             navigateToLogin();
                         } else {
-                            Toast.makeText(ResetPasswordActivity.this, "Lỗi: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            String errorMsg = task.getException() != null ? task.getException().getMessage() : "Unknown";
+                            Toast.makeText(ResetPasswordActivity.this, getString(R.string.msg_error_prefix, errorMsg), Toast.LENGTH_LONG).show();
                         }
                     });
         } else {
             setLoading(false);
-            Toast.makeText(this, "Phiên làm việc đã hết hạn hoặc dữ liệu không hợp lệ.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.msg_session_invalid), Toast.LENGTH_SHORT).show();
             finish();
         }
     }

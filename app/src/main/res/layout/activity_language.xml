@@ -74,7 +74,83 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:paddingTop="4dp"
-            android:paddingBottom="16dp" />
+            android:paddingBottom="16dp">
+
+            <!-- Vietnamese -->
+            <LinearLayout
+                android:id="@+id/layoutVietnamese"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_language_item"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/vietnam_flag" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:text="Tiếng Việt"
+                    android:textColor="#1A1A1A"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/checkVietnamese"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/check"
+                    android:visibility="gone"
+                    app:tint="#1A1A1A" />
+            </LinearLayout>
+
+            <!-- English -->
+            <LinearLayout
+                android:id="@+id/layoutEnglish"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_language_item"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/america_flag" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:text="English"
+                    android:textColor="#1A1A1A"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/checkEnglish"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/check"
+                    android:visibility="gone"
+                    app:tint="#1A1A1A" />
+            </LinearLayout>
+
+        </LinearLayout>
 
     </ScrollView>
 
@@ -88,7 +164,7 @@
         android:paddingBottom="28dp">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_apply_language"
+            android:id="@+id/btnApply"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="52dp"

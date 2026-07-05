@@ -10,12 +10,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.yn.homi.core.BaseActivity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.yn.homi.R;
 import com.yn.homi.data.local.SharedPrefManager;
 
-public class TermsConditionsActivity extends AppCompatActivity {
+public class TermsConditionsActivity extends BaseActivity {
 
     private ImageButton btnBack;
     private CheckBox checkboxAgree;

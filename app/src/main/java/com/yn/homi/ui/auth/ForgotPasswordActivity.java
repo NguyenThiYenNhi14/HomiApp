@@ -2,22 +2,20 @@ package com.yn.homi.ui.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.yn.homi.core.BaseActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.yn.homi.R;
 import com.yn.homi.utils.OTPManager;
 
-public class ForgotPasswordActivity extends AppCompatActivity {
+public class ForgotPasswordActivity extends BaseActivity {
 
     private EditText edtEmail;
     private AppCompatButton btnSendCode;
@@ -53,7 +51,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         String contact = edtEmail.getText().toString().trim();
 
         if (TextUtils.isEmpty(contact)) {
-            edtEmail.setError("Email or Phone required");
+            edtEmail.setError(getString(R.string.err_enter_email_phone));
             return;
         }
 
@@ -61,7 +59,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         boolean isPhone = TextUtils.isDigitsOnly(contact) && contact.length() >= 10;
 
         if (!isEmail && !isPhone) {
-            edtEmail.setError("Enter a valid email or phone number");
+            edtEmail.setError(getString(R.string.err_invalid_email_phone));
             return;
         }
 
@@ -89,7 +87,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             @Override
             public void onFailure(String error) {
                 setLoading(false);
-                Toast.makeText(ForgotPasswordActivity.this, "Lỗi: " + error, Toast.LENGTH_LONG).show();
+                Toast.makeText(ForgotPasswordActivity.this, getString(R.string.msg_error_prefix, error), Toast.LENGTH_LONG).show();
             }
         };
 

@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
+import com.yn.homi.core.BaseActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -16,7 +17,7 @@ import com.yn.homi.R;
 import com.yn.homi.ui.profile.order.MyOrdersActivity;
 import com.yn.homi.ui.home.HomeActivity;
 
-public class OrderSuccessActivity extends AppCompatActivity {
+public class OrderSuccessActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

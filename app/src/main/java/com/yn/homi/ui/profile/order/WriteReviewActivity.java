@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import com.yn.homi.core.BaseActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
@@ -30,7 +31,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class WriteReviewActivity extends AppCompatActivity {
+public class WriteReviewActivity extends BaseActivity {
 
     private static final String CLOUDINARY_CLOUD_NAME = "ddkaekbnb";
     private static final String CLOUDINARY_UPLOAD_PRESET = "Homi_Avatar"; 

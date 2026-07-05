@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
+import com.yn.homi.core.BaseActivity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +25,7 @@ import com.yn.homi.ui.home.HomeActivity;
 import com.yn.homi.ui.shop.ShopActivity;
 import com.yn.homi.ui.profile.profile.YourProfileActivity;
 
-public class WishlistActivity extends AppCompatActivity {
+public class WishlistActivity extends BaseActivity {
 
     private RecyclerView recyclerWishlist;
     private WishlistGroupAdapter groupAdapter;

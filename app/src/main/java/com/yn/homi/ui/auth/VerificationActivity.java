@@ -18,11 +18,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import java.util.UUID;
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.yn.homi.core.BaseActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,7 +31,7 @@ import com.yn.homi.ui.profile.profile.UserProfile;
 import java.util.HashMap;
 import java.util.Map;
 
-public class VerificationActivity extends AppCompatActivity {
+public class VerificationActivity extends BaseActivity {
 
     private EditText[] otpInputs = new EditText[6];
     private AppCompatButton btnContinue;
@@ -90,7 +89,6 @@ public class VerificationActivity extends AppCompatActivity {
         if (contact != null) {
             txtContactInfo.setText(contact);
         }
-        // For Email, show instructions to check inbox
         if ("EMAIL".equals(type)) {
             txtInstruction.setText(R.string.msg_email_sent_instruction);
             findViewById(R.id.otpLayout).setVisibility(View.GONE);
@@ -125,7 +123,6 @@ public class VerificationActivity extends AppCompatActivity {
                     if (s.length() == 1 && index < 5) {
                         otpInputs[index + 1].requestFocus();
                     } else if (s.length() > 1 && index == 0) {
-                        // Handle paste
                         handlePaste(s.toString());
                     }
                 }
@@ -144,7 +141,6 @@ public class VerificationActivity extends AppCompatActivity {
                 return false;
             });
             
-            // Handle paste detection on first box
             if (i == 0) {
                 otpInputs[i].setOnLongClickListener(v -> {
                     ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -178,21 +174,20 @@ public class VerificationActivity extends AppCompatActivity {
 
         String otp = sb.toString();
         if (otp.length() < 6) {
-            Toast.makeText(this, "Please enter all 6 digits", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.msg_enter_6_digits), Toast.LENGTH_SHORT).show();
             return;
         }
 
         if ("PHONE".equals(type)) {
             verifyPhoneOTP(otp);
         } else {
-            // For Email, users don't enter a code here.
-            Toast.makeText(this, "Please click the link in your email to verify.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.msg_click_email_link), Toast.LENGTH_LONG).show();
         }
     }
 
     private void verifyPhoneOTP(String code) {
         if (verificationId == null) {
-            Toast.makeText(this, "Error: Authentication ID not found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.err_auth_id_not_found), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -204,20 +199,19 @@ public class VerificationActivity extends AppCompatActivity {
             if (task.isSuccessful()) {
                 handleSuccess();
             } else {
-                Toast.makeText(this, "Invalid verification code", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.err_invalid_otp), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void handleSuccess() {
         if ("FORGOT_PASSWORD".equals(flow)) {
-            Toast.makeText(this, "Verification successful!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.msg_verification_success), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(VerificationActivity.this, ResetPasswordActivity.class);
             intent.putExtra("email", contact); 
             startActivity(intent);
             finish();
         } else {
-            // For PHONE registration flow, need to create account after successful OTP verification
             if ("PHONE".equals(type)) {
                 if (userProfile == null || password == null) {
                     recoverUserData();
@@ -233,16 +227,16 @@ public class VerificationActivity extends AppCompatActivity {
                                     saveUserToFirestore(uid, userProfile);
                                 } else {
                                     setLoading(false);
-                                    Toast.makeText(this, "Account creation error: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                    String errorMsg = task.getException() != null ? task.getException().getMessage() : "Unknown";
+                                    Toast.makeText(this, getString(R.string.msg_account_creation_error, errorMsg), Toast.LENGTH_LONG).show();
                                 }
                             });
                 } else {
-                    Toast.makeText(this, "Could not complete registration. Please try again.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.msg_registration_incomplete), Toast.LENGTH_SHORT).show();
                     finish();
                 }
             } else {
-                // Email account was already created and saved to Firestore from RegistrationActivity
-                Toast.makeText(this, "Verification successful!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.msg_verification_success), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(VerificationActivity.this, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -285,7 +279,6 @@ public class VerificationActivity extends AppCompatActivity {
     }
 
     private void uploadAvatarAndSaveProfile(String uid, UserProfile profile) {
-        // Try default bucket from google-services.json
         FirebaseStorage storage = FirebaseStorage.getInstance();
         performUpload(storage, uid, profile, false);
     }
@@ -295,23 +288,9 @@ public class VerificationActivity extends AppCompatActivity {
                 .child("avatars/" + uid + "/" + UUID.randomUUID().toString() + ".jpg");
 
         Uri fileUri = Uri.parse(profile.avatarUri);
-        android.util.Log.d("HomiUpload", "Attempting upload: " + fileUri.toString() + " to bucket: " + storageRef.getBucket());
-
-        // Check if file exists if it's file://
-        if ("file".equals(fileUri.getScheme())) {
-            java.io.File file = new java.io.File(fileUri.getPath());
-            if (!file.exists()) {
-                android.util.Log.e("HomiUpload", "File does not exist at: " + fileUri.getPath());
-                Toast.makeText(this, "Selected image not found. Skipping image upload.", Toast.LENGTH_SHORT).show();
-                profile.avatarUri = null;
-                submitProfileToFirestore(uid, profile);
-                return;
-            }
-        }
 
         storageRef.putFile(fileUri)
                 .addOnSuccessListener(taskSnapshot -> {
-                    android.util.Log.d("HomiUpload", "Upload successful!");
                     storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                         profile.avatarUri = uri.toString();
                         submitProfileToFirestore(uid, profile);
@@ -319,14 +298,9 @@ public class VerificationActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> {
                     String msg = e.getMessage();
-                    android.util.Log.e("HomiUpload", "Upload error: " + msg);
-                    
-                    // If 404 (Object not found) and haven't retried, try another bucket
                     if (!isRetry && msg != null && (msg.contains("Object does not exist") || msg.contains("Bucket does not exist") || msg.contains("404"))) {
                         String currentBucket = storageRef.getBucket();
                         String nextBucket = currentBucket.contains("appspot.com") ? "homi-47e58.firebasestorage.app" : "homi-47e58.appspot.com";
-                        
-                        android.util.Log.w("HomiUpload", "Bucket " + currentBucket + " error 404, trying " + nextBucket + "...");
                         try {
                             FirebaseStorage retryStorage = FirebaseStorage.getInstance("gs://" + nextBucket);
                             performUpload(retryStorage, uid, profile, true);
@@ -340,11 +314,7 @@ public class VerificationActivity extends AppCompatActivity {
     }
 
     private void handleUploadFailure(Exception e, UserProfile profile) {
-        android.util.Log.e("HomiUpload", "Upload failed completely: " + e.getMessage());
         String msg = e.getMessage();
-        if (msg != null && msg.contains("Object does not exist")) {
-            msg = "Error 404: Storage Bucket not found. \n\nNOTE: You NEED to go to Firebase Console -> Storage and click 'Get Started' to activate the service.";
-        }
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
         profile.avatarUri = null;
         submitProfileToFirestore(profile.uid, profile);
@@ -358,7 +328,7 @@ public class VerificationActivity extends AppCompatActivity {
                     grantWelcomeCoupon(uid);
                     setLoading(false);
                     clearPendingData();
-                    Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.msg_registration_success), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(VerificationActivity.this, LoginActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
@@ -366,7 +336,7 @@ public class VerificationActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> {
                     setLoading(false);
-                    Toast.makeText(this, "Failed to save profile: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.msg_failed_save_profile, e.getMessage()), Toast.LENGTH_SHORT).show();
                 });
     }
 

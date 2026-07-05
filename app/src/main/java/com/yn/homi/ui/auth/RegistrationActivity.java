@@ -3,12 +3,9 @@ package com.yn.homi.ui.auth;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Patterns;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -22,11 +19,9 @@ import android.provider.MediaStore;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
-import androidx.appcompat.app.AppCompatActivity;
+import com.yn.homi.core.BaseActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
-import com.google.firebase.auth.ActionCodeSettings;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.yn.homi.R;
 import com.yn.homi.ui.profile.profile.UserProfile;
@@ -37,7 +32,7 @@ import java.util.Map;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class RegistrationActivity extends AppCompatActivity {
+public class RegistrationActivity extends BaseActivity {
 
     private EditText edtUsername, edtContact, edtAddress, edtPassword, edtDob;
     private Spinner spinnerGender;
@@ -96,22 +91,22 @@ public class RegistrationActivity extends AppCompatActivity {
         // Mandatory fields
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             edtUsername.setHint(android.text.Html.fromHtml(getString(R.string.str_username) + redStar, android.text.Html.FROM_HTML_MODE_LEGACY));
-            edtContact.setHint(android.text.Html.fromHtml("Email or Phone" + redStar, android.text.Html.FROM_HTML_MODE_LEGACY));
+            edtContact.setHint(android.text.Html.fromHtml(getString(R.string.str_email_or_phone) + redStar, android.text.Html.FROM_HTML_MODE_LEGACY));
             edtPassword.setHint(android.text.Html.fromHtml(getString(R.string.password) + redStar, android.text.Html.FROM_HTML_MODE_LEGACY));
         } else {
             edtUsername.setHint(android.text.Html.fromHtml(getString(R.string.str_username) + redStar));
-            edtContact.setHint(android.text.Html.fromHtml("Email or Phone" + redStar));
+            edtContact.setHint(android.text.Html.fromHtml(getString(R.string.str_email_or_phone) + redStar));
             edtPassword.setHint(android.text.Html.fromHtml(getString(R.string.password) + redStar));
         }
         
-        // Optional fields - Set clear (Optional) hint
-        edtAddress.setHint(getString(R.string.str_address_label) + " (Optional)");
-        edtDob.setHint(getString(R.string.str_dob_label) + " (Optional)");
+        // Optional fields
+        edtAddress.setHint(getString(R.string.str_address_label) + " " + getString(R.string.optional_label));
+        edtDob.setHint(getString(R.string.str_dob_label) + " " + getString(R.string.optional_label));
     }
 
     private void setupGenderSpinner() {
-        String[] genders = {"Male", "Female", "Other"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, genders);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.gender_options, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGender.setAdapter(adapter);
     }
@@ -123,7 +118,6 @@ public class RegistrationActivity extends AppCompatActivity {
         layoutAvatar.setOnClickListener(v -> openGallery());
 
         btnDatePicker.setOnClickListener(v -> showDatePicker());
-        // Also allow clicking the EditText if it's not focusable
         edtDob.setOnClickListener(v -> showDatePicker());
 
         btnSignUp.setOnClickListener(v -> handleSignUp());
@@ -169,7 +163,7 @@ public class RegistrationActivity extends AppCompatActivity {
         String dob = edtDob.getText().toString().trim();
         String gender = spinnerGender.getSelectedItem().toString();
 
-        if (validateInput(username, contact, address, password, dob)) {
+        if (validateInput(username, contact, password)) {
             setLoading(true);
 
             UserProfile userProfile = new UserProfile();
@@ -188,7 +182,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
             boolean isEmail = Patterns.EMAIL_ADDRESS.matcher(contact).matches();
 
-            // Save info to SharedPreferences to prevent loss if app is killed
             getSharedPreferences("HomiAuth", MODE_PRIVATE).edit()
                     .putString("pending_contact", contact)
                     .putString("pending_type", isEmail ? "EMAIL" : "PHONE")
@@ -205,12 +198,9 @@ public class RegistrationActivity extends AppCompatActivity {
                 userProfile.email = contact;
                 createUserInFirebase(userProfile, password);
             } else {
-                // Assume it's a Phone Number
-                userProfile.phone = contact;
-                // Note: Firebase Phone Auth requires Billing for real SMS
                 otpManager.sendOTPToPhone(contact, new OTPManager.OTPCallback() {
                     @Override
-                    public void onCodeSent(String verificationId, com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken token) {
+                    public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
                         setLoading(false);
                         Intent intent = new Intent(RegistrationActivity.this, VerificationActivity.class);
                         intent.putExtra("contact", contact);
@@ -225,7 +215,6 @@ public class RegistrationActivity extends AppCompatActivity {
                     @Override
                     public void onVerificationSuccess() {
                         setLoading(false);
-                        // Case for automatic verification (Instant Verification)
                         Intent intent = new Intent(RegistrationActivity.this, VerificationActivity.class);
                         intent.putExtra("contact", contact);
                         intent.putExtra("type", "PHONE");
@@ -239,7 +228,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(String error) {
                         setLoading(false);
-                        Toast.makeText(RegistrationActivity.this, "SMS delivery error: " + error, Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegistrationActivity.this, getString(R.string.msg_sms_delivery_error, error), Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -253,13 +242,14 @@ public class RegistrationActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         com.google.firebase.auth.FirebaseUser user = task.getResult().getUser();
                         if (user != null) {
-                            user.sendEmailVerification(); // Send traditional email verification
+                            user.sendEmailVerification();
                             String uid = user.getUid();
                             saveUserToFirestore(uid, profile);
                         }
                     } else {
                         setLoading(false);
-                        Toast.makeText(this, "Registration error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        String errorMsg = task.getException() != null ? task.getException().getMessage() : "Unknown error";
+                        Toast.makeText(this, getString(R.string.msg_registration_error, errorMsg), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -272,9 +262,8 @@ public class RegistrationActivity extends AppCompatActivity {
                 .addOnSuccessListener(aVoid -> {
                     grantWelcomeCoupon(uid);
                     setLoading(false);
-                    Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.msg_registration_success), Toast.LENGTH_SHORT).show();
                     
-                    // Switch to check email notification screen
                     Intent intent = new Intent(this, VerificationActivity.class);
                     intent.putExtra("contact", profile.email != null ? profile.email : profile.phone);
                     intent.putExtra("type", profile.email != null ? "EMAIL" : "PHONE");
@@ -284,13 +273,13 @@ public class RegistrationActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> {
                     setLoading(false);
-                    Toast.makeText(this, "Failed to save profile: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.msg_failed_save_profile, e.getMessage()), Toast.LENGTH_SHORT).show();
                 });
     }
 
-    private boolean validateInput(String username, String contact, String address, String password, String dob) {
+    private boolean validateInput(String username, String contact, String password) {
         if (TextUtils.isEmpty(username)) {
-            edtUsername.setError("Username is required");
+            edtUsername.setError(getString(R.string.msg_enter_name));
             edtUsername.requestFocus();
             return false;
         }
@@ -299,13 +288,13 @@ public class RegistrationActivity extends AppCompatActivity {
         boolean isPhone = Patterns.PHONE.matcher(contact).matches() && contact.length() >= 10;
 
         if (!isEmail && !isPhone) {
-            edtContact.setError("Enter a valid email or phone number");
+            edtContact.setError(getString(R.string.err_invalid_email_phone));
             edtContact.requestFocus();
             return false;
         }
 
         if (TextUtils.isEmpty(password) || password.length() < 6) {
-            edtPassword.setError("Password must be at least 6 characters");
+            edtPassword.setError(getString(R.string.err_password_min_length));
             edtPassword.requestFocus();
             return false;
         }

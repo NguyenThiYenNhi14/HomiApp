@@ -160,7 +160,6 @@
     <string name="add_new_address">Thêm địa chỉ mới</string>
     <string name="address_label">Nhãn địa chỉ</string>
     <string name="work">Công việc</string>
-    <string name="other">Khác</string>
     <string name="contact_information">Thông tin liên hệ</string>
     <string name="full_name">Họ và tên</string>
     <string name="phone_number">Số điện thoại</string>
@@ -181,6 +180,7 @@
     <string name="gender">Giới tính</string>
     <string name="male">Nam</string>
     <string name="female">Nữ</string>
+    <string name="other">Khác</string>
     <string name="date_of_birth">Ngày sinh</string>
     <string name="dd_mm_yyyy">Ngày/Tháng/Năm</string>
     <string name="pick_date">Chọn ngày</string>
@@ -356,6 +356,8 @@
     <string name="redeem_success">Đổi coupon thành công!</string>
     <string name="not_enough_points">Bạn chưa đủ 500 điểm</string>
     <string name="error_redeem">Lỗi: %1$s</string>
+    <string name="label_profile_name_format">%1$s \u003e</string>
+    <string name="label_guest_format">Đăng nhập / Đăng ký \u003e</string>
     <string name="msg_camera_error">Không thể mở máy ảnh</string>
     <string name="msg_enter_name">Vui lòng nhập tên của bạn</string>
     <string name="msg_not_logged_in">Bạn chưa đăng nhập!</string>
@@ -432,4 +434,27 @@
     <string name="placeholder_product_name">Tên sản phẩm</string>
     <string name="placeholder_product_price">0đ</string>
     <string name="label_view_detail">Xem chi tiết</string>
+    <string name="err_enter_email_phone">Vui lòng nhập Email hoặc Số điện thoại</string>
+    <string name="err_invalid_email_phone">Vui lòng nhập email hoặc số điện thoại hợp lệ</string>
+    <string name="msg_error_prefix">Lỗi: %1$s</string>
+    <string name="optional_label">(Tùy chọn)</string>
+    <string name="msg_registration_success">Đăng ký thành công!</string>
+    <string name="msg_registration_error">Lỗi đăng ký: %1$s</string>
+    <string name="msg_failed_save_profile">Lưu hồ sơ thất bại: %1$s</string>
+    <string name="msg_sms_delivery_error">Lỗi gửi tin nhắn SMS: %1$s</string>
+    <string name="err_password_min_length">Mật khẩu phải có ít nhất 6 ký tự</string>
+    <string-array name="gender_options">
+        <item>@string/male</item>
+        <item>@string/female</item>
+        <item>@string/other</item>
+    </string-array>
+    <string name="msg_reset_link_sent">Liên kết đặt lại mật khẩu đã được gửi tới %1$s</string>
+    <string name="msg_session_invalid">Phiên làm việc đã hết hạn hoặc dữ liệu không hợp lệ.</string>
+    <string name="msg_enter_6_digits">Vui lòng nhập đủ 6 chữ số</string>
+    <string name="msg_click_email_link">Vui lòng nhấn vào liên kết trong email của bạn để xác thực.</string>
+    <string name="err_auth_id_not_found">Lỗi: Không tìm thấy ID xác thực</string>
+    <string name="err_invalid_otp">Mã xác thực không hợp lệ</string>
+    <string name="msg_verification_success">Xác thực thành công!</string>
+    <string name="msg_account_creation_error">Lỗi tạo tài khoản: %1$s</string>
+    <string name="msg_registration_incomplete">Không thể hoàn tất đăng ký. Vui lòng thử lại.</string>
 </resources>
