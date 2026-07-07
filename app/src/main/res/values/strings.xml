@@ -304,6 +304,7 @@
     <string name="btn_create_new_list">CREATE NEW LIST</string>
     <string name="search_in_list_hint">Search in list</string>
     <string name="buy_now">Buy Now</string>
+    <string name="buy_all_items">Buy All Items</string>
     <string name="are_you_sure_you_want_to_update_your_information">Are you sure you want to update your information?</string>
     <string name="yes">Yes</string>
     <string name="are_you_sure_you_want_to_leave">Are you sure you want to leave?</string>

@@ -146,6 +146,10 @@ public class HomeActivity extends com.yn.homi.core.BaseActivity {
         setupViews();
         updateGreeting();
 
+        // CHỈ CHẠY KHI CẦN CẬP NHẬT DỮ LIỆU MỚI TỪ FILE JSON
+        // firestoreRepository.importProductsFromJson(this);
+        // firestoreRepository.importIdeasFromJson(this);
+
         LinearLayout btnShop = findViewById(R.id.btn_shop);
         if (btnShop != null) {
             btnShop.setOnClickListener(v -> {

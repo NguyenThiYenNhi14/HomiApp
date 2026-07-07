@@ -28,6 +28,9 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+//import com.yn.homi.data.repository.FirestoreRepository;
+
+import com.yn.homi.data.repository.FirestoreRepository;
 import com.yn.homi.ui.auth.LoginActivity;
 import com.yn.homi.R;
 import com.yn.homi.utils.LocaleHelper;
@@ -56,7 +59,11 @@ public class WelcomeActivity extends com.yn.homi.core.BaseActivity {
 
         initViews();
         setupLanguageToggle();
-        
+
+        // CHỈ CHẠY 1 LẦN: Đẩy dữ liệu từ products.json lên Firestore
+        // Dùng WelcomeActivity vì đây là màn hình đầu tiên khi mở App
+        //new FirestoreRepository().importProductsFromJson(this);
+
         // Kiểm tra xem có phải quay lại do đổi ngôn ngữ không
         boolean isLanguageSwitch = getIntent().getBooleanExtra("IS_LANGUAGE_SWITCH", false);
 

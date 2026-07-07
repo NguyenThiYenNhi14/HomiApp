@@ -113,7 +113,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="54dp"
                     android:paddingHorizontal="16dp"
-                    android:text="Buy Room"
+                    android:text="@string/buy_all_items"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
                     app:backgroundTint="#111111"

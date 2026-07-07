@@ -514,4 +514,82 @@ public class FirestoreRepository {
         void onLoaded(List<Review> reviews);
         void onError(Exception e);
     }
+
+    /**
+     * Chạy 1 lần duy nhất để đẩy dữ liệu từ file assets/products.json lên Firestore.
+     * Cấu trúc JSON là Map<String, Product>
+     */
+    public void importProductsFromJson(android.content.Context context) {
+        Log.d("IMPORT", "Hàm importProductsFromJson đã được gọi");
+        try {
+            // 1. Đọc file từ assets
+            java.io.InputStream is = context.getAssets().open("products.json");
+            Log.d("IMPORT", "Đã tìm thấy file products.json trong assets");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String json = new String(buffer, "UTF-8");
+
+            // 2. Parse JSON thành Map
+            com.google.gson.Gson gson = new com.google.gson.Gson();
+            java.lang.reflect.Type mapType = new com.google.gson.reflect.TypeToken<Map<String, Product>>(){}.getType();
+            Map<String, Product> productMap = gson.fromJson(json, mapType);
+
+            if (productMap == null) {
+                Log.e("IMPORT", "Không thể parse JSON hoặc file trống");
+                return;
+            }
+
+            Log.d("IMPORT", "Bắt đầu import " + productMap.size() + " sản phẩm...");
+
+            // 3. Đẩy từng sản phẩm lên Firestore
+            for (Map.Entry<String, Product> entry : productMap.entrySet()) {
+                String id = entry.getKey();
+                Product p = entry.getValue();
+                
+                // Đảm bảo ID trong object khớp với key
+                p.setId(id);
+
+                db.collection("products").document(id).set(p)
+                    .addOnSuccessListener(aVoid -> Log.d("IMPORT", "Thành công: " + id + " - " + p.getName()))
+                    .addOnFailureListener(e -> Log.e("IMPORT", "Lỗi ID " + id + ": " + e.getMessage()));
+            }
+        } catch (Exception e) {
+            Log.e("IMPORT", "Lỗi đọc file JSON hoặc quá trình đẩy dữ liệu", e);
+        }
+    }
+
+    /**
+     * Chạy 1 lần để đẩy dữ liệu từ file assets/ideas.json lên Firestore.
+     */
+    public void importIdeasFromJson(android.content.Context context) {
+        Log.d("IMPORT", "Hàm importIdeasFromJson đã được gọi");
+        try {
+            java.io.InputStream is = context.getAssets().open("ideas.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String json = new String(buffer, "UTF-8");
+
+            com.google.gson.Gson gson = new com.google.gson.Gson();
+            java.lang.reflect.Type mapType = new com.google.gson.reflect.TypeToken<Map<String, Idea>>(){}.getType();
+            Map<String, Idea> ideaMap = gson.fromJson(json, mapType);
+
+            if (ideaMap == null) return;
+
+            for (Map.Entry<String, Idea> entry : ideaMap.entrySet()) {
+                String id = entry.getKey();
+                Idea idea = entry.getValue();
+                idea.setId(id);
+
+                db.collection("ideas").document(id).set(idea)
+                    .addOnSuccessListener(aVoid -> Log.d("IMPORT", "Idea thành công: " + id))
+                    .addOnFailureListener(e -> Log.e("IMPORT", "Lỗi Idea ID " + id + ": " + e.getMessage()));
+            }
+        } catch (Exception e) {
+            Log.e("IMPORT", "Lỗi import ideas", e);
+        }
+    }
 }
